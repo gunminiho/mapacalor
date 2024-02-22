@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MAPA CALOR CECOM 2024</title>
+    <link rel="icon" href="./logo_sjl_2.ico" type="image/x-icon">
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" /> -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+    <script src="https://unpkg.com/@turf/turf"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    <script>
+      async function obtenerDatos() {
+        const url =
+          "https://script.google.com/macros/s/AKfycbyV5PVEeI13k2LHVuPiPNWz5-zdAAmPKay-MXyyzjnII6g4WdoRcSkhGSd4qgbciqJu/exec"; // Reemplaza con la URL de tu Google Sheets
+        try {
+          const respuesta = await fetch(url);
+          const datos = await respuesta.json();
+
+          mostrarDatos(datos);
+        } catch (error) {
+          console.error("Error al obtener los datos:", error);
+        }
+      }
+
+      function mostrarDatos(datos) {
+        const contenedor = document.getElementById("datos-contenedor");
+        contenedor.innerHTML = ""; // Limpiar contenedor
+
+        datos.forEach((fila, index) => {
+          const filaDiv = document.createElement("div");
+          filaDiv.innerHTML = `Fila ${index + 1}: ${JSON.stringify(fila)}`;
+          contenedor.appendChild(filaDiv);
+        });
+      }
+
+      window.onload = obtenerDatos;
+    </script>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      #controls {
+        position: absolute;
+        display: none;
+        top: 80px;
+        left: 20px;
+        z-index: 1000;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        resize: horizontal; /* Permitir redimensionamiento horizontal */
+        overflow: auto; /* Añadir barras de desplazamiento cuando se supera el tamaño */
+        min-width: 200px; /* Ancho mínimo */
+        max-width: 500px; /* Ancho máximo */
+        max-height: calc(100vh - 120px);
+      }
+
+      #controls label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      #controls select {
+        width: 100%; /* Ancho del 100% de su contenedor */
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+
+      #map {
+        height: 100vh;
+        width: 100vw;
+      }
+
+      #coordinates {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        z-index: 1000;
+        background-color: rgba(255, 255, 255, 0.7);
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+      #navbar {
+        background-color: #ff6645;
+        padding: 0.5px;
+        color: #fff;
+        text-align: center;
+        font-size: 17px;
+      }
+      #navbar img {
+        max-width: 100%;
+        max-height: 50px; /* Ajusta la altura según tus necesidades */
+      }
+      #logo {
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        width: 150px; /* ajusta el ancho según tus necesidades */
+        height: 100px; /* para mantener la proporción de la imagen */
+      }
+      #leyenda {
+        height: 160px;
+        width: 300px;
+        position: absolute;
+        bottom: 25px;
+        right: 10px;
+        margin: 5px;
+        z-index: 500;
+        padding: 6px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+      }
+
+      .leyenda-item {
+        margin-bottom: -26px;
+        /* margin-bottom: 3px; */
+        display: flex;
+        align-items: center;
+      }
+
+      .leyenda-item img {
+        width: 25px;
+        height: 30px;
+        margin-right: 10px;
+      }
+      .leyenda-item h5 {
+        letter-spacing: -1px;
+        font-size: 12px;
+      }
+
+      #contenedor-checkboxes {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        background-color: white;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        z-index: 1000;
+        font-size: 14px;
+      }
+      #leyenda h3 {
+        margin-bottom: -6px; /* Ajusta este valor según tus necesidades */
+      }
+
+      #toggle-controls {
+        top: 30px;
+        left: 55px;
+        z-index: 1000;
+        position: absolute;
+        background-color: #4caf50; /* Color de fondo */
+        color: white; /* Color del texto */
+        padding: 10px 20px; /* Espaciado interno */
+        border: none; /* Sin borde */
+        border-radius: 5px; /* Bordes redondeados */
+        cursor: pointer; /* Cursor en forma de mano */
+        margin-bottom: 10px; /* Margen inferior */
+      }
+
+      #toggle-controls:hover {
+        background-color: #45a049; /* Color al pasar el ratón por encima */
+      }
+
+      #toggle-containers {
+              display: none; /* Oculta el botón por defecto */
+          }
+
+          #toggle-containers-1 {
+              display: none; /* Oculta el botón por defecto */
+          }
+
+          #toggle-containers-2 {
+              display: none; /* Oculta el botón por defecto */
+          }
+
+      @media (max-width: 768px) {
+        #toggle-controls {
+          display: none;
+        }
+        #contenedor-checkboxes {
+                display: flex; /* Habilita Flexbox para el contenedor */
+                flex-direction: column; /* Alinea los elementos internos verticalmente */
+                justify-content: center; /* Centra los elementos verticalmente */
+                align-items: center; /* Centra los elementos horizontalmente */
+                position: fixed; /* O absolute, dependiendo de tu necesidad */
+                top: 50%; /* Posiciona el contenedor en el medio de la pantalla */
+                left: 50%; /* Posiciona el contenedor en el medio de la pantalla */
+                transform: translate(-50%, -50%); /* Ajusta precisamente el contenedor al centro */
+                width: 80%; /* Ajusta el ancho del contenedor */
+                max-width: 300px; /* Opcional: Limita el ancho máximo del contenedor */
+                background-color: #fff; /* Fondo del contenedor para mejor visibilidad */
+                padding: 20px; /* Espaciado interno para el contenedor */
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Sombra suave para destacar el contenedor */
+                z-index: 1000; /* Asegura que el contenedor esté por encima de otros elementos */
+                overflow: auto; /* Permite desplazar dentro del contenedor si los elementos exceden el tamaño */
+                border-radius: 10px; /* Bordes redondeados para el contenedor */
+            }
+
+            #leyenda {
+              bottom: 50px;
+            }
+            #controls, #leyenda, #contenedor-checkboxes {
+                display: none; /* Oculta los contenedores en pantallas pequeñas */
+            }
+
+            #toggle-containers {
+                display: block; /* Muestra el botón en pantallas pequeñas */
+                position: fixed;
+                background-color: #02329b; /* Color de fondo */
+                color: white;
+                padding: 5px 10px; /* Espaciado interno */
+                border: none; /* Sin borde */
+                border-radius: 5px;  /* O absolute, según tu preferencia de ubicación */
+                z-index: 1010; /* Asegura que el botón esté por encima de otros elementos */
+                top: 10px; /* Ajusta según necesites */
+                right: 10px; /* Ajusta según necesites */
+                /* Estilos adicionales para el botón (colores, padding, etc.) */
+            }
+
+            #toggle-containers-1 {
+                display: block; /* Muestra el botón en pantallas pequeñas */
+                position: fixed;
+                background-color: #02329b; /* Color de fondo */
+                color: white;
+                padding: 5px 10px; /* Espaciado interno */
+                border: none; /* Sin borde */
+                border-radius: 5px;  /* O absolute, según tu preferencia de ubicación */
+                z-index: 1010; /* Asegura que el botón esté por encima de otros elementos */
+                top: 50px; /* Ajusta según necesites */
+                right: 10px; /* Ajusta según necesites */
+                /* Estilos adicionales para el botón (colores, padding, etc.) */
+            }
+
+            #toggle-containers-2 {
+                display: block; /* Muestra el botón en pantallas pequeñas */
+                position: fixed;
+                background-color: #02329b; /* Color de fondo */
+                color: white;
+                padding: 5px 10px; /* Espaciado interno */
+                border: none; /* Sin borde */
+                border-radius: 5px;  /* O absolute, según tu preferencia de ubicación */
+                z-index: 1010; /* Asegura que el botón esté por encima de otros elementos */
+                top: 90px; /* Ajusta según necesites */
+                right: 10px; /* Ajusta según necesites */
+                /* Estilos adicionales para el botón (colores, padding, etc.) */
+            }
+
+            
+        }
+    </style>
+  </head>
+  <body>
+
+    <div id="contenedor-checkboxes">
+      <ul>
+        <li>
+          <label>
+            CAMARAS VECINALES:
+            <input type="checkbox" id="mostrarMarcadoresCheckbox6" />
+          </label>
+        </li>
+        <li>
+          <label>
+            PUNTOS DE BASURA:
+            <input type="checkbox" id="mostrarMarcadoresCheckbox7" />
+          </label>
+        </li>
+        <li>
+          <label>
+            PARADEROS DE TRANSPORTE:
+            <input type="checkbox" id="mostrarMarcadoresCheckbox8" />
+          </label>
+        </li>
+        <li>
+          <label>
+            PANELES MONUMENTALES:
+            <input type="checkbox" id="mostrarMarcadoresCheckbox9" />
+          </label>
+        </li>
+      </ul>
+    </div>
+    
+    <div id="leyenda">
+      <h3>LEYENDA</h3>
+      <!-- <div class="leyenda-item">
+        <img
+          src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png"
+          alt="Megáfono Rojo"
+        />
+        <h5>
+          CAMARA + MEGAFONOS + POSTE: <span id="contadorMarcadores1"></span>
+        </h5>
+      </div>
+      <div class="leyenda-item">
+        <img
+          src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png"
+          alt="PTZ Verde"
+        />
+        <h5>
+          BOTON + CAMARA + MEGAFONOS + POSTE:
+          <span id="contadorMarcadores2"></span>
+        </h5>
+      </div>
+      <div class="leyenda-item">
+        <img
+          src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png"
+          alt="Blue"
+        />
+        <h5>CAMARAS + POSTE: <span id="contadorMarcadores3"></span></h5>
+      </div>
+      <div class="leyenda-item">
+        <img
+          src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png"
+          alt="Blue"
+        />
+        <h5>
+          PRIORIDAD ENERGIA VECINAL AVANCE:
+          <span id="contadorMarcadores4"></span>
+        </h5>
+      </div>
+      <div class="leyenda-item">
+        <img
+          src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png"
+          alt="Blue"
+        />
+        <h5>PLANTADO DE POSTES: <span id="contadorMarcadores5"></span></h5>
+      </div> -->
+      <div class="leyenda-item">
+        <img
+          src="./camara_vecinal.png"
+          alt="Blue"
+        />
+        <h5>CAMARAS VECINALES: <span id="contadorMarcadores6"></span></h5>
+      </div>
+      <div class="leyenda-item">
+        <img
+          src="./basura.png"
+          alt="Blue"
+        />
+        <h5>PUNTOS DE BASURA: <span id="contadorMarcadores7"></span></h5>
+      </div>
+      <div class="leyenda-item">
+        <img
+          src="./mototaxi.png"
+          alt="Blue"
+        />
+        <h5>PARADEROS DE TRANSPORTE: <span id="contadorMarcadores8"></span></h5>
+      </div>
+      <div class="leyenda-item">
+        <img
+          src="./paneles.png"
+          alt="Blue"
+        />
+        <h5>PANELES MONUMENTALES: <span id="contadorMarcadores9"></span></h5>
+      </div>
+      <!-- Agrega más elementos de leyenda según tus necesidades -->
+    </div>
+
+    <button id="toggle-containers">Filtro de Incidencias</button>
+    <button id="toggle-containers-1">Filtro de Camaras</button>
+    <button id="toggle-containers-2">Mostrar/Ocultar Leyenda</button>
+
+    <button id="toggle-controls">Mostrar/Ocultar Controles</button>
+
+    <div id="controls">
+      <label for="group1">Comisaria: </label>
+      <select id="group1" multiple onchange="populateGroup2()">
+        <!-- Las opciones se llenarán dinámicamente -->
+      </select>
+      <br />
+      <label for="group2">Prioridad: </label>
+      <select id="group2" multiple onchange="populateGroup3()">
+        <!-- Las opciones se llenarán dinámicamente -->
+      </select>
+      <br />
+      <label for="group3">Tipo de caso: </label>
+      <select id="group3" multiple onchange="getTipoCaso()">
+        <!-- Las opciones se llenarán dinámicamente -->
+      </select>
+      <br />
+      <label for="subTipoCaso">Sub Tipo de Caso: </label>
+      <select id="subTipoCaso" multiple onchange="getSubTipoCaso()">
+        <!-- Las opciones se llenarán dinámicamente -->
+      </select>
+      <button id="export-btn" style="display: none;">Exportar a Excel Puntos Generados</button>
+      <label for="" id="contMarcadores" style="display: none;">Camaras:</label>
+      <input type="file" id="fileInput" accept=".xlsx, .xls" style="display: none;" />
+    </div>
+    <div id="map"></div>
+
+    <div id="coordinates">Latitud: 0.0, Longitud: 0.0</div>
+
+    <script>
+
+      document.getElementById('toggle-containers').addEventListener('click', function() {
+          var containers = document.querySelectorAll('#controls');
+          containers.forEach(function(container) {
+              if (container.style.display === 'block') {
+                  container.style.display = 'none';
+              } else {
+                  container.style.display = 'block';
+              }
+          });
+      });
+
+      document.getElementById('toggle-containers-1').addEventListener('click', function() {
+          var containers = document.querySelectorAll('#contenedor-checkboxes');
+          containers.forEach(function(container) {
+              if (container.style.display === 'block') {
+                  container.style.display = 'none';
+              } else {
+                  container.style.display = 'block';
+              }
+          });
+      });
+
+      document.getElementById('toggle-containers-2').addEventListener('click', function() {
+          var containers = document.querySelectorAll('#leyenda');
+          containers.forEach(function(container) {
+              if (container.style.display === 'block') {
+                  container.style.display = 'none';
+              } else {
+                  container.style.display = 'block';
+              }
+          });
+      });
+
+      let polygon;
+      var csvPath = "/Zarate.csv";
+      var csvFilePath1 = "/10 de Octubre.csv"; // Reemplaza 'tu_archivo.csv' con la ruta de tu archivo CSV
+      var csvFilePath2 = "/Bayovar.csv"; // Reemplaza 'tu_archivo.csv' con la ruta de tu archivo CSV
+      var csvFilePath3 = "/Caja de Agua.csv"; // Reemplaza 'tu_archivo.csv' con la ruta de tu archivo CSV
+      var csvFilePath4 = "/Canto Rey.csv"; // Reemplaza 'tu_archivo.csv' con la ruta de tu archivo CSV
+      var csvFilePath5 = "/La Huayrona.csv"; // Reemplaza 'tu_archivo.csv' con la ruta de tu archivo CSV
+      var csvFilePath6 = "/Mariscal Caceres.csv"; // Reemplaza 'tu_archivo.csv' con la ruta de tu archivo CSV
+      var csvFilePath7 = "/Santa Elizabeth.csv"; // Reemplaza 'tu_archivo.csv' con la ruta de tu archivo CSV
+      var polygonColor = "black"; // Color del polígono
+      var polygonColor2 = "blue"; // Color del polígono
+      var polygonColor3 = "green"; // Color del polígono
+      var polygonColor4 = "purple"; // Color del polígono
+      var polygonColor5 = "orange"; // Color del polígono
+      var polygonColor6 = "red"; // Color del polígono
+      var polygonColor7 = "gray"; // Color del polígono
+      var polygonColor8 = "brown"; // Color del polígono
+
+      
+
+      document
+        .getElementById("toggle-controls")
+        .addEventListener("click", function () {
+          var controls = document.getElementById("controls");
+          if (controls.style.display === "none") {
+            controls.style.display = "block";
+          } else {
+            controls.style.display = "none";
+          }
+        });
+
+      var map = L.map("map").setView([-11.966348, -76.996402], 13);
+      const arrayHeat = [];
+
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+      map.on("mousemove", function (e) {
+        document.getElementById("coordinates").innerHTML =
+          "Latitud: " +
+          e.latlng.lat.toFixed(6) +
+          ", Longitud: " +
+          e.latlng.lng.toFixed(6);
+      });
+
+      var coordenadas = [];
+      var marcadoresLayer = L.layerGroup().addTo(map);
+      var contadorMarcadores = 0;
+      //const url = "./map.json";
+      const url = "./incidencias.json";
+      let dataJSON;
+      let heatLayer;
+      let markers;
+
+      var customIcon = L.icon({
+          iconUrl: './camara.png',
+          iconSize: [32, 32], // Tamaño de la imagen
+          iconAnchor: [16, 32], // Punto en el que la imagen debe estar centrada en las coordenadas del marcador
+          popupAnchor: [0, -32] // Punto desde el que se abre el popup relativo al icono
+      });
+
+        // Agregar el evento 'click' al mapa
+        // map.on('click', function (e) {
+        //     // Obtener las coordenadas del clic
+        //     var latitud = e.latlng.lat.toFixed(6);
+        //     var longitud = e.latlng.lng.toFixed(6);
+
+        //     // Mostrar las coordenadas en la consola (puedes quitar esto en la versión final)
+        //     console.log("Latitud: " + latitud + ", Longitud: " + longitud);
+
+        //     // Agregar las coordenadas a la lista
+        //     coordenadas.push({ latitud: latitud, longitud: longitud });
+
+        //     // Crear un nuevo marcador en la ubicación clicada
+        //     var marcador = L.marker(e.latlng, {icon: customIcon}).addTo(marcadoresLayer);
+
+        //     contadorMarcadores++;
+
+        //     // Añadir evento para eliminar el marcador al clic o doble clic en él
+        //     marcador.on('click', function() {
+        //         // Remover el marcador del mapa
+        //         map.removeLayer(marcador);
+        //         contadorMarcadores--;
+
+        //         document.getElementById('contMarcadores').innerText = "Número de marcadores: " + contadorMarcadores;
+
+        //         // Encontrar y eliminar las coordenadas correspondientes del array
+        //         coordenadas = coordenadas.filter(function(coordenada) {
+        //             return coordenada.latitud != latitud || coordenada.longitud != longitud;
+        //         });
+
+        //         // Mostrar las coordenadas actualizadas en la consola (puedes quitar esto en la versión final)
+        //         console.log("Coordenadas actualizadas:", coordenadas);
+
+                
+        //     });
+
+        //     document.getElementById('contMarcadores').innerText = "Número de marcadores: " + contadorMarcadores;
+        // });
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+          var file = e.target.files[0];
+          
+          var reader = new FileReader();
+          
+          reader.onload = function(e) {
+              var data = new Uint8Array(e.target.result);
+              var workbook = XLSX.read(data, {type: 'array'});
+              
+              // Suponiendo que las coordenadas están en la primera hoja del archivo Excel
+              var sheetName = workbook.SheetNames[0];
+              var worksheet = workbook.Sheets[sheetName];
+              
+              // Convertir el contenido de la hoja Excel a un array de objetos
+              var excelData = XLSX.utils.sheet_to_json(worksheet);
+              
+              // Iterar sobre cada fila de datos
+              excelData.forEach(function(row) {
+                  // Suponiendo que las columnas de latitud y longitud se llaman 'Latitud' y 'Longitud'
+                  var latitud = parseFloat(row['latitud']);
+                  var longitud = parseFloat(row['longitud']);
+                  
+                  // Agregar las coordenadas al array coordenadas
+                  coordenadas.push({ latitud: latitud, longitud: longitud });
+                  
+                  // Crear un marcador en el mapa con las coordenadas
+                  var marcador = L.marker([latitud, longitud], {icon: customIcon}).addTo(marcadoresLayer);
+
+                  marcador.on('click', function() {
+                      // Remover el marcador del mapa
+                      map.removeLayer(marcador);
+                      contadorMarcadores--;
+
+                      document.getElementById('contMarcadores').innerText = "Número de marcadores: " + contadorMarcadores;
+
+                      // Encontrar y eliminar las coordenadas correspondientes del array
+                      coordenadas = coordenadas.filter(function(coordenada) {
+                          return coordenada.latitud != latitud || coordenada.longitud != longitud;
+                      });
+
+                      // Mostrar las coordenadas actualizadas en la consola (puedes quitar esto en la versión final)
+                      console.log("Coordenadas actualizadas:", coordenadas);
+
+                      
+                  });
+              });
+              
+              // Actualizar el contador de marcadores
+              contadorMarcadores = coordenadas.length;
+              document.getElementById('contMarcadores').innerText = "Número de marcadores: " + contadorMarcadores;
+          };
+          
+          reader.readAsArrayBuffer(file);
+      });
+
+
+
+      function getSubTipoCaso() {
+        clearMap();
+        const group1Select = document.getElementById("group1");
+        const group2Select = document.getElementById("group2");
+        const group3Select = document.getElementById("group3");
+        const subTipoCasoSelect = document.getElementById("subTipoCaso");
+
+        // Customize this logic based on your data
+        const selectedGroup1Values = Array.from(
+          group1Select.selectedOptions
+        ).map((option) => option.value);
+        const selectedGroup2Values = Array.from(
+          group2Select.selectedOptions
+        ).map((option) => option.value);
+        const selectedGroup3Values = Array.from(
+          group3Select.selectedOptions
+        ).map((option) => option.value);
+        const selectedTipoCasoValues = Array.from(
+          subTipoCasoSelect.selectedOptions
+        ).map((option) => option.value);
+
+        dataJSON.forEach((element) => {
+          // Filter based on selected values
+          if (
+            (selectedGroup1Values.length === 0 ||
+              selectedGroup1Values.includes(element["Comisaria"])) &&
+            (selectedGroup2Values.length === 0 ||
+              selectedGroup2Values.includes(element["Prioridad"])) &&
+            (selectedGroup3Values.length === 0 ||
+              selectedGroup3Values.includes(element["Tipo de Caso"])) &&
+            (selectedTipoCasoValues.length === 0 ||
+              selectedTipoCasoValues.includes(element["Sub Tipo de Caso"]))
+          ) {
+            const obj = [element.Latitud, element.Longitud, 0.5];
+            arrayHeat.push(obj);
+
+            // Personalizar tu marcador aquí
+            const myIcon = L.icon({
+              iconUrl: "my-icon.png",
+              iconSize: [38, 50],
+              iconAnchor: [30, 94],
+              popupAnchor: [-3, -76],
+              shadowUrl: "my-icon-shadow.png",
+              shadowSize: [68, 95],
+              shadowAnchor: [22, 94],
+            });
+
+            const marker = L.marker([element.Latitud, element.Longitud]); //.addTo(markers);
+            marker.bindPopup(
+              `<b>Comisaria:</b> ${element["Comisaria"]}<br><b>Prioridad:</b> ${element["Prioridad"]}<br><b>Tipo de caso:</b> ${element["Tipo de Caso"]}<br><b>Sub Tipo de Caso:</b> ${element["Sub Tipo de Caso"]}<br><b>Latitud: </b>${element.Latitud}<br><b>Longitud: </b>${element.Longitud}`
+            );
+          }
+        });
+
+        heatLayer = L.heatLayer(arrayHeat, { radius: 25 }).addTo(map);
+      }
+
+      function getTipoCaso() {
+        clearMap();
+        const group1Select = document.getElementById("group1");
+        const group2Select = document.getElementById("group2");
+        const group3Select = document.getElementById("group3");
+        const subTipoCasoSelect = document.getElementById("subTipoCaso");
+
+        // Customize this logic based on your data
+        const selectedGroup1Values = Array.from(
+          group1Select.selectedOptions
+        ).map((option) => option.value);
+        const selectedGroup2Values = Array.from(
+          group2Select.selectedOptions
+        ).map((option) => option.value);
+        const selectedGroup3Values = Array.from(
+          group3Select.selectedOptions
+        ).map((option) => option.value);
+        subTipoCasoSelect.innerHTML = "";
+
+        if (
+          selectedGroup1Values.length !== 0 &&
+          selectedGroup2Values.length !== 0 &&
+          selectedGroup3Values.length !== 0
+        ) {
+          // Customize this logic based on your data
+          const subTipoCasos = dataJSON
+            .filter(
+              (element) =>
+                selectedGroup1Values.includes(element["Comisaria"]) &&
+                selectedGroup2Values.includes(element["Prioridad"]) &&
+                selectedGroup3Values.includes(element["Tipo de Caso"])
+            )
+            .map((element) => element["Sub Tipo de Caso"]);
+
+          const uniqueSubTipoCasos = [...new Set(subTipoCasos)];
+
+          uniqueSubTipoCasos.forEach((subTipoCaso) => {
+            const option = document.createElement("option");
+            option.value = subTipoCaso;
+            option.text = subTipoCaso;
+            subTipoCasoSelect.appendChild(option);
+          });
+        }
+
+        getSubTipoCaso();
+      }
+
+      function populateGroup2() {
+        clearMap();
+        const group1Select = document.getElementById("group1");
+        const group2Select = document.getElementById("group2");
+        const group3Select = document.getElementById("group3");
+
+        group2Select.innerHTML = "";
+        group3Select.innerHTML = "";
+
+        const selectedGroup1Values = Array.from(
+          group1Select.selectedOptions
+        ).map((option) => option.value);
+
+        if (selectedGroup1Values.length !== 0) {
+          // Customize this logic based on your data
+          const subTypes = dataJSON
+            .filter((element) =>
+              selectedGroup1Values.includes(element["Comisaria"])
+            )
+            .map((element) => element["Prioridad"]);
+
+          const uniqueSubTypes = [...new Set(subTypes)];
+
+          uniqueSubTypes.forEach((subType) => {
+            const option = document.createElement("option");
+            option.value = subType;
+            option.text = subType;
+            group2Select.appendChild(option);
+          });
+        }
+
+        getTipoCaso(); // Llamar a getTipoCaso() después de poblar group2
+      }
+
+      function populateGroup3() {
+        clearMap();
+        const group1Select = document.getElementById("group1");
+        const group2Select = document.getElementById("group2");
+        const group3Select = document.getElementById("group3");
+
+        group3Select.innerHTML = "";
+
+        const selectedGroup1Values = Array.from(
+          group1Select.selectedOptions
+        ).map((option) => option.value);
+        const selectedGroup2Values = Array.from(
+          group2Select.selectedOptions
+        ).map((option) => option.value);
+
+        if (
+          selectedGroup1Values.length !== 0 &&
+          selectedGroup2Values.length !== 0
+        ) {
+          // Customize this logic based on your data
+          const subTypes = dataJSON
+            .filter(
+              (element) =>
+                selectedGroup1Values.includes(element["Comisaria"]) &&
+                selectedGroup2Values.includes(element["Prioridad"])
+            )
+            .map((element) => element["Tipo de Caso"]);
+
+          const uniqueSubTypes = [...new Set(subTypes)];
+
+          uniqueSubTypes.forEach((subType) => {
+            const option = document.createElement("option");
+            option.value = subType;
+            option.text = subType;
+            group3Select.appendChild(option);
+          });
+        }
+        getTipoCaso(); // Llamar a getTipoCaso() después de poblar group3
+      }
+
+      function clearMap() {
+        if (heatLayer) {
+          map.removeLayer(heatLayer);
+        }
+
+        // if (markers) {
+        //     markers.clearLayers();
+        // }
+        arrayHeat.length = 0;
+      }
+
+      const jsonUrl = "./datos_camara.json";
+
+      const capasMarcadores = {
+        MEGAFONO: L.layerGroup().addTo(map),
+        PTZ: L.layerGroup().addTo(map),
+      };
+
+      let data1;
+
+      async function obtenerDatos() {
+        const url =
+          "https://script.google.com/macros/s/AKfycbzE7wyJ_do8m62vk6iQ8yBgGrXg6Va7y895rC5IyLfhxrHJRRl9_7xtL4l4D4_hQJPK/exec"; // Reemplaza con la URL de tu Google Sheets
+        // "https://script.google.com/macros/s/AKfycbyWlzf8DwZdLRx1u9KW8hBXL1TW5B9QQzNcI85hqagmDGu3cfB7VRRSy0ALwNzG7Hgw/exec"; // Reemplaza con la URL de tu Google Sheets
+        try {
+          const respuesta = await fetch(url);
+          const datos = await respuesta.json();
+          // document.getElementById("mostrarMarcadoresCheckbox1").checked &&
+          //   agregarMarcadores(datos.PrimeraHoja);
+          // document.getElementById("mostrarMarcadoresCheckbox2").checked &&
+          //   agregarMarcadores2(datos.PrimeraHoja);
+          // document.getElementById("mostrarMarcadoresCheckbox3").checked &&
+          //   agregarMarcadores3(datos.PrimeraHoja);
+          // document.getElementById("mostrarMarcadoresCheckbox4").checked &&
+          //   agregarMarcadores4(datos.PrimeraHoja);
+          // document.getElementById("mostrarMarcadoresCheckbox5").checked &&
+          //   agregarMarcadores5(datos.PrimeraHoja);
+          document.getElementById("mostrarMarcadoresCheckbox6").checked &&
+            agregarMarcadores6(datos.SegundaHoja);
+          document.getElementById("mostrarMarcadoresCheckbox7").checked &&
+            agregarMarcadores7(datos.TerceraHoja);
+          document.getElementById("mostrarMarcadoresCheckbox8").checked &&
+            agregarMarcadores8(datos.CuartaHoja);
+          document.getElementById("mostrarMarcadoresCheckbox9").checked &&
+            agregarMarcadores9(datos.QuintaHoja);
+          console.log(datos.QuintaHoja);
+        } catch (error) {
+          console.error("Error al obtener los datos:", error);
+        }
+      }
+
+      function actualizarContador(tipo, cantidad) {
+        const idContador = `contadorMarcadores${tipo}`;
+        const elementoContador = document.getElementById(idContador);
+        if (elementoContador) {
+          elementoContador.textContent = `${cantidad}`;
+        }
+      }
+
+      var currentMarkers = [];
+      function clearMarkers() {
+        for (var i = 0; i < currentMarkers.length; i++) {
+          map.removeLayer(currentMarkers[i]);
+        }
+        currentMarkers = [];
+      }
+      var currentMarkers1 = [];
+      function clearMarkers1() {
+        for (var i = 0; i < currentMarkers1.length; i++) {
+          map.removeLayer(currentMarkers1[i]);
+        }
+        currentMarkers1 = [];
+      }
+      var currentMarkers2 = [];
+      function clearMarkers2() {
+        for (var i = 0; i < currentMarkers2.length; i++) {
+          map.removeLayer(currentMarkers2[i]);
+        }
+        currentMarkers2 = [];
+      }
+      var currentMarkers3 = [];
+      function clearMarkers3() {
+        for (var i = 0; i < currentMarkers3.length; i++) {
+          map.removeLayer(currentMarkers3[i]);
+        }
+        currentMarkers3 = [];
+      }
+      var currentMarkers4 = [];
+      function clearMarkers4() {
+        for (var i = 0; i < currentMarkers4.length; i++) {
+          map.removeLayer(currentMarkers4[i]);
+        }
+        currentMarkers4 = [];
+      }
+      var currentMarkers5 = [];
+      function clearMarkers5() {
+        for (var i = 0; i < currentMarkers5.length; i++) {
+          map.removeLayer(currentMarkers5[i]);
+        }
+        currentMarkers5 = [];
+      }
+
+      var currentMarkers6 = [];
+      function clearMarkers6() {
+        for (var i = 0; i < currentMarkers6.length; i++) {
+          map.removeLayer(currentMarkers6[i]);
+        }
+        currentMarkers6 = [];
+      }
+
+      var currentMarkers7 = [];
+      function clearMarkers7() {
+        for (var i = 0; i < currentMarkers7.length; i++) {
+          map.removeLayer(currentMarkers7[i]);
+        }
+        currentMarkers7 = [];
+      }
+
+      var currentMarkers8 = [];
+      function clearMarkers8() {
+        for (var i = 0; i < currentMarkers8.length; i++) {
+          map.removeLayer(currentMarkers8[i]);
+        }
+        currentMarkers8 = [];
+      }
+
+      // function agregarMarcadores(data1) {
+      //     clearMarkers()
+      //     data1.forEach(marcador => {
+      //         const latitud = marcador.LATITUD;
+      //         const longitud = marcador.LONGITUD;
+      //         const tipoMegafono = marcador.MEGAFONO;
+
+      //         if (tipoMegafono === 'MEGAFONO') {
+      //             const popupInfo = `Punto: ${marcador.PUNTO}<br>Tipo: ${marcador.TIPO}<br>Descripción: ${marcador.DESCRIPCION}<br>Tipo de Camara: ${marcador['TIPO DE CAMARA']}<br>Latitud: ${marcador.LATITUD}<br>Longitud: ${marcador.LONGITUD}`;
+      //         const customIcon = new L.Icon({
+      //             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png', // Ruta a tu imagen de icono
+      //             shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      //             iconSize: [25, 41],
+      //             iconAnchor: [12, 41],
+      //             popupAnchor: [1, -34],
+      //             shadowSize: [41, 41]
+      //         });
+
+      //         const markermegafono = L.marker([latitud, longitud],{icon: customIcon}).addTo(map);
+      //         currentMarkers.push(markermegafono)
+      //         markermegafono.bindPopup(popupInfo);
+      //         }
+      //     });
+      // }
+
+      // Manejar clic en el botón de exportar
+      $("#export-btn").click(function () {
+        // Verificar si hay coordenadas para exportar
+        if (coordenadas.length > 0) {
+          // Llamar a la función para exportar a Excel
+          exportarAExcel(coordenadas);
+        } else {
+          alert("No hay coordenadas para exportar. Por favor, selecciona puntos en el mapa.");
+        }
+      });
+
+      // Función para exportar a Excel
+      function exportarAExcel(coordenadas) {
+        // Crear un nuevo libro de Excel
+        var workbook = XLSX.utils.book_new();
+
+        // Crear una hoja de cálculo con los datos de coordenadas
+        var worksheet = XLSX.utils.json_to_sheet(coordenadas);
+
+        // Agregar la hoja de cálculo al libro
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Coordenadas');
+
+        // Guardar el libro como un archivo Excel
+        XLSX.writeFile(workbook, 'coordenadas.xlsx');
+      }
+
+      function agregarMarcadores(datosPrimeraHoja) {
+        clearMarkers();
+        let contador = 0;
+        datosPrimeraHoja.forEach((marcador) => {
+          const latitud = marcador.LATITUD;
+          const longitud = marcador.LONGITUD;
+          const tipoMegafono = marcador.MEGAFONO;
+
+          if (tipoMegafono === "MEGAFONO") {
+            const popupInfo = `Punto: ${marcador.PUNTO}<br>Tipo: ${marcador.TIPO}<br>Descripción: ${marcador.DESCRIPCION}<br>Tipo de Camara: ${marcador["TIPO DE CAMARA"]}<br>Latitud: ${marcador.LATITUD}<br>Longitud: ${marcador.LONGITUD}`;
+            const customIcon = L.icon({
+              iconUrl:
+                "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+              shadowUrl:
+                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41],
+            });
+
+            const marker = L.marker([latitud, longitud], {
+              icon: customIcon,
+            }).addTo(map);
+            currentMarkers.push(marker);
+            marker.bindPopup(popupInfo);
+
+            contador++;
+          }
+        });
+        actualizarContador(1, contador);
+      }
+
+      function agregarMarcadores2(data1) {
+        clearMarkers1();
+        let contador = 0;
+        data1.forEach((marcador) => {
+          const latitud = marcador.LATITUD;
+          const longitud = marcador.LONGITUD;
+          const tipoMegafono = marcador["BOTON DE PANICO"];
+
+          if (tipoMegafono === "BOTON DE PANICO") {
+            const popupInfo = `Punto: ${marcador.PUNTO}<br>Tipo: ${marcador.TIPO}<br>Descripción: ${marcador.DESCRIPCION}<br>Tipo de Camara: ${marcador["TIPO DE CAMARA"]}<br>Latitud: ${marcador.LATITUD}<br>Longitud: ${marcador.LONGITUD}`;
+
+            const customIcon = new L.Icon({
+              iconUrl:
+                "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png", // Ruta a tu imagen de icono
+              shadowUrl:
+                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41],
+            });
+
+            const markerptz = L.marker([latitud, longitud], {
+              icon: customIcon,
+            }).addTo(map);
+            currentMarkers1.push(markerptz);
+            markerptz.bindPopup(popupInfo);
+            contador++;
+          }
+        });
+        actualizarContador(2, contador);
+      }
+      function agregarMarcadores3(data1) {
+        clearMarkers2();
+        let contador = 0;
+        data1.forEach((marcador) => {
+          const latitud = marcador.LATITUD;
+          const longitud = marcador.LONGITUD;
+          const tipoMegafono = marcador.MEGAFONO;
+          // const tipoBotonPanico = marcador['BOTON DE PANICO'];
+
+          if (tipoMegafono !== "MEGAFONO") {
+            const popupInfo = `Punto: ${marcador.PUNTO}<br>Tipo: ${marcador.TIPO}<br>Descripción: ${marcador.DESCRIPCION}<br>Tipo de Camara: ${marcador["TIPO DE CAMARA"]}<br>Latitud: ${marcador.LATITUD}<br>Longitud: ${marcador.LONGITUD}`;
+            const customIcon = new L.Icon({
+              iconUrl:
+                "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png", // Ruta a tu imagen de icono
+              shadowUrl:
+                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41],
+            });
+
+            const TIPO = L.marker([latitud, longitud], {
+              icon: customIcon,
+            }).addTo(map);
+            currentMarkers2.push(TIPO);
+            TIPO.bindPopup(popupInfo);
+            contador++;
+          }
+        });
+        actualizarContador(3, contador);
+      }
+      function agregarMarcadores4(data1) {
+        clearMarkers3();
+        let contador = 0;
+        data1.forEach((marcador) => {
+          const latitud = marcador.LATITUD;
+          const longitud = marcador.LONGITUD;
+          const tipoprioridad = marcador["PRIORIDAD ENERGIA VECINAL AVANCE"];
+          // const tipoBotonPanico = marcador['BOTON DE PANICO'];
+
+          if (
+            tipoprioridad === "TECNOLOGIA GSC" ||
+            tipoprioridad === "PRIORIZADO" ||
+            tipoprioridad === "OK"
+          ) {
+            const popupInfo = `Punto: ${marcador.PUNTO}<br>Tipo: ${marcador.TIPO}<br>Descripción: ${marcador.DESCRIPCION}<br>Tipo de Camara: ${marcador["TIPO DE CAMARA"]}<br>Latitud: ${marcador.LATITUD}<br>Longitud: ${marcador.LONGITUD}`;
+            const customIcon = new L.Icon({
+              iconUrl:
+                "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png", // Ruta a tu imagen de icono
+              shadowUrl:
+                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41],
+            });
+
+            const prioridad = L.marker([latitud, longitud], {
+              icon: customIcon,
+            }).addTo(map);
+            currentMarkers3.push(prioridad);
+            prioridad.bindPopup(popupInfo);
+            contador++;
+          }
+        });
+        actualizarContador(4, contador);
+      }
+      function agregarMarcadores5(data1) {
+        clearMarkers4();
+        let contador = 0;
+        data1.forEach((marcador) => {
+          const latitud = marcador.LATITUD;
+          const longitud = marcador.LONGITUD;
+          const tipoprioridad = marcador["PLANTADO DE POSTES"];
+          // const tipoBotonPanico = marcador['BOTON DE PANICO'];
+
+          if (tipoprioridad === "PLANTADO") {
+            const popupInfo = `Punto: ${marcador.PUNTO}<br>Tipo: ${marcador.TIPO}<br>Descripción: ${marcador.DESCRIPCION}<br>Tipo de Camara: ${marcador["TIPO DE CAMARA"]}<br>Latitud: ${marcador.LATITUD}<br>Longitud: ${marcador.LONGITUD}`;
+            const customIcon = new L.Icon({
+              iconUrl:
+                "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png", // Ruta a tu imagen de icono
+              shadowUrl:
+                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41],
+            });
+
+            const prioridad = L.marker([latitud, longitud], {
+              icon: customIcon,
+            }).addTo(map);
+            currentMarkers4.push(prioridad);
+            prioridad.bindPopup(popupInfo);
+            contador++;
+          }
+        });
+        actualizarContador(5, contador);
+      }
+      function agregarMarcadores6(datosSegundaHoja) {
+        clearMarkers5();
+        let contador = 0;
+        datosSegundaHoja.forEach((marcador) => {
+          const latitud = marcador.LATITUD;
+          const longitud = marcador.LONGITUD;
+          const actividad = marcador.ACTIVIDAD;
+          // const tipoBotonPanico = marcador['BOTON DE PANICO'];
+
+          if (actividad === "OK") {
+            const popupInfo = `<br>Descripción: ${marcador.nombre_vecino}<br>Latitud: ${marcador.LATITUD}<br>Longitud: ${marcador.LONGITUD}`;
+            const customIcon = new L.Icon({
+              iconUrl:
+                "./camara_vecinal.png", // Ruta a tu imagen de icono
+              shadowUrl:
+                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41],
+            });
+
+            const prioridad = L.marker([latitud, longitud], {
+              icon: customIcon,
+            }).addTo(map);
+            currentMarkers5.push(prioridad);
+            prioridad.bindPopup(popupInfo);
+            contador++;
+          }
+        });
+        actualizarContador(6, contador * 4);
+      }
+
+      function agregarMarcadores7(datosTerceraHoja) {
+        clearMarkers6();
+        let contador = 0;
+        datosTerceraHoja.forEach((marcador) => {
+          const latitud = marcador.Latitud;
+          const longitud = marcador.Longitud;
+          const id = marcador.ID;
+          // const tipoBotonPanico = marcador['BOTON DE PANICO'];
+
+          if (id === marcador.ID) {
+            const popupInfo = `<br>ID: ${marcador.ID}<br>Latitud: ${marcador.Latitud}<br>Longitud: ${marcador.Longitud}`;
+            const customIcon = new L.Icon({
+              iconUrl:
+                "./basura.png", // Ruta a tu imagen de icono
+              shadowUrl:
+                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41],
+            });
+
+            const prioridad = L.marker([latitud, longitud], {
+              icon: customIcon,
+            }).addTo(map);
+            currentMarkers6.push(prioridad);
+            prioridad.bindPopup(popupInfo);
+            contador++;
+          }
+        });
+        actualizarContador(7, contador);
+      }
+
+      function agregarMarcadores8(datosCuartaHoja) {
+        clearMarkers7();
+        let contador = 0;
+        datosCuartaHoja.forEach((marcador) => {
+          const latitud = marcador.LATITUD;
+          const longitud = marcador.LONGITUD;
+          const interseccion = marcador.INTERSECCIONES;
+          const nrocamaras = marcador.CAMARAS;
+          // const tipoBotonPanico = marcador['BOTON DE PANICO'];
+
+            const popupInfo = `<br>INTERSECCIONES: ${interseccion}<br>NRO DE CAMARAS: ${nrocamaras}<br>Latitud: ${latitud}<br>Longitud: ${longitud}`;
+            const customIcon = new L.Icon({
+              iconUrl:
+                "./mototaxi.png", // Ruta a tu imagen de icono
+              shadowUrl:
+                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41],
+            });
+
+            const prioridad = L.marker([latitud, longitud], {
+              icon: customIcon,
+            }).addTo(map);
+            currentMarkers7.push(prioridad);
+            prioridad.bindPopup(popupInfo);
+            contador++;
+        });
+        actualizarContador(8, contador);
+      }
+
+      function agregarMarcadores9(datosQuintaHoja) {
+        clearMarkers8();
+        let contador = 0;
+        datosQuintaHoja.forEach((marcador) => {
+          const latitud = marcador.Latitud;
+          const longitud = marcador.Longitud;
+          const empresas = marcador.Empresa;
+          const referencia = marcador.Referencia;
+          const anuncio = marcador.Anuncio;
+          const celular = marcador.Celular;
+          // const tipoBotonPanico = marcador['BOTON DE PANICO'];
+
+            const popupInfo = `<br>Empresa: ${empresas}<br>Referencia: ${referencia}<br>Anuncio: ${anuncio}<br>Celular: ${celular}<br>Latitud: ${latitud}<br>Longitud: ${longitud}`;
+            const customIcon = new L.Icon({
+              iconUrl:
+                "./paneles.png", // Ruta a tu imagen de icono
+              shadowUrl:
+                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41],
+            });
+
+            const prioridad = L.marker([latitud, longitud], {
+              icon: customIcon,
+            }).addTo(map);
+            currentMarkers8.push(prioridad);
+            prioridad.bindPopup(popupInfo);
+            contador++;
+        });
+        actualizarContador(9, contador);
+      }
+
+      // document
+      //   .getElementById("mostrarMarcadoresCheckbox1")
+      //   .addEventListener("change", (event) => {
+      //     if (event.target.checked) {
+      //       obtenerDatos(); // Aquí puedes filtrar los datos si es necesario
+      //     } else {
+      //       clearMarkers();
+      //     }
+      //   });
+
+      // document
+      //   .getElementById("mostrarMarcadoresCheckbox2")
+      //   .addEventListener("change", (event) => {
+      //     if (event.target.checked) {
+      //       obtenerDatos();
+      //     } else {
+      //       clearMarkers1();
+      //     }
+      //   });
+
+      // document
+      //   .getElementById("mostrarMarcadoresCheckbox3")
+      //   .addEventListener("change", (event) => {
+      //     if (event.target.checked) {
+      //       obtenerDatos();
+      //     } else {
+      //       clearMarkers2();
+      //     }
+      //   });
+
+      // document
+      //   .getElementById("mostrarMarcadoresCheckbox4")
+      //   .addEventListener("change", (event) => {
+      //     if (event.target.checked) {
+      //       obtenerDatos();
+      //     } else {
+      //       clearMarkers3();
+      //     }
+      //   });
+
+      // document
+      //   .getElementById("mostrarMarcadoresCheckbox5")
+      //   .addEventListener("change", (event) => {
+      //     if (event.target.checked) {
+      //       obtenerDatos();
+      //     } else {
+      //       clearMarkers4();
+      //     }
+      //   });
+
+      document
+        .getElementById("mostrarMarcadoresCheckbox6")
+        .addEventListener("change", (event) => {
+          if (event.target.checked) {
+            obtenerDatos();
+          } else {
+            clearMarkers5();
+          }
+        });
+
+      document
+        .getElementById("mostrarMarcadoresCheckbox7")
+        .addEventListener("change", (event) => {
+          if (event.target.checked) {
+            obtenerDatos();
+          } else {
+            clearMarkers6();
+          }
+        });
+
+        document
+        .getElementById("mostrarMarcadoresCheckbox8")
+        .addEventListener("change", (event) => {
+          if (event.target.checked) {
+            obtenerDatos();
+          } else {
+            clearMarkers7();
+          }
+        });
+
+        document
+        .getElementById("mostrarMarcadoresCheckbox9")
+        .addEventListener("change", (event) => {
+          if (event.target.checked) {
+            obtenerDatos();
+          } else {
+            clearMarkers8();
+          }
+        });
+
+      function showPolygonFromCSV(csvFilePath, color, popupMessage, name) {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+              var csvData = xhr.responseText;
+              var csvRows = csvData.split("\n");
+
+              var latlngs = [];
+
+              for (var i = 0; i < csvRows.length; i++) {
+                var rowData = csvRows[i].split(","); // Cambiar '\t' si el delimitador es diferente
+
+                // Verificar si hay al menos dos elementos en la fila
+                if (rowData.length >= 2) {
+                  // Convertir las coordenadas a números
+                  var latitude = parseFloat(rowData[0].trim());
+                  var longitude = parseFloat(rowData[1].trim());
+
+                  // Verificar si los datos son válidos
+                  if (!isNaN(latitude) && !isNaN(longitude)) {
+                    latlngs.push([latitude, longitude]);
+                  }
+                }
+              }
+
+              // Mostrar el polígono en el mapa con un popup estático
+              var polygon = L.polygon(latlngs, { color: color, fillOpacity: 0.05 }).addTo(map);
+              // globalPolygons.push(latlngs);
+              //map.fitBounds(polygon.getBounds());
+
+              // Agregar evento click al polígono
+              polygon.on("click", function (e) {
+                var lat = e.latlng.lat;
+                var lng = e.latlng.lng;
+
+                var nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`;
+
+                fetch(nominatimUrl)
+                  .then((response) => response.json())
+                  .then((data) => {
+                    var address = data.display_name;
+                    var addressDetails = data.address;
+
+                    var cuadra = addressDetails.road;
+                    //var jurisdiccion = addressDetails.city;
+                    var jurisdiccion = popupMessage;
+                    var urbanizacion = name;
+
+                    // Puedes realizar acciones adicionales aquí, como abrir un modal
+                    openModal(
+                      lat,
+                      lng,
+                      address,
+                      addressDetails,
+                      cuadra,
+                      jurisdiccion,
+                      urbanizacion
+                    );
+                    console.log(addressDetails);
+                  })
+                  .catch((error) => {
+                    console.error("Error al obtener la dirección:", error);
+                  });
+              });
+            } else {
+              console.error("Error al cargar el archivo CSV: " + csvFilePath);
+            }
+          }
+        };
+
+        xhr.open("GET", csvFilePath, true);
+        xhr.send();
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        if (polygon) {
+          map.removeLayer(polygon);
+        }
+        showPolygonFromCSV(csvPath, polygonColor, 2, "Zarate");
+        showPolygonFromCSV(csvFilePath1, polygonColor2, 8, "10 de Octubre");
+        showPolygonFromCSV(csvFilePath2, polygonColor3, 6, "Bayovar");
+        showPolygonFromCSV(csvFilePath3, polygonColor4, 1, "Caja de Agua");
+        showPolygonFromCSV(csvFilePath4, polygonColor5, 4, "Canto Rey");
+        showPolygonFromCSV(csvFilePath5, polygonColor6, 3, "La Huayrona");
+        showPolygonFromCSV(csvFilePath6, polygonColor7, 7, "Mariscal Caceres");
+        showPolygonFromCSV(csvFilePath7, polygonColor8, 5, "Santa Elizabeth");
+      });
+      // document.getElementById('mostrarMarcadoresCheckbox6').addEventListener('change', (event) => {
+      //     if (event.target.checked) {
+      //         obtenerDatos();
+      //     } else {
+      //         clearMarkers5();
+      //     }
+      // });
+
+      // fetch(jsonUrl)
+      //     .then(response => response.json())
+      //     .then(data1 => {
+      // document.getElementById('mostrarMarcadoresCheckbox1').addEventListener('change', () => {
+      //     if (document.getElementById('mostrarMarcadoresCheckbox1').checked) {
+      //         agregarMarcadores(data1, 'MEGAFONO', 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png');
+      //     } else {
+      //         clearMarkers()
+      //     }
+      // });
+
+      // document.getElementById('mostrarMarcadoresCheckbox2').addEventListener('change', () => {
+      //     if (document.getElementById('mostrarMarcadoresCheckbox2').checked) {
+      //         agregarMarcadores2(data1, 'BOTON DE PANICO', 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png');
+      //     } else {
+      //         clearMarkers1()
+      //     }
+      // });
+      // document.getElementById('mostrarMarcadoresCheckbox3').addEventListener('change', () => {
+      //     if (document.getElementById('mostrarMarcadoresCheckbox3').checked) {
+      //         agregarMarcadores3(data1, 'PTZ', 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png');
+      //     } else {
+      //         clearMarkers2()
+      //     }
+      // });
+      // document.getElementById('mostrarMarcadoresCheckbox4').addEventListener('change', () => {
+      //     if (document.getElementById('mostrarMarcadoresCheckbox4').checked) {
+      //         agregarMarcadores4(data1, 'PRIORIDAD ENERGIA VECINAL AVANCE', 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png');
+      //     } else {
+      //         clearMarkers3()
+      //     }
+      // });
+      // document.getElementById('mostrarMarcadoresCheckbox5').addEventListener('change', () => {
+      //     if (document.getElementById('mostrarMarcadoresCheckbox5').checked) {
+      //         agregarMarcadores5(data1, 'PLANTADO', 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png');
+      //     } else {
+      //         clearMarkers4()
+      //     }
+      // });
+
+      // })
+
+      // document
+      //   .getElementById("mostrarMarcadoresCheckbox1")
+      //   .addEventListener("change", () => obtenerDatos());
+      // document
+      //   .getElementById("mostrarMarcadoresCheckbox2")
+      //   .addEventListener("change", () => obtenerDatos());
+      // document
+      //   .getElementById("mostrarMarcadoresCheckbox3")
+      //   .addEventListener("change", () => obtenerDatos());
+      // document
+      //   .getElementById("mostrarMarcadoresCheckbox4")
+      //   .addEventListener("change", () => obtenerDatos());
+      // document
+      //   .getElementById("mostrarMarcadoresCheckbox5")
+      //   .addEventListener("change", () => obtenerDatos());
+      document
+        .getElementById("mostrarMarcadoresCheckbox6")
+        .addEventListener("change", () => obtenerDatos());
+      document
+        .getElementById("mostrarMarcadoresCheckbox7")
+        .addEventListener("change", () => obtenerDatos());
+      document
+        .getElementById("mostrarMarcadoresCheckbox8")
+        .addEventListener("change", () => obtenerDatos());
+
+      document
+        .getElementById("mostrarMarcadoresCheckbox9")
+        .addEventListener("change", () => obtenerDatos());
+
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          dataJSON = data;
+
+          // Llenar group1Select con opciones
+          const group1Select = document.getElementById("group1");
+          const arrayGroup1 = [];
+          dataJSON.forEach((element) => {
+            arrayGroup1.push(element["Comisaria"]);
+          });
+          const arrayGroup1Unique = [...new Set(arrayGroup1)];
+          arrayGroup1Unique.forEach((element) => {
+            const option = document.createElement("option");
+            option.value = element;
+            option.text = element;
+            group1Select.appendChild(option);
+          });
+
+          // Inicializar el grupo de marcadores
+          markers = L.markerClusterGroup();
+          map.addLayer(markers);
+        })
+        .catch((error) =>
+          console.error("Error al cargar el archivo JSON:", error)
+        );
+      // const colorCheckbox = document.getElementById('colorCheckbox');
+      // colorCheckbox.addEventListener('change', function () {
+      //     eliminarMarcadores(); // Eliminar marcadores existentes
+      //     agregarMarcadores(colorCheckbox.checked); // Volver a agregar marcadores con el nuevo color
+      // });
+    </script>
+  </body>
+</html>
