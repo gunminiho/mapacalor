@@ -75,6 +75,8 @@
         overflow: auto; /* Añadir barras de desplazamiento cuando se supera el tamaño */
         min-width: 200px; /* Ancho mínimo */
         max-width: 500px; /* Ancho máximo */
+        width: 300px;
+        height: 350px;
         max-height: calc(100vh - 120px);
       }
 
@@ -395,18 +397,23 @@
     <button id="toggle-controls">Mostrar/Ocultar Controles</button>
 
     <div id="controls">
-      <label for="group1">Comisaria: </label>
+      <label for="group1">Jurisdiccion: </label>
       <select id="group1" multiple onchange="populateGroup2()">
         <!-- Las opciones se llenarán dinámicamente -->
       </select>
       <br />
-      <label for="group2">Prioridad: </label>
+      <label for="group2">Agrupacion: </label>
       <select id="group2" multiple onchange="populateGroup3()">
         <!-- Las opciones se llenarán dinámicamente -->
       </select>
       <br />
-      <label for="group3">Tipo de caso: </label>
-      <select id="group3" multiple onchange="getTipoCaso()">
+      <label for="group3">Nueva Clasificacion: </label>
+      <select id="group3" multiple onchange="populateGroup4()">
+        <!-- Las opciones se llenarán dinámicamente -->
+      </select>
+      <br />
+      <label for="group4">Tipo de caso: </label>
+      <select id="group4" multiple onchange="getTipoCaso()">
         <!-- Las opciones se llenarán dinámicamente -->
       </select>
       <br />
@@ -507,7 +514,7 @@
       var marcadoresLayer = L.layerGroup().addTo(map);
       var contadorMarcadores = 0;
       //const url = "./map.json";
-      const url = "./incidencias.json";
+      const url = "./datos_incidencias_clean.json";
       let dataJSON;
       let heatLayer;
       let markers;
@@ -613,63 +620,108 @@
           reader.readAsArrayBuffer(file);
       });
 
+        async function cargarCSVyCrearPoligono(url) {
+            const response = await fetch(url);
+            const data = await response.text();
+            const lines = data.split('\n').slice(1); // Elimina el encabezado
+            let coords = lines.map(line => {
+                const [lat, lng] = line.split(';').map(Number);
+                return [lng, lat]; // Turf.js utiliza [longitud, latitud]
+            });
+
+            // Asegúrate de que el polígono esté cerrado
+            if (coords.length > 0 && (coords[0][0] !== coords[coords.length - 1][0] || coords[0][1] !== coords[coords.length - 1][1])) {
+                coords.push(coords[0]); // Añade la primera coordenada al final para cerrar el polígono
+            }
+
+            // Crea un polígono GeoJSON
+            return turf.polygon([coords]);
+        }
+
 
 
       function getSubTipoCaso() {
         clearMap();
-        const group1Select = document.getElementById("group1");
-        const group2Select = document.getElementById("group2");
-        const group3Select = document.getElementById("group3");
-        const subTipoCasoSelect = document.getElementById("subTipoCaso");
+        const csvUrl = './POLIGONO DE SAN JUAN DE LURIGANCHO.csv';
+        cargarCSVyCrearPoligono(csvUrl).then(geoJsonPolygon => {
+          const group1Select = document.getElementById("group1");
+          const group2Select = document.getElementById("group2");
+          const group3Select = document.getElementById("group3");
+          const group4Select = document.getElementById("group4");
+          const subTipoCasoSelect = document.getElementById("subTipoCaso");
 
-        // Customize this logic based on your data
-        const selectedGroup1Values = Array.from(
-          group1Select.selectedOptions
-        ).map((option) => option.value);
-        const selectedGroup2Values = Array.from(
-          group2Select.selectedOptions
-        ).map((option) => option.value);
-        const selectedGroup3Values = Array.from(
-          group3Select.selectedOptions
-        ).map((option) => option.value);
-        const selectedTipoCasoValues = Array.from(
-          subTipoCasoSelect.selectedOptions
-        ).map((option) => option.value);
+          // Customize this logic based on your data
+          const selectedGroup1Values = Array.from(
+            group1Select.selectedOptions
+          ).map((option) => option.value);
+          const selectedGroup2Values = Array.from(
+            group2Select.selectedOptions
+          ).map((option) => option.value);
+          const selectedGroup3Values = Array.from(
+            group3Select.selectedOptions
+          ).map((option) => option.value);
+          const selectedGroup4Values = Array.from(
+            group4Select.selectedOptions
+          ).map((option) => option.value);
+          const selectedTipoCasoValues = Array.from(
+            subTipoCasoSelect.selectedOptions
+          ).map((option) => option.value);
 
-        dataJSON.forEach((element) => {
-          // Filter based on selected values
-          if (
-            (selectedGroup1Values.length === 0 ||
-              selectedGroup1Values.includes(element["Comisaria"])) &&
-            (selectedGroup2Values.length === 0 ||
-              selectedGroup2Values.includes(element["Prioridad"])) &&
-            (selectedGroup3Values.length === 0 ||
-              selectedGroup3Values.includes(element["Tipo de Caso"])) &&
-            (selectedTipoCasoValues.length === 0 ||
-              selectedTipoCasoValues.includes(element["Sub Tipo de Caso"]))
-          ) {
-            const obj = [element.Latitud, element.Longitud, 0.5];
-            arrayHeat.push(obj);
+          dataJSON.forEach((element) => {
+            // Filter based on selected values
+            if (
+              (selectedGroup1Values.length === 0 ||
+                selectedGroup1Values.includes(element["Comisaria"])) &&
+              (selectedGroup2Values.length === 0 ||
+                selectedGroup2Values.includes(element["Agrupacion"])) &&
+              (selectedGroup3Values.length === 0 ||
+                selectedGroup3Values.includes(element["Nueva Clasificacion"])) &&
+              (selectedGroup4Values.length === 0 ||
+                selectedGroup4Values.includes(element["Tipo de Caso"])) &&
+              (selectedTipoCasoValues.length === 0 ||
+                selectedTipoCasoValues.includes(element["Sub Tipo de Caso"]))
+            ) {
+              var point = turf.point([element.Longitud, element.Latitud]);
+              if (turf.booleanPointInPolygon(point, geoJsonPolygon)) {
+                let weight = 1; // Ponderación predeterminada
+                if (selectedGroup3Values.includes("Homicidio")) {
+                  weight = 100; // Duplicar el peso si el tipo de caso es homicidio
+                }
+                const obj = [element.Latitud, element.Longitud, weight];
+                arrayHeat.push(obj);
+              }
+              
 
-            // Personalizar tu marcador aquí
-            const myIcon = L.icon({
-              iconUrl: "my-icon.png",
-              iconSize: [38, 50],
-              iconAnchor: [30, 94],
-              popupAnchor: [-3, -76],
-              shadowUrl: "my-icon-shadow.png",
-              shadowSize: [68, 95],
-              shadowAnchor: [22, 94],
-            });
+              // Personalizar tu marcador aquí
+              const myIcon = L.icon({
+                iconUrl: "my-icon.png",
+                iconSize: [38, 50],
+                iconAnchor: [30, 94],
+                popupAnchor: [-3, -76],
+                shadowUrl: "my-icon-shadow.png",
+                shadowSize: [68, 95],
+                shadowAnchor: [22, 94],
+              });
 
-            const marker = L.marker([element.Latitud, element.Longitud]); //.addTo(markers);
-            marker.bindPopup(
-              `<b>Comisaria:</b> ${element["Comisaria"]}<br><b>Prioridad:</b> ${element["Prioridad"]}<br><b>Tipo de caso:</b> ${element["Tipo de Caso"]}<br><b>Sub Tipo de Caso:</b> ${element["Sub Tipo de Caso"]}<br><b>Latitud: </b>${element.Latitud}<br><b>Longitud: </b>${element.Longitud}`
-            );
-          }
+              const marker = L.marker([element.Latitud, element.Longitud]); //.addTo(markers);
+              marker.bindPopup(
+                `<b>Comisaria:</b> ${element["Comisaria"]}<br><b>Prioridad:</b> ${element["Prioridad"]}<br><b>Tipo de caso:</b> ${element["Tipo de Caso"]}<br><b>Sub Tipo de Caso:</b> ${element["Sub Tipo de Caso"]}<br><b>Latitud: </b>${element.Latitud}<br><b>Longitud: </b>${element.Longitud}`
+              );
+            }
+          });
+          const gradient = {
+            0.4: 'blue',
+            0.6: 'cyan',
+            0.8: 'lime',
+            1.0: 'red'
+          };
+
+
+          //heatLayer = L.heatLayer(arrayHeat, { radius: 25 }).addTo(map);
+          heatLayer = L.heatLayer(arrayHeat, { radius: 25, gradient: gradient }).addTo(map);
+
         });
-
-        heatLayer = L.heatLayer(arrayHeat, { radius: 25 }).addTo(map);
+        
       }
 
       function getTipoCaso() {
@@ -677,6 +729,7 @@
         const group1Select = document.getElementById("group1");
         const group2Select = document.getElementById("group2");
         const group3Select = document.getElementById("group3");
+        const group4Select = document.getElementById("group4");
         const subTipoCasoSelect = document.getElementById("subTipoCaso");
 
         // Customize this logic based on your data
@@ -689,20 +742,25 @@
         const selectedGroup3Values = Array.from(
           group3Select.selectedOptions
         ).map((option) => option.value);
+        const selectedGroup4Values = Array.from(
+          group4Select.selectedOptions
+        ).map((option) => option.value);
         subTipoCasoSelect.innerHTML = "";
 
         if (
           selectedGroup1Values.length !== 0 &&
           selectedGroup2Values.length !== 0 &&
-          selectedGroup3Values.length !== 0
+          selectedGroup3Values.length !== 0 &&
+          selectedGroup4Values.length !== 0
         ) {
           // Customize this logic based on your data
           const subTipoCasos = dataJSON
             .filter(
               (element) =>
                 selectedGroup1Values.includes(element["Comisaria"]) &&
-                selectedGroup2Values.includes(element["Prioridad"]) &&
-                selectedGroup3Values.includes(element["Tipo de Caso"])
+                selectedGroup2Values.includes(element["Agrupacion"]) &&
+                selectedGroup3Values.includes(element["Nueva Clasificacion"]) &&
+                selectedGroup4Values.includes(element["Tipo de Caso"])
             )
             .map((element) => element["Sub Tipo de Caso"]);
 
@@ -738,7 +796,7 @@
             .filter((element) =>
               selectedGroup1Values.includes(element["Comisaria"])
             )
-            .map((element) => element["Prioridad"]);
+            .map((element) => element["Agrupacion"]);
 
           const uniqueSubTypes = [...new Set(subTypes)];
 
@@ -777,7 +835,54 @@
             .filter(
               (element) =>
                 selectedGroup1Values.includes(element["Comisaria"]) &&
-                selectedGroup2Values.includes(element["Prioridad"])
+                selectedGroup2Values.includes(element["Agrupacion"])
+            )
+            .map((element) => element["Nueva Clasificacion"]);
+
+          const uniqueSubTypes = [...new Set(subTypes)];
+
+          uniqueSubTypes.forEach((subType) => {
+            const option = document.createElement("option");
+            option.value = subType;
+            option.text = subType;
+            group3Select.appendChild(option);
+          });
+        }
+        getTipoCaso(); // Llamar a getTipoCaso() después de poblar group3
+      }
+
+      function populateGroup4() {
+        clearMap();
+        const group1Select = document.getElementById("group1");
+        const group2Select = document.getElementById("group2");
+        const group3Select = document.getElementById("group3");
+        const group4Select = document.getElementById("group4");
+
+        group4Select.innerHTML = "";
+
+        const selectedGroup1Values = Array.from(
+          group1Select.selectedOptions
+        ).map((option) => option.value);
+        const selectedGroup2Values = Array.from(
+          group2Select.selectedOptions
+        ).map((option) => option.value);
+        const selectedGroup3Values = Array.from(
+          group3Select.selectedOptions
+        ).map((option) => option.value);
+
+
+        if (
+          selectedGroup1Values.length !== 0 &&
+          selectedGroup2Values.length !== 0 &&
+          selectedGroup3Values.length !== 0
+        ) {
+          // Customize this logic based on your data
+          const subTypes = dataJSON
+            .filter(
+              (element) =>
+                selectedGroup1Values.includes(element["Comisaria"]) &&
+                selectedGroup2Values.includes(element["Agrupacion"]) &&
+                selectedGroup3Values.includes(element["Nueva Clasificacion"])
             )
             .map((element) => element["Tipo de Caso"]);
 
@@ -787,7 +892,7 @@
             const option = document.createElement("option");
             option.value = subType;
             option.text = subType;
-            group3Select.appendChild(option);
+            group4Select.appendChild(option);
           });
         }
         getTipoCaso(); // Llamar a getTipoCaso() después de poblar group3
