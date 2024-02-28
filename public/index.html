@@ -18,6 +18,20 @@
       integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
       crossorigin=""
     ></script>
+    <link rel="stylesheet" href="/assets/vendor/fonts/fontawesome.css" />
+    <link rel="stylesheet" href="/assets/vendor/fonts/tabler-icons.css" />
+    <link rel="stylesheet" href="/assets/vendor/fonts/flag-icons.css" />
+    <link rel="stylesheet" href="/assets/vendor/libs/spinkit/spinkit.css" />
+
+    <link rel="stylesheet" href="/assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="/assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="/assets/css/demo.css" />
+    <link rel="stylesheet" href="/assets/vendor/libs/node-waves/node-waves.css" />
+    <link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="/assets/vendor/libs/typeahead-js/typeahead.css" />
+    <link rel="stylesheet" href="/assets/vendor/libs/select2/select2.css" />
+    <link rel="stylesheet" href="/assets/vendor/libs/@form-validation/umd/styles/index.min.css" />
+    <link rel="stylesheet" href="/assets/vendor/libs/bs-stepper/bs-stepper.css" />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
@@ -129,7 +143,7 @@
         height: 100px; /* para mantener la proporción de la imagen */
       }
       #leyenda {
-        height: 160px;
+        height: 190px;
         width: 300px;
         position: absolute;
         bottom: 25px;
@@ -163,6 +177,21 @@
         position: absolute;
         top: 10px;
         right: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        background-color: white;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        z-index: 1000;
+        font-size: 14px;
+      }
+
+      #contenedor-filtro {
+        position: absolute;
+        top: 10px;
+        right: 350px;
         display: flex;
         flex-direction: column;
         align-items: flex-end;
@@ -281,12 +310,32 @@
 
             
         }
+
+        input[type="date"] {
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          outline: none;
+          font-size: 16px;
+          margin-bottom: 5px;
+          transition: border-color 0.3s;
+        }
+
+        input[type="date"]:focus {
+          border-color: dodgerblue;
+        }
     </style>
   </head>
   <body>
 
     <div id="contenedor-checkboxes">
       <ul>
+        <li>
+          <label>
+            PROYECTO CAMARAS:
+            <input type="checkbox" id="mostrarMarcadoresCheckbox10" />
+          </label>
+        </li>
         <li>
           <label>
             CAMARAS VECINALES:
@@ -313,6 +362,26 @@
         </li>
       </ul>
     </div>
+
+    <!-- <div id="contenedor-filtro">
+      <ul>
+        <li>
+          <label>
+            FECHA INI:
+            <input type="date" name="" id="FechaIni">
+          </label>
+        </li>
+        <li>
+          <label>
+            FECHA FIN:
+            <input type="date" name="" id="FechaFin">
+          </label>
+        </li>
+      </ul>
+    </div> -->
+
+    <!-- <input type="date" name="" id="FechaIni">
+    <input type="date" name="" id="FechaFin"> -->
     
     <div id="leyenda">
       <h3>LEYENDA</h3>
@@ -361,6 +430,13 @@
       </div> -->
       <div class="leyenda-item">
         <img
+          src="./camaras_sjl.png"
+          alt="Blue"
+        />
+        <h5>PROYECTO CAMARAS: <span id="contadorMarcadores10"></span></h5>
+      </div>
+      <div class="leyenda-item">
+        <img
           src="./camara_vecinal.png"
           alt="Blue"
         />
@@ -393,6 +469,7 @@
     <button id="toggle-containers">Filtro de Incidencias</button>
     <button id="toggle-containers-1">Filtro de Camaras</button>
     <button id="toggle-containers-2">Mostrar/Ocultar Leyenda</button>
+
 
     <button id="toggle-controls">Mostrar/Ocultar Controles</button>
 
@@ -642,7 +719,7 @@
 
       function getSubTipoCaso() {
         clearMap();
-        const csvUrl = './POLIGONO DE SAN JUAN DE LURIGANCHO.csv';
+        const csvUrl = './areaasjl.csv';
         cargarCSVyCrearPoligono(csvUrl).then(geoJsonPolygon => {
           const group1Select = document.getElementById("group1");
           const group2Select = document.getElementById("group2");
@@ -925,8 +1002,8 @@
         try {
           const respuesta = await fetch(url);
           const datos = await respuesta.json();
-          // document.getElementById("mostrarMarcadoresCheckbox1").checked &&
-          //   agregarMarcadores(datos.PrimeraHoja);
+          document.getElementById("mostrarMarcadoresCheckbox10").checked &&
+            agregarMarcadores10(datos.PrimeraHoja);
           // document.getElementById("mostrarMarcadoresCheckbox2").checked &&
           //   agregarMarcadores2(datos.PrimeraHoja);
           // document.getElementById("mostrarMarcadoresCheckbox3").checked &&
@@ -1022,6 +1099,14 @@
           map.removeLayer(currentMarkers8[i]);
         }
         currentMarkers8 = [];
+      }
+
+      var currentMarkers9 = [];
+      function clearMarkers9() {
+        for (var i = 0; i < currentMarkers9.length; i++) {
+          map.removeLayer(currentMarkers9[i]);
+        }
+        currentMarkers9 = [];
       }
 
       // function agregarMarcadores(data1) {
@@ -1270,7 +1355,7 @@
             contador++;
           }
         });
-        actualizarContador(6, contador * 4);
+        actualizarContador(6, contador);
       }
 
       function agregarMarcadores7(datosTerceraHoja) {
@@ -1372,6 +1457,46 @@
         actualizarContador(9, contador);
       }
 
+      function agregarMarcadores10(datosPrimeraHoja) {
+        clearMarkers9();
+        let contador = 0;
+        datosPrimeraHoja.forEach((marcador) => {
+          const latitud = marcador.LATITUD;
+          const longitud = marcador.LONGITUD;
+          const punto = marcador.PUNTO;
+          const tipo = marcador['TIPO DE CAMARA'];
+          
+            // Validación del tipo de cámara
+          let multiplicador = 1;
+
+          if (tipo.includes('*LPR')) {
+              const multiplicadorStr = tipo.split('*')[0];
+              multiplicador = parseInt(multiplicadorStr, 10) || 1;
+          }
+
+            const popupInfo = `<br>Punto: ${punto}<br>Tipo: ${tipo}<br>Latitud: ${latitud}<br>Longitud: ${longitud}`;
+            const customIcon = new L.Icon({
+              iconUrl:
+                "./camaras_sjl.png", // Ruta a tu imagen de icono
+              shadowUrl:
+                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41],
+            });
+
+            const prioridad = L.marker([latitud, longitud], {
+              icon: customIcon,
+            }).addTo(map);
+            currentMarkers9.push(prioridad);
+            prioridad.bindPopup(popupInfo);
+            ///contador++;
+            contador += multiplicador;
+        });
+        actualizarContador(10, contador);
+      }
+
       // document
       //   .getElementById("mostrarMarcadoresCheckbox1")
       //   .addEventListener("change", (event) => {
@@ -1459,6 +1584,16 @@
             obtenerDatos();
           } else {
             clearMarkers8();
+          }
+        });
+
+        document
+        .getElementById("mostrarMarcadoresCheckbox10")
+        .addEventListener("change", (event) => {
+          if (event.target.checked) {
+            obtenerDatos();
+          } else {
+            clearMarkers9();
           }
         });
 
@@ -1627,6 +1762,10 @@
 
       document
         .getElementById("mostrarMarcadoresCheckbox9")
+        .addEventListener("change", () => obtenerDatos());
+
+      document
+        .getElementById("mostrarMarcadoresCheckbox10")
         .addEventListener("change", () => obtenerDatos());
 
       fetch(url)
