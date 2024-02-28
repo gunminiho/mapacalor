@@ -143,7 +143,7 @@
         height: 100px; /* para mantener la proporción de la imagen */
       }
       #leyenda {
-        height: 210px;
+        height: 215px;
         width: 300px;
         position: absolute;
         bottom: 25px;
@@ -211,7 +211,7 @@
         left: 55px;
         z-index: 1000;
         position: absolute;
-        background-color: #4caf50; /* Color de fondo */
+        /*background-color: #4caf50;  Color de fondo */
         color: white; /* Color del texto */
         padding: 10px 20px; /* Espaciado interno */
         border: none; /* Sin borde */
@@ -369,14 +369,14 @@
       </ul>
     </div>
 
-      <button type="button" class="btn btn-primary" style="margin-left: 300px; z-index: 1020; position: absolute; margin-top: 30px;"
+      <button type="button" class="btn btn-primary" style="margin-left: 250px; z-index: 1020; position: absolute; margin-top: 30px;"
           data-bs-toggle="modal" data-bs-target="#addNewCCModal">
           <i class="fas fa-search me-2"> </i>Mostrar Rutas
       </button>
 
 
     <div class="modal fade" id="addNewCCModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc modal-xl">
+      <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc modal-lg">
           <div class="modal-content p-3 p-md-5">
               <!-- <div id="controls"> -->
               <div class="modal-body">
@@ -595,7 +595,7 @@
     <button id="toggle-containers-2">Mostrar/Ocultar Leyenda</button>
 
 
-    <button id="toggle-controls">Mostrar/Ocultar Controles</button>
+    <button id="toggle-controls" class="btn btn-primary">Mostrar Incidencias</button>
 
     <div id="controls">
       <label for="group1">Jurisdiccion: </label>
