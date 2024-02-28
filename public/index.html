@@ -143,7 +143,7 @@
         height: 100px; /* para mantener la proporción de la imagen */
       }
       #leyenda {
-        height: 190px;
+        height: 210px;
         width: 300px;
         position: absolute;
         bottom: 25px;
@@ -157,7 +157,7 @@
       }
 
       .leyenda-item {
-        margin-bottom: -26px;
+        margin-bottom: -20px;
         /* margin-bottom: 3px; */
         display: flex;
         align-items: center;
@@ -170,7 +170,7 @@
       }
       .leyenda-item h5 {
         letter-spacing: -1px;
-        font-size: 12px;
+        font-size: 11px;
       }
 
       #contenedor-checkboxes {
@@ -181,11 +181,11 @@
         flex-direction: column;
         align-items: flex-end;
         background-color: white;
-        padding: 10px;
+        padding: 5px;
         border: 1px solid #ccc;
         border-radius: 5px;
         z-index: 1000;
-        font-size: 14px;
+        font-size: 12px;
       }
 
       #contenedor-filtro {
@@ -344,6 +344,12 @@
         </li>
         <li>
           <label>
+            CAMARAS ACTUALES:
+            <input type="checkbox" id="mostrarMarcadoresCheckbox11" />
+          </label>
+        </li>
+        <li>
+          <label>
             PUNTOS DE BASURA:
             <input type="checkbox" id="mostrarMarcadoresCheckbox7" />
           </label>
@@ -438,6 +444,13 @@
       <div class="leyenda-item">
         <img
           src="./camara_vecinal.png"
+          alt="Blue"
+        />
+        <h5>CAMARAS ACTUALES: <span id="contadorMarcadores11"></span></h5>
+      </div>
+      <div class="leyenda-item">
+        <img
+          src="./camara_35s.png"
           alt="Blue"
         />
         <h5>CAMARAS VECINALES: <span id="contadorMarcadores6"></span></h5>
@@ -997,7 +1010,7 @@
 
       async function obtenerDatos() {
         const url =
-          "https://script.google.com/macros/s/AKfycbzE7wyJ_do8m62vk6iQ8yBgGrXg6Va7y895rC5IyLfhxrHJRRl9_7xtL4l4D4_hQJPK/exec"; // Reemplaza con la URL de tu Google Sheets
+          "https://script.google.com/macros/s/AKfycby17dZTDJtGfq0dM1BDeT_RO75jm3rSZvCfJyzIKUip8Pbmu5PLP0uvRcHxye03Q0YK/exec"; // Reemplaza con la URL de tu Google Sheets
         // "https://script.google.com/macros/s/AKfycbyWlzf8DwZdLRx1u9KW8hBXL1TW5B9QQzNcI85hqagmDGu3cfB7VRRSy0ALwNzG7Hgw/exec"; // Reemplaza con la URL de tu Google Sheets
         try {
           const respuesta = await fetch(url);
@@ -1020,6 +1033,8 @@
             agregarMarcadores8(datos.CuartaHoja);
           document.getElementById("mostrarMarcadoresCheckbox9").checked &&
             agregarMarcadores9(datos.QuintaHoja);
+          document.getElementById("mostrarMarcadoresCheckbox11").checked &&
+            agregarMarcadores11(datos.SextaHoja);
           console.log(datos.QuintaHoja);
         } catch (error) {
           console.error("Error al obtener los datos:", error);
@@ -1107,6 +1122,14 @@
           map.removeLayer(currentMarkers9[i]);
         }
         currentMarkers9 = [];
+      }
+
+      var currentMarkers10 = [];
+      function clearMarkers10() {
+        for (var i = 0; i < currentMarkers10.length; i++) {
+          map.removeLayer(currentMarkers10[i]);
+        }
+        currentMarkers10 = [];
       }
 
       // function agregarMarcadores(data1) {
@@ -1328,10 +1351,12 @@
       function agregarMarcadores6(datosSegundaHoja) {
         clearMarkers5();
         let contador = 0;
+        let sumaConteo = 0; 
         datosSegundaHoja.forEach((marcador) => {
           const latitud = marcador.LATITUD;
           const longitud = marcador.LONGITUD;
           const actividad = marcador.ACTIVIDAD;
+          const cantidad = marcador.CONTEO;
           // const tipoBotonPanico = marcador['BOTON DE PANICO'];
 
           if (actividad === "OK") {
@@ -1353,9 +1378,12 @@
             currentMarkers5.push(prioridad);
             prioridad.bindPopup(popupInfo);
             contador++;
+            sumaConteo += cantidad;
           }
         });
-        actualizarContador(6, contador);
+        actualizarContador(6, sumaConteo);
+        // console.log("Suma total de CONTEO:", sumaConteo); 
+        // console.log("Contador:", contador); 
       }
 
       function agregarMarcadores7(datosTerceraHoja) {
@@ -1497,6 +1525,41 @@
         actualizarContador(10, contador);
       }
 
+      function agregarMarcadores11(datosSextaHoja) {
+        clearMarkers10();
+        let contador = 0;
+        datosSextaHoja.forEach((marcador) => {
+          const latitud = marcador.LATITUD;
+          const longitud = marcador.LONGITUD;
+          const zona = marcador.ZONA;
+          const nombre = marcador.NOMBRE;
+          const ubicación = marcador.UBICACIÓN;
+          const nro = marcador['N°'];
+
+            const popupInfo = `<br>N°: ${nro}<br>Nombre: ${nombre}<br>Ubicacion: ${ubicación}<br>Zona: ${zona}<br>Latitud: ${latitud}<br>Longitud: ${longitud}`;
+            const customIcon = new L.Icon({
+              iconUrl:
+                "./camara_35s.png", // Ruta a tu imagen de icono
+              shadowUrl:
+                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41],
+            });
+
+            const prioridad = L.marker([latitud, longitud], {
+              icon: customIcon,
+            }).addTo(map);
+            currentMarkers10.push(prioridad);
+            prioridad.bindPopup(popupInfo);
+            contador++;
+            //contador += multiplicador;
+        });
+        actualizarContador(11, contador);
+      }
+
+
       // document
       //   .getElementById("mostrarMarcadoresCheckbox1")
       //   .addEventListener("change", (event) => {
@@ -1594,6 +1657,16 @@
             obtenerDatos();
           } else {
             clearMarkers9();
+          }
+        });
+
+        document
+        .getElementById("mostrarMarcadoresCheckbox11")
+        .addEventListener("change", (event) => {
+          if (event.target.checked) {
+            obtenerDatos();
+          } else {
+            clearMarkers10();
           }
         });
 
@@ -1766,6 +1839,10 @@
 
       document
         .getElementById("mostrarMarcadoresCheckbox10")
+        .addEventListener("change", () => obtenerDatos());
+
+      document
+        .getElementById("mostrarMarcadoresCheckbox11")
         .addEventListener("change", () => obtenerDatos());
 
       fetch(url)
