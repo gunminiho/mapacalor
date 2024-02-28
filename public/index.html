@@ -18,20 +18,20 @@
       integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
       crossorigin=""
     ></script>
-    <link rel="stylesheet" href="/assets/vendor/fonts/fontawesome.css" />
-    <link rel="stylesheet" href="/assets/vendor/fonts/tabler-icons.css" />
-    <link rel="stylesheet" href="/assets/vendor/fonts/flag-icons.css" />
-    <link rel="stylesheet" href="/assets/vendor/libs/spinkit/spinkit.css" />
+    <link rel="stylesheet" href="./assets/vendor/fonts/fontawesome.css" />
+    <link rel="stylesheet" href="./assets/vendor/fonts/tabler-icons.css" />
+    <link rel="stylesheet" href="./assets/vendor/fonts/flag-icons.css" />
+    <link rel="stylesheet" href="./assets/vendor/libs/spinkit/spinkit.css" />
 
-    <link rel="stylesheet" href="/assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="/assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="/assets/css/demo.css" />
-    <link rel="stylesheet" href="/assets/vendor/libs/node-waves/node-waves.css" />
-    <link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-    <link rel="stylesheet" href="/assets/vendor/libs/typeahead-js/typeahead.css" />
-    <link rel="stylesheet" href="/assets/vendor/libs/select2/select2.css" />
-    <link rel="stylesheet" href="/assets/vendor/libs/@form-validation/umd/styles/index.min.css" />
-    <link rel="stylesheet" href="/assets/vendor/libs/bs-stepper/bs-stepper.css" />
+    <link rel="stylesheet" href="./assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="./assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="./assets/css/demo.css" />
+    <link rel="stylesheet" href="./assets/vendor/libs/node-waves/node-waves.css" />
+    <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="./assets/vendor/libs/typeahead-js/typeahead.css" />
+    <link rel="stylesheet" href="./assets/vendor/libs/select2/select2.css" />
+    <link rel="stylesheet" href="./assets/vendor/libs/@form-validation/umd/styles/index.min.css" />
+    <link rel="stylesheet" href="./assets/vendor/libs/bs-stepper/bs-stepper.css" />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
@@ -157,7 +157,7 @@
       }
 
       .leyenda-item {
-        margin-bottom: -7px;
+        margin-bottom: -2px;
         /* margin-bottom: 3px; */
         display: flex;
         align-items: center;
@@ -368,6 +368,117 @@
         </li>
       </ul>
     </div>
+
+      <button type="button" class="btn btn-primary" style="margin-left: 300px; z-index: 1020; position: absolute; margin-top: 30px;"
+          data-bs-toggle="modal" data-bs-target="#addNewCCModal">
+          <i class="fas fa-search me-2"> </i>Mostrar Rutas
+      </button>
+
+
+    <div class="modal fade" id="addNewCCModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc modal-xl">
+          <div class="modal-content p-3 p-md-5">
+              <!-- <div id="controls"> -->
+              <div class="modal-body">
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <!-- <div class="text-center mb-4">
+                      <h3 class="mb-2">Opciones de Busqueda</h3>
+                  </div> -->
+                  <!-- <form class="row g-3" onsubmit="return false">
+
+                      <div class="col-12 col-md-6">
+                          <label for="group1">Comisaria: </label>
+
+                          <select id="group1" name="group1 " class="select2 form-control" multiple
+                              onchange="populateGroup2()">
+                          </select>
+                      </div>
+                      <div class="col-12 col-md-6">
+                          <label for="group2">Prioridad: </label>
+                          <select id="group2" name="group2 " class="select2 form-select" multiple
+                              onchange="populateGroup3()">
+                          </select>
+                      </div>
+                      <div class="col-12 col-md-6">
+                          <label for="group3">Tipo de caso: </label>
+                          <select id="group3" name="group3 " class="select2 form-select" multiple
+                              onchange="getTipoCaso()">
+                          </select>
+                      </div>
+                      <div class="col-12 col-md-6">
+                          <label for="subTipoCaso">Sub Tipo de Caso: </label>
+                          <select id="subTipoCaso" name="group4 " class="select2 form-select" multiple
+                              onchange="getSubTipoCaso()">
+                          </select>
+                      </div>
+                      <div class="col-12 col-md-6">
+                          <label for="DateInicio">Fecha inicio: </label>
+                          <input type="date" id="DateInicio" name="trip-start" class="form-control" value="" />
+                      </div>
+                      <div class="col-12 col-md-6">
+                          <label for="DateFin">Fecha Final: </label>
+                          <input type="date" id="DateFinal" name="trip-start" class="form-control" value=""
+                              onchange="getFechaRango()" />
+                      </div>
+
+                      <div class="col-12 col-md-6">
+                          <label for="DateInicio">Hora inicio: </label>
+                          <input type="time" id="HoraInicio" name="trip-start" class="form-control" value=""
+                              step="1" />
+                      </div>
+                      <div class="col-12 col-md-6">
+                          <label for="DateFin">Hora Final: </label>
+                          <input type="time" id="HoraFinal" name="trip-start" class="form-control" value="" step="1"
+                              onchange="getHoraRango()" />
+                      </div>
+
+                  </form> -->
+
+                  <!--  FILTRO UNIDAD RUTAS SELECT --------------------------------------------------------------------------------- -->
+                  <div class="text-center mb-4 mt-4">
+                      <h3 class="mb-2">Filtrar Unidad de Transporte</h3>
+                  </div>
+
+                  <form class="row g-3" onsubmit="return false">
+                      <div class="col-12 col-md-12">
+                          <label for="groupUnidad">Unidad: </label>
+                          <select id="groupUnidad" name="groupUnidad "class=" form-control" onchange="mostrarRutas()" multiple>
+                          </select>
+                      </div>
+                      <div class="col-12 col-md-6">
+                          <label for="DateInicio">Fecha inicio: </label>
+                          <input type="date" id="startDateInputRutas" name="trip-start" class="form-control"
+                              value="" />
+                      </div>
+                      <div class="col-12 col-md-6">
+                          <label for="DateFin">Fecha Final: </label>
+                          <input type="date" id="endDateInputRutas" name="trip-start" class="form-control"
+                              value="" onchange="filtrarFechasRutas()"/>
+                          <!-- <input type="date" id="DateFinal" name="trip-start" class="form-control" value=""/> -->
+                      </div>
+
+                      <div class="col-12 col-md-6">
+                          <label for="DateInicio">Hora inicio: </label>
+                          <input type="time" id="HoraInicioRutas" name="trip-start" class="form-control"
+                              value="" step="1" />
+                      </div>
+                      <div class="col-12 col-md-6">
+                          <label for="DateFin">Hora Final: </label>
+                          <input type="time" id="HoraFinalRutas" name="trip-start" class="form-control"
+                              value="" step="1" onchange="filtrarFechasRutas()" />
+                          <!-- <input type="date" id="DateFinal" name="trip-start" class="form-control" value=""/> -->
+                      </div>
+
+                  </form>
+
+              </div>
+                  <button type="reset" class="btn btn-label-secondary btn-reset" data-bs-dismiss="modal"
+                      aria-label="Close">
+                      Volver
+                  </button>
+          </div>
+      </div>
+  </div>
 
     <!-- <div id="contenedor-filtro">
       <ul>
@@ -605,6 +716,8 @@
       var contadorMarcadores = 0;
       //const url = "./map.json";
       const url = "./datos_incidencias_clean.json";
+      const urlRutas = './data_rutas.json';
+      let dataJSON_Unidades;
       let dataJSON;
       let heatLayer;
       let markers;
@@ -727,6 +840,198 @@
             // Crea un polígono GeoJSON
             return turf.polygon([coords]);
         }
+
+        var capasMapa = {
+            marcadores: [],
+            polilíneas: []
+        };
+
+        function limpiarCapas() {
+            // Eliminar marcadores
+            capasMapa.marcadores.forEach(function(marcador) {
+                map.removeLayer(marcador);
+            });
+            capasMapa.marcadores = []; // Limpiar la lista de marcadores
+
+            // Eliminar polilíneas
+            capasMapa.polilíneas.forEach(function(polilínea) {
+                map.removeLayer(polilínea);
+            });
+            capasMapa.polilíneas = []; // Limpiar la lista de polilíneas
+        }
+
+        fetch(urlRutas)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al cargar el archivo JSON');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Aquí manejas la respuesta. 'data' contiene los datos del archivo JSON
+
+                // Resto del código sigue igual
+                dataJSON_Unidades = data;
+
+                // Llenar group1Select con opciones
+                const group1Select = document.getElementById("groupUnidad");
+                const arrayGroup1 = [];
+                dataJSON_Unidades.forEach(element => {
+                    arrayGroup1.push(element["Unidad"]);
+                });
+                const arrayGroup1Unique = [...new Set(arrayGroup1)];
+                arrayGroup1Unique.forEach(element => {
+                    const option = document.createElement("option");
+                    option.value = element;
+                    option.text = element;
+                    group1Select.appendChild(option);
+                });
+
+                // Inicializar el grupo de marcadores
+                markers = L.markerClusterGroup();
+                map.addLayer(markers);
+            })
+            .catch(error => {
+                // Aquí manejas los errores de la carga del archivo JSON
+                console.error("Error al cargar el archivo JSON: ", error);
+          });
+
+
+          let dataJSON_Rutas = []; // Inicializar como un array vacío
+
+          function mostrarRutas() {
+            const unidadSelect = document.getElementById("groupUnidad");
+            const selectedOptions = Array.from(unidadSelect.selectedOptions);
+            const unidadesSeleccionadas = selectedOptions.map(option => option.value);
+
+            const fechaInicio = new Date(document.getElementById("startDateInputRutas").value);
+            const fechaFin = new Date(document.getElementById("endDateInputRutas").value);
+            const horaInicio = document.getElementById("HoraInicioRutas").value;
+            const horaFin = document.getElementById("HoraFinalRutas").value;
+
+            // Limpiar capas antiguas antes de hacer la petición
+            limpiarCapas();
+
+            // Array para almacenar los datos de todas las unidades seleccionadas
+            const datosUnidades = [];
+
+            // Contador para llevar el control de las peticiones completadas
+            let peticionesCompletadas = 0;
+
+            unidadesSeleccionadas.forEach(function(valorUnidad) {
+                // Utilizar el archivo local directamente sin necesidad de una URL completa
+                const url = urlRutas;  // Ajusta la ruta según la ubicación exacta de tu archivo JSON
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error al cargar el archivo JSON');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+
+                        // Filtrar las rutas solo para la unidad seleccionada
+                        const rutasUnidad = data.filter(item => item.Unidad === valorUnidad);
+
+                        // Filtrar las rutas según las fechas y horas seleccionadas
+                        // const rutasFiltradas = rutasUnidad.filter(function(item) {
+                        //     const fechaItem = new Date(item.Fecha);
+                        //     const horaItem = new Date("1970-01-01T" + item.Hora); // Combinar con una fecha fija para obtener un objeto Date completo
+                        //     return fechaItem >= fechaInicio && fechaItem <= fechaFin && horaItem >= horaInicio && horaItem <= horaFin;
+                        // });
+
+                        datosUnidades.push(rutasUnidad); // Agregar los datos filtrados al array
+                        peticionesCompletadas++;
+
+                        // Verificar si todas las peticiones se han completado
+                        if (peticionesCompletadas === unidadesSeleccionadas.length) {
+                            // Combinar los datos de todas las unidades
+                            dataJSON_Rutas = datosUnidades.flat();
+
+                            // Mostrar las rutas filtradas en el mapa
+                            console.log("Rutas filtradas:", rutasUnidad);
+                            mostrarRutasEnMapa(dataJSON_Rutas);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error al cargar el archivo JSON: ", error);
+                    });
+            });
+        }
+
+
+          function mostrarRutasEnMapa(rutas) {
+            // Limpiar polilíneas antiguas
+            if (capasMapa.polilinea) {
+                map.removeLayer(capasMapa.polilinea);
+            }
+
+            // Verificar si hay coordenadas válidas para la polilínea
+            const polylinePoints = rutas.map(function(item) {
+                return [parseFloat(item.Latitud), parseFloat(item.Longitud)];
+            });
+
+            console.log("Coordenadas extraídas:", polylinePoints); // Agregado para imprimir coordenadas en la consola
+
+            if (polylinePoints.length === 0) {
+                console.error("Error: No hay coordenadas válidas para la polilínea.");
+                return;
+            }
+
+            // Crear la polilínea con los puntos almacenados
+            const polyline = L.polyline(polylinePoints, {
+                color: '#0C3978',
+                opacity: 0.75,
+                weight: 3.5
+            }).addTo(map);
+
+            capasMapa.polilinea = polyline;
+
+            // Ajustar los límites del mapa solo si hay coordenadas válidas
+            map.fitBounds(polyline.getBounds());
+        }
+
+        function filtrarFechasRutas() {
+            const startDate = new Date(document.getElementById('startDateInputRutas').value);
+            const endDate = new Date(document.getElementById('endDateInputRutas').value);
+            const horaInicio = document.getElementById("HoraInicioRutas").value;
+            const horaFin = document.getElementById("HoraFinalRutas").value;
+
+            if (dataJSON_Rutas && dataJSON_Rutas.length > 0) {
+                // Convertir horas de inicio y fin a segundos para comparación
+                const horaInicioSegundos = convertirAHorasSegundos(horaInicio);
+                const horaFinSegundos = convertirAHorasSegundos(horaFin);
+
+                // Filtrar las rutas según las fechas y horas seleccionadas
+                const rutasFiltradas = dataJSON_Rutas.filter(function(item) {
+                    const itemDate = new Date(item.Fecha);
+                    const itemTime = convertirAHorasSegundos(item.Hora);
+                    return itemDate >= startDate && itemDate <= endDate && itemTime >= horaInicioSegundos && itemTime <= horaFinSegundos;
+                });
+
+                if (rutasFiltradas.length === 0) {
+                    console.error("No hay rutas para mostrar dentro del rango de fechas y horas seleccionado.");
+                    limpiarCapas();
+                    return;
+                }
+
+                // Mostrar las rutas filtradas en el mapa
+                mostrarRutasEnMapa(rutasFiltradas);
+            } else {
+                console.error("Error: dataJSON_Rutas no está definida o es un array vacío.");
+            }
+        }
+
+        function convertirAHorasSegundos(hora) {
+            const partesHora = hora.split(":");
+            const horas = parseInt(partesHora[0]);
+            const minutos = parseInt(partesHora[1]);
+            const segundos = partesHora.length > 2 ? parseInt(partesHora[2]) : 0; // Si hay segundos en la hora, convertirlos también
+
+            return horas * 3600 + minutos * 60 + segundos;
+        }
+
 
 
 
@@ -1878,5 +2183,32 @@
       //     agregarMarcadores(colorCheckbox.checked); // Volver a agregar marcadores con el nuevo color
       // });
     </script>
+    <!-- <script src="./assets/vendor/libs/jquery/jquery.js"></script> -->
+    <script src="./assets/vendor/libs/popper/popper.js"></script>
+    <script src="./assets/vendor/js/bootstrap.js"></script>
+    <script src="./assets/vendor/libs/node-waves/node-waves.js"></script>
+    <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="./assets/vendor/libs/hammer/hammer.js"></script>
+    <script src="./assets/vendor/libs/i18n/i18n.js"></script>
+    <script src="./assets/vendor/libs/typeahead-js/typeahead.js"></script>
+    <script src="./assets/vendor/js/menu.js"></script>
+    <script src="./assets/vendor/libs/cleavejs/cleave.js"></script>
+    <script src="./assets/vendor/libs/cleavejs/cleave-phone.js"></script>
+    <script src="./assets/vendor/libs/select2/select2.js"></script>
+    <script src="./assets/vendor/libs/@form-validation/umd/bundle/popular.min.js"></script>
+    <script src="./assets/vendor/libs/@form-validation/umd/plugin-bootstrap5/index.min.js"></script>
+    <script src="./assets/vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js"></script>
+    <script src="./assets/vendor/libs/bs-stepper/bs-stepper.js"></script>
+    <script src="./assets/js/main.js"></script>
+
+    <!-- Page JS -->
+    <script src="./assets/js/pages-pricing.js"></script>
+    <script src="./assets/js/modal-create-app.js"></script>
+    <script src="./assets/js/modal-add-new-cc.js"></script>
+    <script src="./assets/js/modal-add-new-address.js"></script>
+    <script src="./assets/js/modal-edit-user.js"></script>
+    <script src="./assets/js/modal-enable-otp.js"></script>
+    <script src="./assets/js/modal-share-project.js"></script>
+    <script src="./assets/js/modal-two-factor-auth.js"></script>
   </body>
 </html>
