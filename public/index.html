@@ -237,8 +237,17 @@
           }
 
       @media (max-width: 768px) {
-        #toggle-controls {
+        #toggle-controls{
           display: none;
+          z-index: 1010; /* Asegura que el botón esté por encima de otros elementos */
+          top: 10px; /* Ajusta según necesites */
+          left: 50px;
+          font-size: 10px;
+        }
+        #btnRutas{
+          top: 45px;
+          right: 10px;
+          font-size: 10px;
         }
         #contenedor-checkboxes {
                 display: flex; /* Habilita Flexbox para el contenedor */
@@ -267,7 +276,7 @@
             }
 
             #toggle-containers {
-                display: block; /* Muestra el botón en pantallas pequeñas */
+                display: none; /* Muestra el botón en pantallas pequeñas */
                 position: fixed;
                 background-color: #02329b; /* Color de fondo */
                 color: white;
@@ -289,8 +298,9 @@
                 border: none; /* Sin borde */
                 border-radius: 5px;  /* O absolute, según tu preferencia de ubicación */
                 z-index: 1010; /* Asegura que el botón esté por encima de otros elementos */
-                top: 50px; /* Ajusta según necesites */
-                right: 10px; /* Ajusta según necesites */
+                top: 10px; /* Ajusta según necesites */
+                right: 10px;
+                font-size: 10px; /* Ajusta según necesites */
                 /* Estilos adicionales para el botón (colores, padding, etc.) */
             }
 
@@ -303,11 +313,11 @@
                 border: none; /* Sin borde */
                 border-radius: 5px;  /* O absolute, según tu preferencia de ubicación */
                 z-index: 1010; /* Asegura que el botón esté por encima de otros elementos */
-                top: 90px; /* Ajusta según necesites */
-                right: 10px; /* Ajusta según necesites */
+                top: 40px; /* Ajusta según necesites */
+                right: 10px;
+                font-size: 10px; /* Ajusta según necesites */
                 /* Estilos adicionales para el botón (colores, padding, etc.) */
             }
-
             
         }
 
@@ -369,7 +379,7 @@
       </ul>
     </div>
 
-      <button type="button" class="btn btn-primary" style="margin-left: 250px; z-index: 1020; position: absolute; margin-top: 30px;"
+      <button id="btnRutas" type="button" class="btn btn-primary" style="margin-left: 250px; z-index: 1020; position: absolute; margin-top: 30px;"
           data-bs-toggle="modal" data-bs-target="#addNewCCModal">
           <i class="fas fa-search me-2"> </i>Mostrar Rutas
       </button>
