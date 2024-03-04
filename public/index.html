@@ -449,6 +449,11 @@
                       <h3 class="mb-2">Filtrar Unidad de Transporte</h3>
                   </div>
 
+                  <label>
+                    <input type="checkbox" id="checkboxSeleccionarTodoRutas" onchange="seleccionarTodoRutas()">
+                    Seleccionar Todo
+                  </label>
+
                   <form class="row g-3" onsubmit="return false">
                       <div class="col-12 col-md-12">
                           <label for="groupUnidad">Unidad: </label>
@@ -608,6 +613,11 @@
     <button id="toggle-controls" class="btn btn-primary">Mostrar Incidencias</button>
 
     <div id="controls">
+      <label>
+        <input type="checkbox" id="checkboxSeleccionarTodo" onchange="seleccionarTodo()">
+        Seleccionar Todo
+      </label>
+      
       <label for="group1">Jurisdiccion: </label>
       <select id="group1" multiple onchange="populateGroup2()">
         <!-- Las opciones se llenarán dinámicamente -->
@@ -674,6 +684,34 @@
               }
           });
       });
+
+      function seleccionarTodo() {
+      // Obtén el estado del checkbox
+      var checkbox = document.getElementById('checkboxSeleccionarTodo');
+      var estadoCheckbox = checkbox.checked;
+
+      // Obtén el elemento select múltiple
+      var selectMultiple = document.getElementById('group1');
+
+      // Recorre todas las opciones y establece su estado según el checkbox
+      for (var i = 0; i < selectMultiple.options.length; i++) {
+        selectMultiple.options[i].selected = estadoCheckbox;
+      }
+    }
+
+    function seleccionarTodoRutas() {
+      // Obtén el estado del checkbox
+      var checkbox = document.getElementById('checkboxSeleccionarTodoRutas');
+      var estadoCheckbox = checkbox.checked;
+
+      // Obtén el elemento select múltiple
+      var selectMultiple = document.getElementById('groupUnidad');
+
+      // Recorre todas las opciones y establece su estado según el checkbox
+      for (var i = 0; i < selectMultiple.options.length; i++) {
+        selectMultiple.options[i].selected = estadoCheckbox;
+      }
+    }
 
       let polygon;
       var csvPath = "/Zarate.csv";
