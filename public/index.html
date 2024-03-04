@@ -391,58 +391,6 @@
               <!-- <div id="controls"> -->
               <div class="modal-body">
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  <!-- <div class="text-center mb-4">
-                      <h3 class="mb-2">Opciones de Busqueda</h3>
-                  </div> -->
-                  <!-- <form class="row g-3" onsubmit="return false">
-
-                      <div class="col-12 col-md-6">
-                          <label for="group1">Comisaria: </label>
-
-                          <select id="group1" name="group1 " class="select2 form-control" multiple
-                              onchange="populateGroup2()">
-                          </select>
-                      </div>
-                      <div class="col-12 col-md-6">
-                          <label for="group2">Prioridad: </label>
-                          <select id="group2" name="group2 " class="select2 form-select" multiple
-                              onchange="populateGroup3()">
-                          </select>
-                      </div>
-                      <div class="col-12 col-md-6">
-                          <label for="group3">Tipo de caso: </label>
-                          <select id="group3" name="group3 " class="select2 form-select" multiple
-                              onchange="getTipoCaso()">
-                          </select>
-                      </div>
-                      <div class="col-12 col-md-6">
-                          <label for="subTipoCaso">Sub Tipo de Caso: </label>
-                          <select id="subTipoCaso" name="group4 " class="select2 form-select" multiple
-                              onchange="getSubTipoCaso()">
-                          </select>
-                      </div>
-                      <div class="col-12 col-md-6">
-                          <label for="DateInicio">Fecha inicio: </label>
-                          <input type="date" id="DateInicio" name="trip-start" class="form-control" value="" />
-                      </div>
-                      <div class="col-12 col-md-6">
-                          <label for="DateFin">Fecha Final: </label>
-                          <input type="date" id="DateFinal" name="trip-start" class="form-control" value=""
-                              onchange="getFechaRango()" />
-                      </div>
-
-                      <div class="col-12 col-md-6">
-                          <label for="DateInicio">Hora inicio: </label>
-                          <input type="time" id="HoraInicio" name="trip-start" class="form-control" value=""
-                              step="1" />
-                      </div>
-                      <div class="col-12 col-md-6">
-                          <label for="DateFin">Hora Final: </label>
-                          <input type="time" id="HoraFinal" name="trip-start" class="form-control" value="" step="1"
-                              onchange="getHoraRango()" />
-                      </div>
-
-                  </form> -->
 
                   <!--  FILTRO UNIDAD RUTAS SELECT --------------------------------------------------------------------------------- -->
                   <div class="text-center mb-4 mt-4">
@@ -493,27 +441,85 @@
                   </button>
           </div>
       </div>
-  </div>
+    </div>
 
-    <!-- <div id="contenedor-filtro">
-      <ul>
-        <li>
-          <label>
-            FECHA INI:
-            <input type="date" name="" id="FechaIni">
-          </label>
-        </li>
-        <li>
-          <label>
-            FECHA FIN:
-            <input type="date" name="" id="FechaFin">
-          </label>
-        </li>
-      </ul>
-    </div> -->
+    <div class="modal fade" id="addNewIncModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc modal-lg">
+          <div class="modal-content p-3 p-md-5">
+              <!-- <div id="controls"> -->
+              <div class="modal-body">
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
-    <!-- <input type="date" name="" id="FechaIni">
-    <input type="date" name="" id="FechaFin"> -->
+                  <!--  FILTRO UNIDAD RUTAS SELECT --------------------------------------------------------------------------------- -->
+                  <div class="text-center mb-4 mt-4">
+                      <h3 class="mb-2">Filtrar Incidencias</h3>
+                  </div>
+
+                  <label>
+                    <input type="checkbox" id="checkboxSeleccionarTodo" onchange="seleccionarTodo()">
+                    Seleccionar Todo
+                  </label>
+
+                  <form class="row g-3" onsubmit="return false">
+                      <div class="col-12 col-md-12">
+                          <label for="group1">Jurisdiccion: </label>
+                          <select id="group1" name="group1 "class=" form-control" onchange="populateGroup2()" multiple>
+                          </select>
+                      </div>
+                      <div class="col-12 col-md-6">
+                          <label for="group2">Agrupacion: </label>
+                          <select id="group2" name="group2 "class=" form-control" onchange="populateGroup3()" multiple>
+                          </select>
+                      </div>
+                      <div class="col-12 col-md-6">
+                          <label for="group3">Clasificacion: </label>
+                          <select id="group3" name="group2 "class=" form-control" onchange="populateGroup4()" multiple>
+                          </select>
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="group4">Tipo de Caso: </label>
+                        <select id="group4" name="group2 "class=" form-control" onchange="getTipoCaso()" multiple>
+                        </select>
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="subTipoCaso">Sub Tipo de Caso: </label>
+                        <select id="subTipoCaso" name="group2 "class=" form-control" onchange="getSubTipoCaso()" multiple>
+                        </select>
+                      </div>
+                      <div class="col-12 col-md-6">
+                          <label for="DateInicio">Fecha inicio: </label>
+                          <input type="date" id="DateInicio" name="trip-start" class="form-control"
+                              value="" />
+                      </div>
+                      <div class="col-12 col-md-6">
+                          <label for="DateFin">Fecha Final: </label>
+                          <input type="date" id="DateFinal" name="trip-start" class="form-control"
+                              value="" onchange="getFechaRango()"/>
+                          <!-- <input type="date" id="DateFinal" name="trip-start" class="form-control" value=""/> -->
+                      </div>
+
+                      <div class="col-12 col-md-6">
+                          <label for="DateInicio">Hora inicio: </label>
+                          <input type="time" id="HoraInicio" name="trip-start" class="form-control"
+                              value="" step="1" />
+                      </div>
+                      <div class="col-12 col-md-6">
+                          <label for="DateFin">Hora Final: </label>
+                          <input type="time" id="HoraFinal" name="trip-start" class="form-control"
+                              value="" step="1" onchange="getHoraRango()" />
+                          <!-- <input type="date" id="DateFinal" name="trip-start" class="form-control" value=""/> -->
+                      </div>
+
+                  </form>
+
+              </div>
+                  <button type="reset" class="btn btn-label-secondary btn-reset" data-bs-dismiss="modal"
+                      aria-label="Close">
+                      Volver
+                  </button>
+          </div>
+      </div>
+    </div>
     
     <div id="leyenda">
       <h3>LEYENDA</h3>
@@ -610,7 +616,7 @@
     <button id="toggle-containers-2">Mostrar/Ocultar Leyenda</button>
 
 
-    <button id="toggle-controls" class="btn btn-primary">Mostrar Incidencias</button>
+    <button id="toggle-controls" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewIncModal">Mostrar Incidencias</button>
 
     <div id="controls">
       <label>
@@ -738,7 +744,7 @@
         .addEventListener("click", function () {
           var controls = document.getElementById("controls");
           if (controls.style.display === "none") {
-            controls.style.display = "block";
+            controls.style.display = "none";
           } else {
             controls.style.display = "none";
           }
@@ -763,7 +769,7 @@
       var marcadoresLayer = L.layerGroup().addTo(map);
       var contadorMarcadores = 0;
       //const url = "./map.json";
-      const url = "./datos_incidencias_clean.json";
+      const url = "./data_incidencias_clean_2.json";
       const urlRutas = './data_rutas.json';
       let dataJSON_Unidades;
       let dataJSON;
@@ -1080,10 +1086,166 @@
             return horas * 3600 + minutos * 60 + segundos;
         }
 
+      function getHoraRango() {
+            clearMap();
+            const csvUrl = './areaasjl.csv';
+            cargarCSVyCrearPoligono(csvUrl).then(geoJsonPolygon => {
+            const group1Select = document.getElementById("group1");
+            const group2Select = document.getElementById("group2");
+            const group3Select = document.getElementById("group3");
+            const group4Select = document.getElementById("group4");
+            const subTipoCasoSelect = document.getElementById("subTipoCaso");
+            const fechaSelect = document.getElementById("DateInicio"); // Agrega el elemento de fecha
+            const fechaSelectFin = document.getElementById("DateFinal"); // Agrega el elemento de fecha
+            const horaSelect = document.getElementById("HoraInicio"); // Agrega el elemento de fecha
+            const horaSelectFin = document.getElementById("HoraFinal"); // Agrega el elemento de fecha
+            // const horaSelect = document.getElementById("hora");
+            datosFiltrados = [];
+            // Customize this logic based on your data
+            const selectedGroup1Values = Array.from(group1Select.selectedOptions).map(option => option.value);
+            const selectedGroup2Values = Array.from(group2Select.selectedOptions).map(option => option.value);
+            const selectedGroup3Values = Array.from(group3Select.selectedOptions).map(option => option.value);
+            const selectedGroup4Values = Array.from(group4Select.selectedOptions).map(option => option.value);
+            const selectedTipoCasoValues = Array.from(subTipoCasoSelect.selectedOptions).map(option => option.value);
 
+            const selectedFechaInicio = fechaSelect.value;
+            const selectedFechaFin = fechaSelectFin.value; // Obtén la fecha seleccionada
+            const selectedHoraInicio = horaSelect.value; // Obtén la fecha seleccionada
+            const selectedHoraFin = horaSelectFin.value; // Obtén la fecha seleccionada
+            // const selectedHora = horaSelect.value;
+            console.log(selectedHoraInicio)
 
+            dataJSON.forEach(element => {
+                // Filter based on selected values
+                if (
+                    (selectedGroup1Values.length === 0 || selectedGroup1Values.includes(element["Comisaria"])) &&
+                    (selectedGroup2Values.length === 0 || selectedGroup2Values.includes(element["Agrupacion"])) &&
+                    (selectedGroup3Values.length === 0 || selectedGroup3Values.includes(element["Nueva Clasificacion"])) &&
+                    (selectedGroup4Values.length === 0 || selectedGroup4Values.includes(element["Tipo de Caso"])) &&
+                    // (selectedTipoCasoValues.length === 0 || selectedTipoCasoValues.includes(element["Sub Tipo de Caso"]))&&
+                    filtrarPorRangoDeFechas(element, selectedFechaInicio, selectedFechaFin) &&
+                    filtrarPorRangoDeHoras(element, selectedHoraInicio, selectedHoraFin)
 
-      function getSubTipoCaso() {
+                ) {
+                  var point = turf.point([element.Longitud, element.Latitud]);
+                  if (turf.booleanPointInPolygon(point, geoJsonPolygon)) {
+                    let weight = 1; // Ponderación predeterminada
+                    if (selectedGroup3Values.includes("Homicidio")) {
+                      weight = 100; // Duplicar el peso si el tipo de caso es homicidio
+                    }
+                    const obj = [element.Latitud, element.Longitud, weight];
+                    arrayHeat.push(obj);
+                  }
+                    // Personalizar tu marcador aquí
+                    const myIcon = L.icon({
+                        iconUrl: 'my-icon.png',
+                        iconSize: [38, 50],
+                        iconAnchor: [30, 94],
+                        popupAnchor: [-3, -76],
+                        shadowUrl: 'my-icon-shadow.png',
+                        shadowSize: [68, 95],
+                        shadowAnchor: [22, 94]
+                    });
+
+                    const marker = L.marker([element.Latitud, element.Longitud]) //.addTo(markers);
+                    marker.bindPopup(
+                        `<b>Comisaria:</b> ${element["Comisaria"]}<br><b>Prioridad:</b> ${element["Prioridad"]}<br><b>Tipo de caso:</b> ${element["Tipo de caso"]}<br><b>Sub Tipo de Caso:</b> ${element["Sub Tipo de Caso"]}<br><b>Latitud: </b>${element.Latitud}<br><b>Longitud: </b>${element.Longitud}`
+                    );
+                }
+            });
+
+            const gradient = {
+              0.4: 'blue',
+              0.6: 'cyan',
+              0.8: 'lime',
+              1.0: 'red'
+            };
+
+            //heatLayer = L.heatLayer(arrayHeat, { radius: 25 }).addTo(map);
+            heatLayer = L.heatLayer(arrayHeat, { radius: 25, gradient: gradient }).addTo(map);
+
+            });
+            console.log(arrayHeat);
+        }
+
+      function getFechaRango() {
+            clearMap();
+            const csvUrl = './areaasjl.csv';
+            cargarCSVyCrearPoligono(csvUrl).then(geoJsonPolygon => {
+            const group1Select = document.getElementById("group1");
+            const group2Select = document.getElementById("group2");
+            const group3Select = document.getElementById("group3");
+            const group4Select = document.getElementById("group4");
+            const subTipoCasoSelect = document.getElementById("subTipoCaso");
+            const fechaSelect = document.getElementById("DateInicio"); // Agrega el elemento de fecha
+            const fechaSelectFin = document.getElementById("DateFinal"); // Agrega el elemento de fecha
+            // const horaSelect = document.getElementById("hora");
+            datosFiltrados = [];
+            // Customize this logic based on your data
+            const selectedGroup1Values = Array.from(group1Select.selectedOptions).map(option => option.value);
+            const selectedGroup2Values = Array.from(group2Select.selectedOptions).map(option => option.value);
+            const selectedGroup3Values = Array.from(group3Select.selectedOptions).map(option => option.value);
+            const selectedGroup4Values = Array.from(group4Select.selectedOptions).map(option => option.value);
+            const selectedTipoCasoValues = Array.from(subTipoCasoSelect.selectedOptions).map(option => option.value);
+
+            const selectedFechaInicio = fechaSelect.value;
+            const selectedFechaFin = fechaSelectFin.value; // Obtén la fecha seleccionada
+            // const selectedHora = horaSelect.value;
+            console.log(selectedFechaInicio)
+
+            dataJSON.forEach(element => {
+                // Filter based on selected values
+                if (
+                    (selectedGroup1Values.length === 0 || selectedGroup1Values.includes(element["Comisaria"])) &&
+                    (selectedGroup2Values.length === 0 || selectedGroup2Values.includes(element["Agrupacion"])) &&
+                    (selectedGroup3Values.length === 0 || selectedGroup3Values.includes(element["Nueva Clasificacion"])) &&
+                    (selectedGroup4Values.length === 0 || selectedGroup4Values.includes(element["Tipo de Caso"])) &&
+                    // (selectedTipoCasoValues.length === 0 || selectedTipoCasoValues.includes(element["Sub Tipo de Caso"]))&&
+                    filtrarPorRangoDeFechas(element, selectedFechaInicio, selectedFechaFin)
+                ) {
+                  var point = turf.point([element.Longitud, element.Latitud]);
+                  if (turf.booleanPointInPolygon(point, geoJsonPolygon)) {
+                    let weight = 1; // Ponderación predeterminada
+                    if (selectedGroup3Values.includes("Homicidio")) {
+                      weight = 100; // Duplicar el peso si el tipo de caso es homicidio
+                    }
+                    const obj = [element.Latitud, element.Longitud, weight];
+                    arrayHeat.push(obj);
+                  }
+
+                    // Personalizar tu marcador aquí
+                    const myIcon = L.icon({
+                        iconUrl: 'my-icon.png',
+                        iconSize: [38, 50],
+                        iconAnchor: [30, 94],
+                        popupAnchor: [-3, -76],
+                        shadowUrl: 'my-icon-shadow.png',
+                        shadowSize: [68, 95],
+                        shadowAnchor: [22, 94]
+                    });
+
+                    const marker = L.marker([element.Latitud, element.Longitud]) //.addTo(markers);
+                    marker.bindPopup(
+                        `<b>Comisaria:</b> ${element["Comisaria"]}<br><b>Prioridad:</b> ${element["Prioridad"]}<br><b>Tipo de caso:</b> ${element["Tipo de caso"]}<br><b>Sub Tipo de Caso:</b> ${element["Sub Tipo de Caso"]}<br><b>Latitud: </b>${element.Latitud}<br><b>Longitud: </b>${element.Longitud}`
+                    );
+                }
+            });
+
+            const gradient = {
+              0.4: 'blue',
+              0.6: 'cyan',
+              0.8: 'lime',
+              1.0: 'red'
+            };
+
+            //heatLayer = L.heatLayer(arrayHeat, { radius: 25 }).addTo(map);
+            heatLayer = L.heatLayer(arrayHeat, { radius: 25, gradient: gradient }).addTo(map);
+
+            });
+            //console.log(arrayHeat);
+        }
+
+        function getSubTipoCaso() {
         clearMap();
         const csvUrl = './areaasjl.csv';
         cargarCSVyCrearPoligono(csvUrl).then(geoJsonPolygon => {
@@ -1253,6 +1415,28 @@
 
         getTipoCaso(); // Llamar a getTipoCaso() después de poblar group2
       }
+
+      function filtrarPorRangoDeFechas(element, fechaInicio, fechaFin) {
+            const fechaElemento = new Date(element.Fecha);
+            const inicio = new Date(fechaInicio);
+            const fin = new Date(fechaFin);
+            return fechaElemento >= inicio && fechaElemento <= fin;
+        }
+
+        function filtrarPorRangoDeHoras(element, horaInicio, horaFin) {
+            // Convertir la hora a segundos desde medianoche
+            const segundosDesdeMedianoche = (hora) => {
+                const [horas, minutos, segundos] = hora.split(":").map(Number);
+                return horas * 3600 + minutos * 60 + segundos;
+            };
+
+            const segundosElemento = segundosDesdeMedianoche(element["Hora_Minuto"]);
+            const segundosInicio = segundosDesdeMedianoche(horaInicio);
+            const segundosFin = segundosDesdeMedianoche(horaFin);
+
+            // Comparar si la hora del elemento está dentro del rango
+            return segundosElemento >= segundosInicio && segundosElemento <= segundosFin;
+        }
 
       function populateGroup3() {
         clearMap();
