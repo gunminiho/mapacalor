@@ -774,6 +774,7 @@
       let dataJSON_Unidades;
       let dataJSON;
       let heatLayer;
+      let circleMarkersLayer;
       let markers;
 
       var customIcon = L.icon({
@@ -1101,6 +1102,12 @@
             const horaSelectFin = document.getElementById("HoraFinal"); // Agrega el elemento de fecha
             // const horaSelect = document.getElementById("hora");
             datosFiltrados = [];
+            const markers = [];
+            const clickHandler = (lat, lon, content) => {
+              const marker = L.marker([lat, lon]);
+              marker.bindPopup(content).openPopup();
+              markers.push(marker);
+            };
             // Customize this logic based on your data
             const selectedGroup1Values = Array.from(group1Select.selectedOptions).map(option => option.value);
             const selectedGroup2Values = Array.from(group2Select.selectedOptions).map(option => option.value);
@@ -1113,6 +1120,8 @@
             const selectedHoraInicio = horaSelect.value; // Obtén la fecha seleccionada
             const selectedHoraFin = horaSelectFin.value; // Obtén la fecha seleccionada
             // const selectedHora = horaSelect.value;
+            circleMarkersLayer = new L.LayerGroup();
+            map.addLayer(circleMarkersLayer);
             console.log(selectedHoraInicio)
 
             dataJSON.forEach(element => {
@@ -1135,6 +1144,18 @@
                     }
                     const obj = [element.Latitud, element.Longitud, weight];
                     arrayHeat.push(obj);
+
+                    const content = `<b>Comisaria:</b> ${element["Comisaria"]}<br><b>Agrupacion:</b> ${element["Agrupacion"]}<br><b>Clasificacion:</b> ${element["Nueva Clasificacion"]}<br><b>Tipo de caso:</b> ${element["Tipo de Caso"]}<br><b>Sub Tipo de Caso:</b> ${element["Sub Tipo de Caso"]}<br>
+                    <b>Fecha:</b> ${element["Fecha"]}<br><b>Hora:</b> ${element["Hora_Minuto"]}<br>`;
+
+                    // Attach click event to each heat point
+                      const circleMarker = L.circleMarker([element.Latitud, element.Longitud], { radius: 25, color: 'red' })
+                      .bindPopup(content)
+                      .addTo(circleMarkersLayer)
+                      .on('click', function () {
+                        console.log(element.Latitud);
+                      });
+
                   }
                     // Personalizar tu marcador aquí
                     const myIcon = L.icon({
@@ -1164,6 +1185,10 @@
             //heatLayer = L.heatLayer(arrayHeat, { radius: 25 }).addTo(map);
             heatLayer = L.heatLayer(arrayHeat, { radius: 25, gradient: gradient }).addTo(map);
 
+            markers.forEach(marker => {
+            marker.addTo(map);
+          });
+
             });
             console.log(arrayHeat);
         }
@@ -1181,6 +1206,12 @@
             const fechaSelectFin = document.getElementById("DateFinal"); // Agrega el elemento de fecha
             // const horaSelect = document.getElementById("hora");
             datosFiltrados = [];
+            const markers = [];
+            const clickHandler = (lat, lon, content) => {
+              const marker = L.marker([lat, lon]);
+              marker.bindPopup(content).openPopup();
+              markers.push(marker);
+            };
             // Customize this logic based on your data
             const selectedGroup1Values = Array.from(group1Select.selectedOptions).map(option => option.value);
             const selectedGroup2Values = Array.from(group2Select.selectedOptions).map(option => option.value);
@@ -1191,6 +1222,8 @@
             const selectedFechaInicio = fechaSelect.value;
             const selectedFechaFin = fechaSelectFin.value; // Obtén la fecha seleccionada
             // const selectedHora = horaSelect.value;
+            circleMarkersLayer = new L.LayerGroup();
+            map.addLayer(circleMarkersLayer);
             console.log(selectedFechaInicio)
 
             dataJSON.forEach(element => {
@@ -1211,6 +1244,17 @@
                     }
                     const obj = [element.Latitud, element.Longitud, weight];
                     arrayHeat.push(obj);
+
+                    const content = `<b>Comisaria:</b> ${element["Comisaria"]}<br><b>Agrupacion:</b> ${element["Agrupacion"]}<br><b>Clasificacion:</b> ${element["Nueva Clasificacion"]}<br><b>Tipo de caso:</b> ${element["Tipo de Caso"]}<br><b>Sub Tipo de Caso:</b> ${element["Sub Tipo de Caso"]}<br>
+                    <b>Fecha:</b> ${element["Fecha"]}<br><b>Hora:</b> ${element["Hora_Minuto"]}<br>`;
+
+                    // Attach click event to each heat point
+                    const circleMarker = L.circleMarker([element.Latitud, element.Longitud], { radius: 25, color: 'red' })
+                      .bindPopup(content)
+                      .addTo(circleMarkersLayer)
+                      .on('click', function () {
+                        console.log(element.Latitud);
+                      });
                   }
 
                     // Personalizar tu marcador aquí
@@ -1240,6 +1284,10 @@
 
             //heatLayer = L.heatLayer(arrayHeat, { radius: 25 }).addTo(map);
             heatLayer = L.heatLayer(arrayHeat, { radius: 25, gradient: gradient }).addTo(map);
+
+            markers.forEach(marker => {
+            marker.addTo(map);
+          });
 
             });
             //console.log(arrayHeat);
@@ -1534,6 +1582,10 @@
         //     markers.clearLayers();
         // }
         arrayHeat.length = 0;
+
+        if (circleMarkersLayer) {
+          map.removeLayer(circleMarkersLayer);
+        }
       }
 
       const jsonUrl = "./datos_camara.json";
