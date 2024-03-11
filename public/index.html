@@ -376,6 +376,12 @@
             <input type="checkbox" id="mostrarMarcadoresCheckbox9" />
           </label>
         </li>
+        <li>
+          <label>
+            CV-CAJA DE AGUA:
+            <input type="checkbox" id="mostrarMarcadoresCheckbox12" />
+          </label>
+        </li>
       </ul>
     </div>
 
@@ -521,7 +527,7 @@
       </div>
     </div>
     
-    <div id="leyenda">
+    <div id="leyenda" style="display: none;">
       <h3>LEYENDA</h3>
       <!-- <div class="leyenda-item">
         <img
@@ -585,7 +591,7 @@
           src="./camara_vecinal.png"
           alt="Blue"
         />
-        <h5>CAMARAS VECINALES: <span id="contadorMarcadores6"></span></h5>
+        <h5>CAMARAS VECINALES: <span id="contadorMarcadores6"></span><span id="contadorMarcadores12"></span></h5>
       </div>
       <div class="leyenda-item">
         <img
@@ -769,7 +775,7 @@
       var marcadoresLayer = L.layerGroup().addTo(map);
       var contadorMarcadores = 0;
       //const url = "./map.json";
-      const url = "./data_incidencias_clean_2.json";
+      const url = "./incidencias.json";
       const urlRutas = './data_rutas.json';
       let dataJSON_Unidades;
       let dataJSON;
@@ -1599,7 +1605,7 @@
 
       async function obtenerDatos() {
         const url =
-          "https://script.google.com/macros/s/AKfycby17dZTDJtGfq0dM1BDeT_RO75jm3rSZvCfJyzIKUip8Pbmu5PLP0uvRcHxye03Q0YK/exec"; // Reemplaza con la URL de tu Google Sheets
+          "https://script.google.com/macros/s/AKfycbwWeVYAR5A5l_b0VE_URB0dXnxyGGQMSiFviisenNdTOETaqxdizzYsMXJVzlqO4cPi/exec"; // Reemplaza con la URL de tu Google Sheets
         // "https://script.google.com/macros/s/AKfycbyWlzf8DwZdLRx1u9KW8hBXL1TW5B9QQzNcI85hqagmDGu3cfB7VRRSy0ALwNzG7Hgw/exec"; // Reemplaza con la URL de tu Google Sheets
         try {
           const respuesta = await fetch(url);
@@ -1624,7 +1630,9 @@
             agregarMarcadores9(datos.QuintaHoja);
           document.getElementById("mostrarMarcadoresCheckbox11").checked &&
             agregarMarcadores11(datos.SextaHoja);
-          console.log(datos.QuintaHoja);
+          document.getElementById("mostrarMarcadoresCheckbox12").checked &&
+            agregarMarcadores12(datos.SeptimaHoja);
+          //console.log(datos.QuintaHoja);
         } catch (error) {
           console.error("Error al obtener los datos:", error);
         }
@@ -1721,30 +1729,13 @@
         currentMarkers10 = [];
       }
 
-      // function agregarMarcadores(data1) {
-      //     clearMarkers()
-      //     data1.forEach(marcador => {
-      //         const latitud = marcador.LATITUD;
-      //         const longitud = marcador.LONGITUD;
-      //         const tipoMegafono = marcador.MEGAFONO;
-
-      //         if (tipoMegafono === 'MEGAFONO') {
-      //             const popupInfo = `Punto: ${marcador.PUNTO}<br>Tipo: ${marcador.TIPO}<br>Descripción: ${marcador.DESCRIPCION}<br>Tipo de Camara: ${marcador['TIPO DE CAMARA']}<br>Latitud: ${marcador.LATITUD}<br>Longitud: ${marcador.LONGITUD}`;
-      //         const customIcon = new L.Icon({
-      //             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png', // Ruta a tu imagen de icono
-      //             shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-      //             iconSize: [25, 41],
-      //             iconAnchor: [12, 41],
-      //             popupAnchor: [1, -34],
-      //             shadowSize: [41, 41]
-      //         });
-
-      //         const markermegafono = L.marker([latitud, longitud],{icon: customIcon}).addTo(map);
-      //         currentMarkers.push(markermegafono)
-      //         markermegafono.bindPopup(popupInfo);
-      //         }
-      //     });
-      // }
+      var currentMarkers11 = [];
+      function clearMarkers11() {
+        for (var i = 0; i < currentMarkers11.length; i++) {
+          map.removeLayer(currentMarkers11[i]);
+        }
+        currentMarkers11 = [];
+      }
 
       // Manejar clic en el botón de exportar
       $("#export-btn").click(function () {
@@ -2148,56 +2139,39 @@
         actualizarContador(11, contador);
       }
 
+      function agregarMarcadores12(datosSeptimaHoja) {
+        clearMarkers11();
+        let contador = 0;
+        datosSeptimaHoja.forEach((marcador) => {
+          const latitud = marcador.LATITUD;
+          const longitud = marcador.LONGITUD;
+          const modelo = marcador.MODELO;
+          const jurisdiccion = marcador.JURIDICCIÓN;
+          const nombre_vecino = marcador['NOMBRE VECINO'];
 
-      // document
-      //   .getElementById("mostrarMarcadoresCheckbox1")
-      //   .addEventListener("change", (event) => {
-      //     if (event.target.checked) {
-      //       obtenerDatos(); // Aquí puedes filtrar los datos si es necesario
-      //     } else {
-      //       clearMarkers();
-      //     }
-      //   });
+            const popupInfo = `<br>Modelo: ${modelo}<br>Jurisdiccion: ${jurisdiccion}<br>Nombre Vecino: ${nombre_vecino}`;
+            const customIcon = new L.Icon({
+              iconUrl:
+                "./camara_35s.png", // Ruta a tu imagen de icono
+              shadowUrl:
+                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41],
+            });
 
-      // document
-      //   .getElementById("mostrarMarcadoresCheckbox2")
-      //   .addEventListener("change", (event) => {
-      //     if (event.target.checked) {
-      //       obtenerDatos();
-      //     } else {
-      //       clearMarkers1();
-      //     }
-      //   });
+            const prioridad = L.marker([latitud, longitud], {
+              icon: customIcon,
+            }).addTo(map);
+            currentMarkers11.push(prioridad);
+            prioridad.bindPopup(popupInfo);
+            contador++;
+            //contador += multiplicador;
+        });
+        actualizarContador(12, contador);
+      }
 
-      // document
-      //   .getElementById("mostrarMarcadoresCheckbox3")
-      //   .addEventListener("change", (event) => {
-      //     if (event.target.checked) {
-      //       obtenerDatos();
-      //     } else {
-      //       clearMarkers2();
-      //     }
-      //   });
-
-      // document
-      //   .getElementById("mostrarMarcadoresCheckbox4")
-      //   .addEventListener("change", (event) => {
-      //     if (event.target.checked) {
-      //       obtenerDatos();
-      //     } else {
-      //       clearMarkers3();
-      //     }
-      //   });
-
-      // document
-      //   .getElementById("mostrarMarcadoresCheckbox5")
-      //   .addEventListener("change", (event) => {
-      //     if (event.target.checked) {
-      //       obtenerDatos();
-      //     } else {
-      //       clearMarkers4();
-      //     }
-      //   });
 
       document
         .getElementById("mostrarMarcadoresCheckbox6")
@@ -2256,6 +2230,16 @@
             obtenerDatos();
           } else {
             clearMarkers10();
+          }
+        });
+
+        document
+        .getElementById("mostrarMarcadoresCheckbox12")
+        .addEventListener("change", (event) => {
+          if (event.target.checked) {
+            obtenerDatos();
+          } else {
+            clearMarkers11();
           }
         });
 
@@ -2347,71 +2331,6 @@
         showPolygonFromCSV(csvFilePath6, polygonColor7, 7, "Mariscal Caceres");
         showPolygonFromCSV(csvFilePath7, polygonColor8, 5, "Santa Elizabeth");
       });
-      // document.getElementById('mostrarMarcadoresCheckbox6').addEventListener('change', (event) => {
-      //     if (event.target.checked) {
-      //         obtenerDatos();
-      //     } else {
-      //         clearMarkers5();
-      //     }
-      // });
-
-      // fetch(jsonUrl)
-      //     .then(response => response.json())
-      //     .then(data1 => {
-      // document.getElementById('mostrarMarcadoresCheckbox1').addEventListener('change', () => {
-      //     if (document.getElementById('mostrarMarcadoresCheckbox1').checked) {
-      //         agregarMarcadores(data1, 'MEGAFONO', 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png');
-      //     } else {
-      //         clearMarkers()
-      //     }
-      // });
-
-      // document.getElementById('mostrarMarcadoresCheckbox2').addEventListener('change', () => {
-      //     if (document.getElementById('mostrarMarcadoresCheckbox2').checked) {
-      //         agregarMarcadores2(data1, 'BOTON DE PANICO', 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png');
-      //     } else {
-      //         clearMarkers1()
-      //     }
-      // });
-      // document.getElementById('mostrarMarcadoresCheckbox3').addEventListener('change', () => {
-      //     if (document.getElementById('mostrarMarcadoresCheckbox3').checked) {
-      //         agregarMarcadores3(data1, 'PTZ', 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png');
-      //     } else {
-      //         clearMarkers2()
-      //     }
-      // });
-      // document.getElementById('mostrarMarcadoresCheckbox4').addEventListener('change', () => {
-      //     if (document.getElementById('mostrarMarcadoresCheckbox4').checked) {
-      //         agregarMarcadores4(data1, 'PRIORIDAD ENERGIA VECINAL AVANCE', 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png');
-      //     } else {
-      //         clearMarkers3()
-      //     }
-      // });
-      // document.getElementById('mostrarMarcadoresCheckbox5').addEventListener('change', () => {
-      //     if (document.getElementById('mostrarMarcadoresCheckbox5').checked) {
-      //         agregarMarcadores5(data1, 'PLANTADO', 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png');
-      //     } else {
-      //         clearMarkers4()
-      //     }
-      // });
-
-      // })
-
-      // document
-      //   .getElementById("mostrarMarcadoresCheckbox1")
-      //   .addEventListener("change", () => obtenerDatos());
-      // document
-      //   .getElementById("mostrarMarcadoresCheckbox2")
-      //   .addEventListener("change", () => obtenerDatos());
-      // document
-      //   .getElementById("mostrarMarcadoresCheckbox3")
-      //   .addEventListener("change", () => obtenerDatos());
-      // document
-      //   .getElementById("mostrarMarcadoresCheckbox4")
-      //   .addEventListener("change", () => obtenerDatos());
-      // document
-      //   .getElementById("mostrarMarcadoresCheckbox5")
-      //   .addEventListener("change", () => obtenerDatos());
       document
         .getElementById("mostrarMarcadoresCheckbox6")
         .addEventListener("change", () => obtenerDatos());
@@ -2432,6 +2351,10 @@
 
       document
         .getElementById("mostrarMarcadoresCheckbox11")
+        .addEventListener("change", () => obtenerDatos());
+      
+      document
+        .getElementById("mostrarMarcadoresCheckbox12")
         .addEventListener("change", () => obtenerDatos());
 
       fetch(url)
@@ -2461,13 +2384,9 @@
         .catch((error) =>
           console.error("Error al cargar el archivo JSON:", error)
         );
-      // const colorCheckbox = document.getElementById('colorCheckbox');
-      // colorCheckbox.addEventListener('change', function () {
-      //     eliminarMarcadores(); // Eliminar marcadores existentes
-      //     agregarMarcadores(colorCheckbox.checked); // Volver a agregar marcadores con el nuevo color
-      // });
+
     </script>
-    <!-- <script src="./assets/vendor/libs/jquery/jquery.js"></script> -->
+
     <script src="./assets/vendor/libs/popper/popper.js"></script>
     <script src="./assets/vendor/js/bootstrap.js"></script>
     <script src="./assets/vendor/libs/node-waves/node-waves.js"></script>
