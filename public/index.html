@@ -213,11 +213,26 @@
         position: absolute;
         /*background-color: #4caf50;  Color de fondo */
         color: white; /* Color del texto */
-        padding: 10px 20px; /* Espaciado interno */
         border: none; /* Sin borde */
         border-radius: 5px; /* Bordes redondeados */
         cursor: pointer; /* Cursor en forma de mano */
         margin-bottom: 10px; /* Margen inferior */
+      }
+
+      .toggle-controls-fecha {
+        position: absolute;
+        top: 20px;
+        right: 580px;
+        z-index: 1000;
+        width: 13%;
+      }
+
+      .toggle-controls-fecha-2 {
+        position: absolute;
+        top: 20px;
+        right: 360px;
+        z-index: 1000;
+        width: 13%;
       }
 
       #toggle-controls:hover {
@@ -492,17 +507,16 @@
                         <select id="subTipoCaso" name="group2 "class=" form-control" onchange="getSubTipoCaso()" multiple>
                         </select>
                       </div>
-                      <div class="col-12 col-md-6">
+                      <!-- <div class="col-12 col-md-6">
                           <label for="DateInicio">Fecha inicio: </label>
                           <input type="date" id="DateInicio" name="trip-start" class="form-control"
-                              value="" />
+                              value="" onchange="getFechaRango()" />
                       </div>
                       <div class="col-12 col-md-6">
                           <label for="DateFin">Fecha Final: </label>
                           <input type="date" id="DateFinal" name="trip-start" class="form-control"
                               value="" onchange="getFechaRango()"/>
-                          <!-- <input type="date" id="DateFinal" name="trip-start" class="form-control" value=""/> -->
-                      </div>
+                      </div> -->
 
                       <div class="col-12 col-md-6">
                           <label for="DateInicio">Hora inicio: </label>
@@ -513,7 +527,6 @@
                           <label for="DateFin">Hora Final: </label>
                           <input type="time" id="HoraFinal" name="trip-start" class="form-control"
                               value="" step="1" onchange="getHoraRango()" />
-                          <!-- <input type="date" id="DateFinal" name="trip-start" class="form-control" value=""/> -->
                       </div>
 
                   </form>
@@ -623,6 +636,12 @@
 
 
     <button id="toggle-controls" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewIncModal">Mostrar Incidencias</button>
+
+    <input type="date" id="DateInicio" name="trip-start" class="form-control toggle-controls-fecha"
+                              value="" onchange="getFechaRango()" />
+
+    <input type="date" id="DateFinal" name="trip-start" class="form-control toggle-controls-fecha-2"
+                              value="" onchange="getFechaRango()"/>
 
     <div id="controls">
       <label>
@@ -775,7 +794,7 @@
       var marcadoresLayer = L.layerGroup().addTo(map);
       var contadorMarcadores = 0;
       //const url = "./map.json";
-      const url = "./incidencias_18_03_24.json";
+      const url = "./incidencias_18_03_2024.json";
       const urlRutas = './data_rutas.json';
       let dataJSON_Unidades;
       let dataJSON;
