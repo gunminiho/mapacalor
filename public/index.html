@@ -274,6 +274,14 @@
         display: none; /* Oculta el botón por defecto */
       }
 
+      #btnCamaras {
+        position: absolute;
+        top: 80px;
+        right: 20px;
+        z-index: 1000;
+        width: 3%;
+      }
+
       @media (max-width: 768px) {
         #toggle-controls {
           display: none;
@@ -283,7 +291,7 @@
           font-size: 10px;
         }
         #btnRutas {
-          top: 50px;
+          top: 30px;
           right: 10px;
           font-size: 10px;
         }
@@ -333,7 +341,7 @@
         }
 
         #toggle-containers-1 {
-          display: block; /* Muestra el botón en pantallas pequeñas */
+          display: none; /* Muestra el botón en pantallas pequeñas */
           position: fixed;
           background-color: #02329b; /* Color de fondo */
           color: white;
@@ -356,10 +364,34 @@
           border: none; /* Sin borde */
           border-radius: 5px; /* O absolute, según tu preferencia de ubicación */
           z-index: 1010; /* Asegura que el botón esté por encima de otros elementos */
-          top: 40px; /* Ajusta según necesites */
+          top: 20px; /* Ajusta según necesites */
           right: 10px;
           font-size: 10px; /* Ajusta según necesites */
           /* Estilos adicionales para el botón (colores, padding, etc.) */
+        }
+
+        #btnCamaras {
+          position: absolute;
+          top: 87px;
+          right: 20px;
+          z-index: 1000;
+          width: 8%;
+        }
+
+        .toggle-controls-fecha {
+          position: absolute;
+          top: 190px;
+          right: 20px;
+          z-index: 1000;
+          width: 7%;
+        }
+
+        .toggle-controls-fecha-2 {
+          position: absolute;
+          top: 140px;
+          right: 20px;
+          z-index: 1000;
+          width: 7%;
         }
       }
 
@@ -427,17 +459,11 @@
     </div>
 
     <button
-      style="
-        position: absolute;
-        top: 80px;
-        right: 20px;
-        z-index: 1000;
-        width: 3%;
-      "
       type="button"
       class="btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow"
       data-bs-toggle="dropdown"
       aria-expanded="false"
+      id="btnCamaras"
     >
       <i class="ti ti-layers-subtract"></i>
     </button>
