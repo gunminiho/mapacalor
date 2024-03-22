@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MAPA CALOR CECOM 2024</title>
-    <link rel="icon" href="./logo_sjl_2.ico" type="image/x-icon">
+    <link rel="icon" href="./logo_sjl_2.ico" type="image/x-icon" />
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -23,15 +23,38 @@
     <link rel="stylesheet" href="./assets/vendor/fonts/flag-icons.css" />
     <link rel="stylesheet" href="./assets/vendor/libs/spinkit/spinkit.css" />
 
-    <link rel="stylesheet" href="./assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="./assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
+    <link
+      rel="stylesheet"
+      href="./assets/vendor/css/rtl/core.css"
+      class="template-customizer-core-css"
+    />
+    <link
+      rel="stylesheet"
+      href="./assets/vendor/css/rtl/theme-default.css"
+      class="template-customizer-theme-css"
+    />
     <link rel="stylesheet" href="./assets/css/demo.css" />
-    <link rel="stylesheet" href="./assets/vendor/libs/node-waves/node-waves.css" />
-    <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-    <link rel="stylesheet" href="./assets/vendor/libs/typeahead-js/typeahead.css" />
+    <link
+      rel="stylesheet"
+      href="./assets/vendor/libs/node-waves/node-waves.css"
+    />
+    <link
+      rel="stylesheet"
+      href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"
+    />
+    <link
+      rel="stylesheet"
+      href="./assets/vendor/libs/typeahead-js/typeahead.css"
+    />
     <link rel="stylesheet" href="./assets/vendor/libs/select2/select2.css" />
-    <link rel="stylesheet" href="./assets/vendor/libs/@form-validation/umd/styles/index.min.css" />
-    <link rel="stylesheet" href="./assets/vendor/libs/bs-stepper/bs-stepper.css" />
+    <link
+      rel="stylesheet"
+      href="./assets/vendor/libs/@form-validation/umd/styles/index.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="./assets/vendor/libs/bs-stepper/bs-stepper.css"
+    />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
@@ -240,274 +263,433 @@
       }
 
       #toggle-containers {
-              display: none; /* Oculta el botón por defecto */
-          }
+        display: none; /* Oculta el botón por defecto */
+      }
 
-          #toggle-containers-1 {
-              display: none; /* Oculta el botón por defecto */
-          }
+      #toggle-containers-1 {
+        display: none; /* Oculta el botón por defecto */
+      }
 
-          #toggle-containers-2 {
-              display: none; /* Oculta el botón por defecto */
-          }
+      #toggle-containers-2 {
+        display: none; /* Oculta el botón por defecto */
+      }
 
       @media (max-width: 768px) {
-        #toggle-controls{
+        #toggle-controls {
           display: none;
           z-index: 1010; /* Asegura que el botón esté por encima de otros elementos */
           top: 10px; /* Ajusta según necesites */
           left: 50px;
           font-size: 10px;
         }
-        #btnRutas{
+        #btnRutas {
           top: 50px;
           right: 10px;
           font-size: 10px;
         }
         #contenedor-checkboxes {
-                display: flex; /* Habilita Flexbox para el contenedor */
-                flex-direction: column; /* Alinea los elementos internos verticalmente */
-                justify-content: center; /* Centra los elementos verticalmente */
-                align-items: center; /* Centra los elementos horizontalmente */
-                position: fixed; /* O absolute, dependiendo de tu necesidad */
-                top: 50%; /* Posiciona el contenedor en el medio de la pantalla */
-                left: 50%; /* Posiciona el contenedor en el medio de la pantalla */
-                transform: translate(-50%, -50%); /* Ajusta precisamente el contenedor al centro */
-                width: 80%; /* Ajusta el ancho del contenedor */
-                max-width: 300px; /* Opcional: Limita el ancho máximo del contenedor */
-                background-color: #fff; /* Fondo del contenedor para mejor visibilidad */
-                padding: 20px; /* Espaciado interno para el contenedor */
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Sombra suave para destacar el contenedor */
-                z-index: 1000; /* Asegura que el contenedor esté por encima de otros elementos */
-                overflow: auto; /* Permite desplazar dentro del contenedor si los elementos exceden el tamaño */
-                border-radius: 10px; /* Bordes redondeados para el contenedor */
-            }
-
-            #leyenda {
-              bottom: 50px;
-            }
-            #controls, #leyenda, #contenedor-checkboxes {
-                display: none; /* Oculta los contenedores en pantallas pequeñas */
-            }
-
-            #toggle-containers {
-                display: none; /* Muestra el botón en pantallas pequeñas */
-                position: fixed;
-                background-color: #02329b; /* Color de fondo */
-                color: white;
-                padding: 5px 10px; /* Espaciado interno */
-                border: none; /* Sin borde */
-                border-radius: 5px;  /* O absolute, según tu preferencia de ubicación */
-                z-index: 1010; /* Asegura que el botón esté por encima de otros elementos */
-                top: 10px; /* Ajusta según necesites */
-                right: 10px; /* Ajusta según necesites */
-                /* Estilos adicionales para el botón (colores, padding, etc.) */
-            }
-
-            #toggle-containers-1 {
-                display: block; /* Muestra el botón en pantallas pequeñas */
-                position: fixed;
-                background-color: #02329b; /* Color de fondo */
-                color: white;
-                padding: 5px 10px; /* Espaciado interno */
-                border: none; /* Sin borde */
-                border-radius: 5px;  /* O absolute, según tu preferencia de ubicación */
-                z-index: 1010; /* Asegura que el botón esté por encima de otros elementos */
-                top: 10px; /* Ajusta según necesites */
-                right: 10px;
-                font-size: 10px; /* Ajusta según necesites */
-                /* Estilos adicionales para el botón (colores, padding, etc.) */
-            }
-
-            #toggle-containers-2 {
-                display: block; /* Muestra el botón en pantallas pequeñas */
-                position: fixed;
-                background-color: #02329b; /* Color de fondo */
-                color: white;
-                padding: 5px 10px; /* Espaciado interno */
-                border: none; /* Sin borde */
-                border-radius: 5px;  /* O absolute, según tu preferencia de ubicación */
-                z-index: 1010; /* Asegura que el botón esté por encima de otros elementos */
-                top: 40px; /* Ajusta según necesites */
-                right: 10px;
-                font-size: 10px; /* Ajusta según necesites */
-                /* Estilos adicionales para el botón (colores, padding, etc.) */
-            }
-            
+          display: flex; /* Habilita Flexbox para el contenedor */
+          flex-direction: column; /* Alinea los elementos internos verticalmente */
+          justify-content: center; /* Centra los elementos verticalmente */
+          align-items: center; /* Centra los elementos horizontalmente */
+          position: fixed; /* O absolute, dependiendo de tu necesidad */
+          top: 50%; /* Posiciona el contenedor en el medio de la pantalla */
+          left: 50%; /* Posiciona el contenedor en el medio de la pantalla */
+          transform: translate(
+            -50%,
+            -50%
+          ); /* Ajusta precisamente el contenedor al centro */
+          width: 80%; /* Ajusta el ancho del contenedor */
+          max-width: 300px; /* Opcional: Limita el ancho máximo del contenedor */
+          background-color: #fff; /* Fondo del contenedor para mejor visibilidad */
+          padding: 20px; /* Espaciado interno para el contenedor */
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave para destacar el contenedor */
+          z-index: 1000; /* Asegura que el contenedor esté por encima de otros elementos */
+          overflow: auto; /* Permite desplazar dentro del contenedor si los elementos exceden el tamaño */
+          border-radius: 10px; /* Bordes redondeados para el contenedor */
         }
 
-        input[type="date"] {
-          padding: 8px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          outline: none;
-          font-size: 16px;
-          margin-bottom: 5px;
-          transition: border-color 0.3s;
+        #leyenda {
+          bottom: 50px;
+        }
+        #controls,
+        #leyenda,
+        #contenedor-checkboxes {
+          display: none; /* Oculta los contenedores en pantallas pequeñas */
         }
 
-        input[type="date"]:focus {
-          border-color: dodgerblue;
+        #toggle-containers {
+          display: none; /* Muestra el botón en pantallas pequeñas */
+          position: fixed;
+          background-color: #02329b; /* Color de fondo */
+          color: white;
+          padding: 5px 10px; /* Espaciado interno */
+          border: none; /* Sin borde */
+          border-radius: 5px; /* O absolute, según tu preferencia de ubicación */
+          z-index: 1010; /* Asegura que el botón esté por encima de otros elementos */
+          top: 10px; /* Ajusta según necesites */
+          right: 10px; /* Ajusta según necesites */
+          /* Estilos adicionales para el botón (colores, padding, etc.) */
         }
+
+        #toggle-containers-1 {
+          display: block; /* Muestra el botón en pantallas pequeñas */
+          position: fixed;
+          background-color: #02329b; /* Color de fondo */
+          color: white;
+          padding: 5px 10px; /* Espaciado interno */
+          border: none; /* Sin borde */
+          border-radius: 5px; /* O absolute, según tu preferencia de ubicación */
+          z-index: 1010; /* Asegura que el botón esté por encima de otros elementos */
+          top: 10px; /* Ajusta según necesites */
+          right: 10px;
+          font-size: 10px; /* Ajusta según necesites */
+          /* Estilos adicionales para el botón (colores, padding, etc.) */
+        }
+
+        #toggle-containers-2 {
+          display: block; /* Muestra el botón en pantallas pequeñas */
+          position: fixed;
+          background-color: #02329b; /* Color de fondo */
+          color: white;
+          padding: 5px 10px; /* Espaciado interno */
+          border: none; /* Sin borde */
+          border-radius: 5px; /* O absolute, según tu preferencia de ubicación */
+          z-index: 1010; /* Asegura que el botón esté por encima de otros elementos */
+          top: 40px; /* Ajusta según necesites */
+          right: 10px;
+          font-size: 10px; /* Ajusta según necesites */
+          /* Estilos adicionales para el botón (colores, padding, etc.) */
+        }
+      }
+
+      input[type="date"] {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+        font-size: 16px;
+        margin-bottom: 5px;
+        transition: border-color 0.3s;
+      }
+
+      input[type="date"]:focus {
+        border-color: dodgerblue;
+      }
     </style>
   </head>
   <body>
-
-    <div id="contenedor-checkboxes">
+    <div id="contenedor-checkboxes" style="display: none">
       <ul>
         <li>
           <label>
             PROYECTO CAMARAS:
-            <input type="checkbox" id="mostrarMarcadoresCheckbox10" />
+            <input type="checkbox" />
           </label>
         </li>
         <li>
           <label>
             CAMARAS VECINALES:
-            <input type="checkbox" id="mostrarMarcadoresCheckbox6" />
+            <input type="checkbox" />
           </label>
         </li>
         <li>
           <label>
             CAMARAS ACTUALES:
-            <input type="checkbox" id="mostrarMarcadoresCheckbox11" />
+            <input type="checkbox" />
           </label>
         </li>
         <li>
           <label>
             PUNTOS DE BASURA:
-            <input type="checkbox" id="mostrarMarcadoresCheckbox7" />
+            <input type="checkbox" />
           </label>
         </li>
         <li>
           <label>
             PARADEROS DE TRANSPORTE:
-            <input type="checkbox" id="mostrarMarcadoresCheckbox8" />
+            <input type="checkbox" />
           </label>
         </li>
         <li>
           <label>
             PANELES MONUMENTALES:
-            <input type="checkbox" id="mostrarMarcadoresCheckbox9" />
+            <input type="checkbox" />
           </label>
         </li>
         <li>
           <label>
             CV-CAJA DE AGUA:
-            <input type="checkbox" id="mostrarMarcadoresCheckbox12" />
+            <input type="checkbox" />
           </label>
         </li>
       </ul>
     </div>
 
-      <button id="btnRutas" type="button" class="btn btn-primary" style="right: 10px; z-index: 1020; position: absolute; margin-top: 20px;"
-          data-bs-toggle="modal" data-bs-target="#addNewCCModal">
-          <i class="fas fa-search me-2"> </i>Mostrar Rutas
-      </button>
+    <button
+      style="
+        position: absolute;
+        top: 80px;
+        right: 20px;
+        z-index: 1000;
+        width: 3%;
+      "
+      type="button"
+      class="btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <i class="ti ti-layers-subtract"></i>
+    </button>
 
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li>
+        <label class="dropdown-item">
+          <i class="ti ti-map-pin"></i>
+          Proyecto Camaras:
+          <input type="checkbox" id="mostrarMarcadoresCheckbox10" />
+        </label>
+      </li>
+      <li>
+        <label class="dropdown-item">
+          <i class="ti ti-map-pin"></i>
+          Camaras Vecinales:
+          <input type="checkbox" id="mostrarMarcadoresCheckbox6" />
+        </label>
+      </li>
+      <li>
+        <label class="dropdown-item">
+          <i class="ti ti-map-pin"></i>
+          Camaras Municipales:
+          <input type="checkbox" id="mostrarMarcadoresCheckbox11" />
+        </label>
+      </li>
+      <li>
+        <label class="dropdown-item">
+          <i class="ti ti-map-pin"></i>
+          Puntos de Basura:
+          <input type="checkbox" id="mostrarMarcadoresCheckbox7" />
+        </label>
+      </li>
+      <li>
+        <label class="dropdown-item">
+          <i class="ti ti-map-pin"></i>
+          Paraderos de Tranporte:
+          <input type="checkbox" id="mostrarMarcadoresCheckbox8" />
+        </label>
+      </li>
+      <li>
+        <label class="dropdown-item">
+          <i class="ti ti-map-pin"></i>
+          Panele Monumentales:
+          <input type="checkbox" id="mostrarMarcadoresCheckbox9" />
+        </label>
+      </li>
+      <li>
+        <label class="dropdown-item">
+          <i class="ti ti-map-pin"></i>
+          CV-Caja de Agua:
+          <input type="checkbox" id="mostrarMarcadoresCheckbox12" />
+        </label>
+      </li>
+    </ul>
+
+    <button
+      id="btnRutas"
+      type="button"
+      class="btn btn-primary"
+      style="right: 10px; z-index: 1020; position: absolute; margin-top: 20px"
+      data-bs-toggle="modal"
+      data-bs-target="#addNewCCModal"
+    >
+      <i class="fas fa-search me-2"> </i>Mostrar Rutas
+    </button>
 
     <div class="modal fade" id="addNewCCModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc modal-lg">
-          <div class="modal-content p-3 p-md-5">
-              <!-- <div id="controls"> -->
-              <div class="modal-body">
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div
+        class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc modal-lg"
+      >
+        <div class="modal-content p-3 p-md-5">
+          <!-- <div id="controls"> -->
+          <div class="modal-body">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
 
-                  <!--  FILTRO UNIDAD RUTAS SELECT --------------------------------------------------------------------------------- -->
-                  <div class="text-center mb-4 mt-4">
-                      <h3 class="mb-2">Filtrar Unidad de Transporte</h3>
-                  </div>
+            <!--  FILTRO UNIDAD RUTAS SELECT --------------------------------------------------------------------------------- -->
+            <div class="text-center mb-4 mt-4">
+              <h3 class="mb-2">Filtrar Unidad de Transporte</h3>
+            </div>
 
-                  <label>
-                    <input type="checkbox" id="checkboxSeleccionarTodoRutas" onchange="seleccionarTodoRutas()">
-                    Seleccionar Todo
-                  </label>
+            <label>
+              <input
+                type="checkbox"
+                id="checkboxSeleccionarTodoRutas"
+                onchange="seleccionarTodoRutas()"
+              />
+              Seleccionar Todo
+            </label>
 
-                  <form class="row g-3" onsubmit="return false">
-                      <div class="col-12 col-md-12">
-                          <label for="groupUnidad">Unidad: </label>
-                          <select id="groupUnidad" name="groupUnidad "class=" form-control" onchange="mostrarRutas()" multiple>
-                          </select>
-                      </div>
-                      <div class="col-12 col-md-6">
-                          <label for="DateInicio">Fecha inicio: </label>
-                          <input type="date" id="startDateInputRutas" name="trip-start" class="form-control"
-                              value="" />
-                      </div>
-                      <div class="col-12 col-md-6">
-                          <label for="DateFin">Fecha Final: </label>
-                          <input type="date" id="endDateInputRutas" name="trip-start" class="form-control"
-                              value="" onchange="filtrarFechasRutas()"/>
-                          <!-- <input type="date" id="DateFinal" name="trip-start" class="form-control" value=""/> -->
-                      </div>
-
-                      <div class="col-12 col-md-6">
-                          <label for="DateInicio">Hora inicio: </label>
-                          <input type="time" id="HoraInicioRutas" name="trip-start" class="form-control"
-                              value="" step="1" />
-                      </div>
-                      <div class="col-12 col-md-6">
-                          <label for="DateFin">Hora Final: </label>
-                          <input type="time" id="HoraFinalRutas" name="trip-start" class="form-control"
-                              value="" step="1" onchange="filtrarFechasRutas()" />
-                          <!-- <input type="date" id="DateFinal" name="trip-start" class="form-control" value=""/> -->
-                      </div>
-
-                  </form>
-
+            <form class="row g-3" onsubmit="return false">
+              <div class="col-12 col-md-12">
+                <label for="groupUnidad">Unidad: </label>
+                <select
+                  id="groupUnidad"
+                  name="groupUnidad "
+                  class="form-control"
+                  onchange="mostrarRutas()"
+                  multiple
+                ></select>
               </div>
-                  <button type="reset" class="btn btn-label-secondary btn-reset" data-bs-dismiss="modal"
-                      aria-label="Close">
-                      Volver
-                  </button>
+              <div class="col-12 col-md-6">
+                <label for="DateInicio">Fecha inicio: </label>
+                <input
+                  type="date"
+                  id="startDateInputRutas"
+                  name="trip-start"
+                  class="form-control"
+                  value=""
+                />
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="DateFin">Fecha Final: </label>
+                <input
+                  type="date"
+                  id="endDateInputRutas"
+                  name="trip-start"
+                  class="form-control"
+                  value=""
+                  onchange="filtrarFechasRutas()"
+                />
+                <!-- <input type="date" id="DateFinal" name="trip-start" class="form-control" value=""/> -->
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label for="DateInicio">Hora inicio: </label>
+                <input
+                  type="time"
+                  id="HoraInicioRutas"
+                  name="trip-start"
+                  class="form-control"
+                  value=""
+                  step="1"
+                />
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="DateFin">Hora Final: </label>
+                <input
+                  type="time"
+                  id="HoraFinalRutas"
+                  name="trip-start"
+                  class="form-control"
+                  value=""
+                  step="1"
+                  onchange="filtrarFechasRutas()"
+                />
+                <!-- <input type="date" id="DateFinal" name="trip-start" class="form-control" value=""/> -->
+              </div>
+            </form>
           </div>
+          <button
+            type="reset"
+            class="btn btn-label-secondary btn-reset"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            Volver
+          </button>
+        </div>
       </div>
     </div>
 
-    <div class="modal fade" id="addNewIncModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc modal-lg">
-          <div class="modal-content p-3 p-md-5">
-              <!-- <div id="controls"> -->
-              <div class="modal-body">
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div
+      class="modal fade"
+      id="addNewIncModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc modal-lg"
+      >
+        <div class="modal-content p-3 p-md-5">
+          <!-- <div id="controls"> -->
+          <div class="modal-body">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
 
-                  <!--  FILTRO UNIDAD RUTAS SELECT --------------------------------------------------------------------------------- -->
-                  <div class="text-center mb-4 mt-4">
-                      <h3 class="mb-2">Filtrar Incidencias</h3>
-                  </div>
+            <!--  FILTRO UNIDAD RUTAS SELECT --------------------------------------------------------------------------------- -->
+            <div class="text-center mb-4 mt-4">
+              <h3 class="mb-2">Filtrar Incidencias</h3>
+            </div>
 
-                  <label>
-                    <input type="checkbox" id="checkboxSeleccionarTodo" onchange="seleccionarTodo()">
-                    Seleccionar Todo
-                  </label>
+            <label>
+              <input
+                type="checkbox"
+                id="checkboxSeleccionarTodo"
+                onchange="seleccionarTodo()"
+              />
+              Seleccionar Todo
+            </label>
 
-                  <form class="row g-3" onsubmit="return false">
-                      <div class="col-12 col-md-12">
-                          <label for="group1">Jurisdiccion: </label>
-                          <select id="group1" name="group1 "class=" form-control" onchange="populateGroup2()" multiple>
-                          </select>
-                      </div>
-                      <div class="col-12 col-md-6">
-                          <label for="group2">Agrupacion: </label>
-                          <select id="group2" name="group2 "class=" form-control" onchange="populateGroup3()" multiple>
-                          </select>
-                      </div>
-                      <div class="col-12 col-md-6">
-                          <label for="group3">Clasificacion: </label>
-                          <select id="group3" name="group2 "class=" form-control" onchange="populateGroup4()" multiple>
-                          </select>
-                      </div>
-                      <div class="col-12 col-md-6">
-                        <label for="group4">Tipo de Caso: </label>
-                        <select id="group4" name="group2 "class=" form-control" onchange="getTipoCaso()" multiple>
-                        </select>
-                      </div>
-                      <div class="col-12 col-md-6">
-                        <label for="subTipoCaso">Sub Tipo de Caso: </label>
-                        <select id="subTipoCaso" name="group2 "class=" form-control" onchange="getSubTipoCaso()" multiple>
-                        </select>
-                      </div>
-                      <!-- <div class="col-12 col-md-6">
+            <form class="row g-3" onsubmit="return false">
+              <div class="col-12 col-md-12">
+                <label for="group1">Jurisdiccion: </label>
+                <select
+                  id="group1"
+                  name="group1 "
+                  class="form-control"
+                  onchange="populateGroup2()"
+                  multiple
+                ></select>
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="group2">Agrupacion: </label>
+                <select
+                  id="group2"
+                  name="group2 "
+                  class="form-control"
+                  onchange="populateGroup3()"
+                  multiple
+                ></select>
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="group3">Clasificacion: </label>
+                <select
+                  id="group3"
+                  name="group2 "
+                  class="form-control"
+                  onchange="populateGroup4()"
+                  multiple
+                ></select>
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="group4">Tipo de Caso: </label>
+                <select
+                  id="group4"
+                  name="group2 "
+                  class="form-control"
+                  onchange="getTipoCaso()"
+                  multiple
+                ></select>
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="subTipoCaso">Sub Tipo de Caso: </label>
+                <select
+                  id="subTipoCaso"
+                  name="group2 "
+                  class="form-control"
+                  onchange="getSubTipoCaso()"
+                  multiple
+                ></select>
+              </div>
+              <!-- <div class="col-12 col-md-6">
                           <label for="DateInicio">Fecha inicio: </label>
                           <input type="date" id="DateInicio" name="trip-start" class="form-control"
                               value="" onchange="getFechaRango()" />
@@ -518,29 +700,44 @@
                               value="" onchange="getFechaRango()"/>
                       </div> -->
 
-                      <div class="col-12 col-md-6">
-                          <label for="DateInicio">Hora inicio: </label>
-                          <input type="time" id="HoraInicio" name="trip-start" class="form-control"
-                              value="" step="1" />
-                      </div>
-                      <div class="col-12 col-md-6">
-                          <label for="DateFin">Hora Final: </label>
-                          <input type="time" id="HoraFinal" name="trip-start" class="form-control"
-                              value="" step="1" onchange="getHoraRango()" />
-                      </div>
-
-                  </form>
-
+              <div class="col-12 col-md-6">
+                <label for="DateInicio">Hora inicio: </label>
+                <input
+                  type="time"
+                  id="HoraInicio"
+                  name="trip-start"
+                  class="form-control"
+                  value=""
+                  step="1"
+                />
               </div>
-                  <button type="reset" class="btn btn-label-secondary btn-reset" data-bs-dismiss="modal"
-                      aria-label="Close">
-                      Volver
-                  </button>
+              <div class="col-12 col-md-6">
+                <label for="DateFin">Hora Final: </label>
+                <input
+                  type="time"
+                  id="HoraFinal"
+                  name="trip-start"
+                  class="form-control"
+                  value=""
+                  step="1"
+                  onchange="getHoraRango()"
+                />
+              </div>
+            </form>
           </div>
+          <button
+            type="reset"
+            class="btn btn-label-secondary btn-reset"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            Volver
+          </button>
+        </div>
       </div>
     </div>
-    
-    <div id="leyenda" style="display: none;">
+
+    <div id="leyenda" style="display: none">
       <h3>LEYENDA</h3>
       <!-- <div class="leyenda-item">
         <img
@@ -586,45 +783,30 @@
         <h5>PLANTADO DE POSTES: <span id="contadorMarcadores5"></span></h5>
       </div> -->
       <div class="leyenda-item">
-        <img
-          src="./camaras_sjl.png"
-          alt="Blue"
-        />
+        <img src="./camaras_sjl.png" alt="Blue" />
         <h5>PROYECTO CAMARAS: <span id="contadorMarcadores10"></span></h5>
       </div>
       <div class="leyenda-item">
-        <img
-          src="./camara_35s.png"
-          alt="Blue"
-        />
+        <img src="./camara_35s.png" alt="Blue" />
         <h5>CAMARAS ACTUALES: <span id="contadorMarcadores11"></span></h5>
       </div>
       <div class="leyenda-item">
-        <img
-          src="./camara_vecinal.png"
-          alt="Blue"
-        />
-        <h5>CAMARAS VECINALES: <span id="contadorMarcadores6"></span><span id="contadorMarcadores12"></span></h5>
+        <img src="./camara_vecinal.png" alt="Blue" />
+        <h5>
+          CAMARAS VECINALES: <span id="contadorMarcadores6"></span
+          ><span id="contadorMarcadores12"></span>
+        </h5>
       </div>
       <div class="leyenda-item">
-        <img
-          src="./basura.png"
-          alt="Blue"
-        />
+        <img src="./basura.png" alt="Blue" />
         <h5>PUNTOS DE BASURA: <span id="contadorMarcadores7"></span></h5>
       </div>
       <div class="leyenda-item">
-        <img
-          src="./mototaxi.png"
-          alt="Blue"
-        />
+        <img src="./mototaxi.png" alt="Blue" />
         <h5>PARADEROS DE TRANSPORTE: <span id="contadorMarcadores8"></span></h5>
       </div>
       <div class="leyenda-item">
-        <img
-          src="./paneles.png"
-          alt="Blue"
-        />
+        <img src="./paneles.png" alt="Blue" />
         <h5>PANELES MONUMENTALES: <span id="contadorMarcadores9"></span></h5>
       </div>
       <!-- Agrega más elementos de leyenda según tus necesidades -->
@@ -634,21 +816,43 @@
     <button id="toggle-containers-1">Filtro de Camaras</button>
     <button id="toggle-containers-2">Mostrar/Ocultar Leyenda</button>
 
+    <button
+      id="toggle-controls"
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#addNewIncModal"
+    >
+      Mostrar Incidencias
+    </button>
 
-    <button id="toggle-controls" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewIncModal">Mostrar Incidencias</button>
+    <input
+      type="date"
+      id="DateInicio"
+      name="trip-start"
+      class="form-control toggle-controls-fecha"
+      value=""
+      onchange="getFechaRango()"
+    />
 
-    <input type="date" id="DateInicio" name="trip-start" class="form-control toggle-controls-fecha"
-                              value="" onchange="getFechaRango()" />
-
-    <input type="date" id="DateFinal" name="trip-start" class="form-control toggle-controls-fecha-2"
-                              value="" onchange="getFechaRango()"/>
+    <input
+      type="date"
+      id="DateFinal"
+      name="trip-start"
+      class="form-control toggle-controls-fecha-2"
+      value=""
+      onchange="getFechaRango()"
+    />
 
     <div id="controls">
       <label>
-        <input type="checkbox" id="checkboxSeleccionarTodo" onchange="seleccionarTodo()">
+        <input
+          type="checkbox"
+          id="checkboxSeleccionarTodo"
+          onchange="seleccionarTodo()"
+        />
         Seleccionar Todo
       </label>
-      
+
       <label for="group1">Jurisdiccion: </label>
       <select id="group1" multiple onchange="populateGroup2()">
         <!-- Las opciones se llenarán dinámicamente -->
@@ -673,76 +877,88 @@
       <select id="subTipoCaso" multiple onchange="getSubTipoCaso()">
         <!-- Las opciones se llenarán dinámicamente -->
       </select>
-      <button id="export-btn" style="display: none;">Exportar a Excel Puntos Generados</button>
-      <label for="" id="contMarcadores" style="display: none;">Camaras:</label>
-      <input type="file" id="fileInput" accept=".xlsx, .xls" style="display: none;" />
+      <button id="export-btn" style="display: none">
+        Exportar a Excel Puntos Generados
+      </button>
+      <label for="" id="contMarcadores" style="display: none">Camaras:</label>
+      <input
+        type="file"
+        id="fileInput"
+        accept=".xlsx, .xls"
+        style="display: none"
+      />
     </div>
     <div id="map"></div>
 
     <div id="coordinates">Latitud: 0.0, Longitud: 0.0</div>
 
     <script>
-
-      document.getElementById('toggle-containers').addEventListener('click', function() {
-          var containers = document.querySelectorAll('#controls');
-          containers.forEach(function(container) {
-              if (container.style.display === 'block') {
-                  container.style.display = 'none';
-              } else {
-                  container.style.display = 'block';
-              }
+      document
+        .getElementById("toggle-containers")
+        .addEventListener("click", function () {
+          var containers = document.querySelectorAll("#controls");
+          containers.forEach(function (container) {
+            if (container.style.display === "block") {
+              container.style.display = "none";
+            } else {
+              container.style.display = "block";
+            }
           });
-      });
+        });
 
-      document.getElementById('toggle-containers-1').addEventListener('click', function() {
-          var containers = document.querySelectorAll('#contenedor-checkboxes');
-          containers.forEach(function(container) {
-              if (container.style.display === 'block') {
-                  container.style.display = 'none';
-              } else {
-                  container.style.display = 'block';
-              }
+      document
+        .getElementById("toggle-containers-1")
+        .addEventListener("click", function () {
+          var containers = document.querySelectorAll("#contenedor-checkboxes");
+          containers.forEach(function (container) {
+            if (container.style.display === "block") {
+              container.style.display = "none";
+            } else {
+              container.style.display = "block";
+            }
           });
-      });
+        });
 
-      document.getElementById('toggle-containers-2').addEventListener('click', function() {
-          var containers = document.querySelectorAll('#leyenda');
-          containers.forEach(function(container) {
-              if (container.style.display === 'block') {
-                  container.style.display = 'none';
-              } else {
-                  container.style.display = 'block';
-              }
+      document
+        .getElementById("toggle-containers-2")
+        .addEventListener("click", function () {
+          var containers = document.querySelectorAll("#leyenda");
+          containers.forEach(function (container) {
+            if (container.style.display === "block") {
+              container.style.display = "none";
+            } else {
+              container.style.display = "block";
+            }
           });
-      });
+        });
 
       function seleccionarTodo() {
-      // Obtén el estado del checkbox
-      var checkbox = document.getElementById('checkboxSeleccionarTodo');
-      var estadoCheckbox = checkbox.checked;
+        // Obtén el estado del checkbox
+        var checkbox = document.getElementById("checkboxSeleccionarTodo");
+        var estadoCheckbox = checkbox.checked;
 
-      // Obtén el elemento select múltiple
-      var selectMultiple = document.getElementById('group1');
+        // Obtén el elemento select múltiple
+        var selectMultiple = document.getElementById("group1");
 
-      // Recorre todas las opciones y establece su estado según el checkbox
-      for (var i = 0; i < selectMultiple.options.length; i++) {
-        selectMultiple.options[i].selected = estadoCheckbox;
+        // Recorre todas las opciones y establece su estado según el checkbox
+        for (var i = 0; i < selectMultiple.options.length; i++) {
+          selectMultiple.options[i].selected = estadoCheckbox;
+        }
       }
-    }
 
-    function seleccionarTodoRutas() {
-      // Obtén el estado del checkbox
-      var checkbox = document.getElementById('checkboxSeleccionarTodoRutas');
-      var estadoCheckbox = checkbox.checked;
+      function seleccionarTodoRutas() {
+        // Obtén el estado del checkbox
+        var checkbox = document.getElementById("checkboxSeleccionarTodoRutas");
+        var estadoCheckbox = checkbox.checked;
 
-      // Obtén el elemento select múltiple
-      var selectMultiple = document.getElementById('groupUnidad');
+        // Obtén el elemento select múltiple
+        var selectMultiple = document.getElementById("groupUnidad");
 
-      // Recorre todas las opciones y establece su estado según el checkbox
-      for (var i = 0; i < selectMultiple.options.length; i++) {
-        selectMultiple.options[i].selected = estadoCheckbox;
+        // Recorre todas las opciones y establece su estado según el checkbox
+        for (var i = 0; i < selectMultiple.options.length; i++) {
+          selectMultiple.options[i].selected = estadoCheckbox;
+        }
       }
-    }
 
       let polygon;
       var csvPath = "/Zarate.csv";
@@ -761,8 +977,6 @@
       var polygonColor6 = "red"; // Color del polígono
       var polygonColor7 = "gray"; // Color del polígono
       var polygonColor8 = "brown"; // Color del polígono
-
-      
 
       document
         .getElementById("toggle-controls")
@@ -794,8 +1008,8 @@
       var marcadoresLayer = L.layerGroup().addTo(map);
       var contadorMarcadores = 0;
       //const url = "./map.json";
-      const url = "./incidencias_18_03_2024.json";
-      const urlRutas = './data_rutas.json';
+      const url = "./incidencias_21_03_2024.json";
+      const urlRutas = "./data_rutas.json";
       let dataJSON_Unidades;
       let dataJSON;
       let heatLayer;
@@ -803,525 +1017,605 @@
       let markers;
 
       var customIcon = L.icon({
-          iconUrl: './camara.png',
-          iconSize: [32, 32], // Tamaño de la imagen
-          iconAnchor: [16, 32], // Punto en el que la imagen debe estar centrada en las coordenadas del marcador
-          popupAnchor: [0, -32] // Punto desde el que se abre el popup relativo al icono
+        iconUrl: "./camara.png",
+        iconSize: [32, 32], // Tamaño de la imagen
+        iconAnchor: [16, 32], // Punto en el que la imagen debe estar centrada en las coordenadas del marcador
+        popupAnchor: [0, -32], // Punto desde el que se abre el popup relativo al icono
       });
 
-        // Agregar el evento 'click' al mapa
-        // map.on('click', function (e) {
-        //     // Obtener las coordenadas del clic
-        //     var latitud = e.latlng.lat.toFixed(6);
-        //     var longitud = e.latlng.lng.toFixed(6);
+      // Agregar el evento 'click' al mapa
+      // map.on('click', function (e) {
+      //     // Obtener las coordenadas del clic
+      //     var latitud = e.latlng.lat.toFixed(6);
+      //     var longitud = e.latlng.lng.toFixed(6);
 
-        //     // Mostrar las coordenadas en la consola (puedes quitar esto en la versión final)
-        //     console.log("Latitud: " + latitud + ", Longitud: " + longitud);
+      //     // Mostrar las coordenadas en la consola (puedes quitar esto en la versión final)
+      //     console.log("Latitud: " + latitud + ", Longitud: " + longitud);
 
-        //     // Agregar las coordenadas a la lista
-        //     coordenadas.push({ latitud: latitud, longitud: longitud });
+      //     // Agregar las coordenadas a la lista
+      //     coordenadas.push({ latitud: latitud, longitud: longitud });
 
-        //     // Crear un nuevo marcador en la ubicación clicada
-        //     var marcador = L.marker(e.latlng, {icon: customIcon}).addTo(marcadoresLayer);
+      //     // Crear un nuevo marcador en la ubicación clicada
+      //     var marcador = L.marker(e.latlng, {icon: customIcon}).addTo(marcadoresLayer);
 
-        //     contadorMarcadores++;
+      //     contadorMarcadores++;
 
-        //     // Añadir evento para eliminar el marcador al clic o doble clic en él
-        //     marcador.on('click', function() {
-        //         // Remover el marcador del mapa
-        //         map.removeLayer(marcador);
-        //         contadorMarcadores--;
+      //     // Añadir evento para eliminar el marcador al clic o doble clic en él
+      //     marcador.on('click', function() {
+      //         // Remover el marcador del mapa
+      //         map.removeLayer(marcador);
+      //         contadorMarcadores--;
 
-        //         document.getElementById('contMarcadores').innerText = "Número de marcadores: " + contadorMarcadores;
+      //         document.getElementById('contMarcadores').innerText = "Número de marcadores: " + contadorMarcadores;
 
-        //         // Encontrar y eliminar las coordenadas correspondientes del array
-        //         coordenadas = coordenadas.filter(function(coordenada) {
-        //             return coordenada.latitud != latitud || coordenada.longitud != longitud;
-        //         });
+      //         // Encontrar y eliminar las coordenadas correspondientes del array
+      //         coordenadas = coordenadas.filter(function(coordenada) {
+      //             return coordenada.latitud != latitud || coordenada.longitud != longitud;
+      //         });
 
-        //         // Mostrar las coordenadas actualizadas en la consola (puedes quitar esto en la versión final)
-        //         console.log("Coordenadas actualizadas:", coordenadas);
+      //         // Mostrar las coordenadas actualizadas en la consola (puedes quitar esto en la versión final)
+      //         console.log("Coordenadas actualizadas:", coordenadas);
 
-                
-        //     });
+      //     });
 
-        //     document.getElementById('contMarcadores').innerText = "Número de marcadores: " + contadorMarcadores;
-        // });
+      //     document.getElementById('contMarcadores').innerText = "Número de marcadores: " + contadorMarcadores;
+      // });
 
-        document.getElementById('fileInput').addEventListener('change', function(e) {
+      document
+        .getElementById("fileInput")
+        .addEventListener("change", function (e) {
           var file = e.target.files[0];
-          
+
           var reader = new FileReader();
-          
-          reader.onload = function(e) {
-              var data = new Uint8Array(e.target.result);
-              var workbook = XLSX.read(data, {type: 'array'});
-              
-              // Suponiendo que las coordenadas están en la primera hoja del archivo Excel
-              var sheetName = workbook.SheetNames[0];
-              var worksheet = workbook.Sheets[sheetName];
-              
-              // Convertir el contenido de la hoja Excel a un array de objetos
-              var excelData = XLSX.utils.sheet_to_json(worksheet);
-              
-              // Iterar sobre cada fila de datos
-              excelData.forEach(function(row) {
-                  // Suponiendo que las columnas de latitud y longitud se llaman 'Latitud' y 'Longitud'
-                  var latitud = parseFloat(row['latitud']);
-                  var longitud = parseFloat(row['longitud']);
-                  
-                  // Agregar las coordenadas al array coordenadas
-                  coordenadas.push({ latitud: latitud, longitud: longitud });
-                  
-                  // Crear un marcador en el mapa con las coordenadas
-                  var marcador = L.marker([latitud, longitud], {icon: customIcon}).addTo(marcadoresLayer);
 
-                  marcador.on('click', function() {
-                      // Remover el marcador del mapa
-                      map.removeLayer(marcador);
-                      contadorMarcadores--;
+          reader.onload = function (e) {
+            var data = new Uint8Array(e.target.result);
+            var workbook = XLSX.read(data, { type: "array" });
 
-                      document.getElementById('contMarcadores').innerText = "Número de marcadores: " + contadorMarcadores;
+            // Suponiendo que las coordenadas están en la primera hoja del archivo Excel
+            var sheetName = workbook.SheetNames[0];
+            var worksheet = workbook.Sheets[sheetName];
 
-                      // Encontrar y eliminar las coordenadas correspondientes del array
-                      coordenadas = coordenadas.filter(function(coordenada) {
-                          return coordenada.latitud != latitud || coordenada.longitud != longitud;
-                      });
+            // Convertir el contenido de la hoja Excel a un array de objetos
+            var excelData = XLSX.utils.sheet_to_json(worksheet);
 
-                      // Mostrar las coordenadas actualizadas en la consola (puedes quitar esto en la versión final)
-                      console.log("Coordenadas actualizadas:", coordenadas);
+            // Iterar sobre cada fila de datos
+            excelData.forEach(function (row) {
+              // Suponiendo que las columnas de latitud y longitud se llaman 'Latitud' y 'Longitud'
+              var latitud = parseFloat(row["latitud"]);
+              var longitud = parseFloat(row["longitud"]);
 
-                      
-                  });
-              });
-              
-              // Actualizar el contador de marcadores
-              contadorMarcadores = coordenadas.length;
-              document.getElementById('contMarcadores').innerText = "Número de marcadores: " + contadorMarcadores;
-          };
-          
-          reader.readAsArrayBuffer(file);
-      });
+              // Agregar las coordenadas al array coordenadas
+              coordenadas.push({ latitud: latitud, longitud: longitud });
 
-        async function cargarCSVyCrearPoligono(url) {
-            const response = await fetch(url);
-            const data = await response.text();
-            const lines = data.split('\n').slice(1); // Elimina el encabezado
-            let coords = lines.map(line => {
-                const [lat, lng] = line.split(';').map(Number);
-                return [lng, lat]; // Turf.js utiliza [longitud, latitud]
-            });
+              // Crear un marcador en el mapa con las coordenadas
+              var marcador = L.marker([latitud, longitud], {
+                icon: customIcon,
+              }).addTo(marcadoresLayer);
 
-            // Asegúrate de que el polígono esté cerrado
-            if (coords.length > 0 && (coords[0][0] !== coords[coords.length - 1][0] || coords[0][1] !== coords[coords.length - 1][1])) {
-                coords.push(coords[0]); // Añade la primera coordenada al final para cerrar el polígono
-            }
-
-            // Crea un polígono GeoJSON
-            return turf.polygon([coords]);
-        }
-
-        var capasMapa = {
-            marcadores: [],
-            polilíneas: []
-        };
-
-        function limpiarCapas() {
-            // Eliminar marcadores
-            capasMapa.marcadores.forEach(function(marcador) {
+              marcador.on("click", function () {
+                // Remover el marcador del mapa
                 map.removeLayer(marcador);
-            });
-            capasMapa.marcadores = []; // Limpiar la lista de marcadores
+                contadorMarcadores--;
 
-            // Eliminar polilíneas
-            capasMapa.polilíneas.forEach(function(polilínea) {
-                map.removeLayer(polilínea);
+                document.getElementById("contMarcadores").innerText =
+                  "Número de marcadores: " + contadorMarcadores;
+
+                // Encontrar y eliminar las coordenadas correspondientes del array
+                coordenadas = coordenadas.filter(function (coordenada) {
+                  return (
+                    coordenada.latitud != latitud ||
+                    coordenada.longitud != longitud
+                  );
+                });
+
+                // Mostrar las coordenadas actualizadas en la consola (puedes quitar esto en la versión final)
+                console.log("Coordenadas actualizadas:", coordenadas);
+              });
             });
-            capasMapa.polilíneas = []; // Limpiar la lista de polilíneas
+
+            // Actualizar el contador de marcadores
+            contadorMarcadores = coordenadas.length;
+            document.getElementById("contMarcadores").innerText =
+              "Número de marcadores: " + contadorMarcadores;
+          };
+
+          reader.readAsArrayBuffer(file);
+        });
+
+      async function cargarCSVyCrearPoligono(url) {
+        const response = await fetch(url);
+        const data = await response.text();
+        const lines = data.split("\n").slice(1); // Elimina el encabezado
+        let coords = lines.map((line) => {
+          const [lat, lng] = line.split(";").map(Number);
+          return [lng, lat]; // Turf.js utiliza [longitud, latitud]
+        });
+
+        // Asegúrate de que el polígono esté cerrado
+        if (
+          coords.length > 0 &&
+          (coords[0][0] !== coords[coords.length - 1][0] ||
+            coords[0][1] !== coords[coords.length - 1][1])
+        ) {
+          coords.push(coords[0]); // Añade la primera coordenada al final para cerrar el polígono
         }
 
-        fetch(urlRutas)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error al cargar el archivo JSON');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Aquí manejas la respuesta. 'data' contiene los datos del archivo JSON
+        // Crea un polígono GeoJSON
+        return turf.polygon([coords]);
+      }
 
-                // Resto del código sigue igual
-                dataJSON_Unidades = data;
+      var capasMapa = {
+        marcadores: [],
+        polilíneas: [],
+      };
 
-                // Llenar group1Select con opciones
-                const group1Select = document.getElementById("groupUnidad");
-                const arrayGroup1 = [];
-                dataJSON_Unidades.forEach(element => {
-                    arrayGroup1.push(element["Unidad"]);
-                });
-                const arrayGroup1Unique = [...new Set(arrayGroup1)];
-                arrayGroup1Unique.forEach(element => {
-                    const option = document.createElement("option");
-                    option.value = element;
-                    option.text = element;
-                    group1Select.appendChild(option);
-                });
+      function limpiarCapas() {
+        // Eliminar marcadores
+        capasMapa.marcadores.forEach(function (marcador) {
+          map.removeLayer(marcador);
+        });
+        capasMapa.marcadores = []; // Limpiar la lista de marcadores
 
-                // Inicializar el grupo de marcadores
-                markers = L.markerClusterGroup();
-                map.addLayer(markers);
-            })
-            .catch(error => {
-                // Aquí manejas los errores de la carga del archivo JSON
-                console.error("Error al cargar el archivo JSON: ", error);
+        // Eliminar polilíneas
+        capasMapa.polilíneas.forEach(function (polilínea) {
+          map.removeLayer(polilínea);
+        });
+        capasMapa.polilíneas = []; // Limpiar la lista de polilíneas
+      }
+
+      fetch(urlRutas)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Error al cargar el archivo JSON");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // Aquí manejas la respuesta. 'data' contiene los datos del archivo JSON
+
+          // Resto del código sigue igual
+          dataJSON_Unidades = data;
+
+          // Llenar group1Select con opciones
+          const group1Select = document.getElementById("groupUnidad");
+          const arrayGroup1 = [];
+          dataJSON_Unidades.forEach((element) => {
+            arrayGroup1.push(element["Unidad"]);
+          });
+          const arrayGroup1Unique = [...new Set(arrayGroup1)];
+          arrayGroup1Unique.forEach((element) => {
+            const option = document.createElement("option");
+            option.value = element;
+            option.text = element;
+            group1Select.appendChild(option);
           });
 
+          // Inicializar el grupo de marcadores
+          markers = L.markerClusterGroup();
+          map.addLayer(markers);
+        })
+        .catch((error) => {
+          // Aquí manejas los errores de la carga del archivo JSON
+          console.error("Error al cargar el archivo JSON: ", error);
+        });
 
-          let dataJSON_Rutas = []; // Inicializar como un array vacío
+      let dataJSON_Rutas = []; // Inicializar como un array vacío
 
-          function mostrarRutas() {
-            const unidadSelect = document.getElementById("groupUnidad");
-            const selectedOptions = Array.from(unidadSelect.selectedOptions);
-            const unidadesSeleccionadas = selectedOptions.map(option => option.value);
+      function mostrarRutas() {
+        const unidadSelect = document.getElementById("groupUnidad");
+        const selectedOptions = Array.from(unidadSelect.selectedOptions);
+        const unidadesSeleccionadas = selectedOptions.map(
+          (option) => option.value
+        );
 
-            const fechaInicio = new Date(document.getElementById("startDateInputRutas").value);
-            const fechaFin = new Date(document.getElementById("endDateInputRutas").value);
-            const horaInicio = document.getElementById("HoraInicioRutas").value;
-            const horaFin = document.getElementById("HoraFinalRutas").value;
+        const fechaInicio = new Date(
+          document.getElementById("startDateInputRutas").value
+        );
+        const fechaFin = new Date(
+          document.getElementById("endDateInputRutas").value
+        );
+        const horaInicio = document.getElementById("HoraInicioRutas").value;
+        const horaFin = document.getElementById("HoraFinalRutas").value;
 
-            // Limpiar capas antiguas antes de hacer la petición
-            limpiarCapas();
+        // Limpiar capas antiguas antes de hacer la petición
+        limpiarCapas();
 
-            // Array para almacenar los datos de todas las unidades seleccionadas
-            const datosUnidades = [];
+        // Array para almacenar los datos de todas las unidades seleccionadas
+        const datosUnidades = [];
 
-            // Contador para llevar el control de las peticiones completadas
-            let peticionesCompletadas = 0;
+        // Contador para llevar el control de las peticiones completadas
+        let peticionesCompletadas = 0;
 
-            unidadesSeleccionadas.forEach(function(valorUnidad) {
-                // Utilizar el archivo local directamente sin necesidad de una URL completa
-                const url = urlRutas;  // Ajusta la ruta según la ubicación exacta de tu archivo JSON
+        unidadesSeleccionadas.forEach(function (valorUnidad) {
+          // Utilizar el archivo local directamente sin necesidad de una URL completa
+          const url = urlRutas; // Ajusta la ruta según la ubicación exacta de tu archivo JSON
 
-                fetch(url)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Error al cargar el archivo JSON');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
+          fetch(url)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Error al cargar el archivo JSON");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              // Filtrar las rutas solo para la unidad seleccionada
+              const rutasUnidad = data.filter(
+                (item) => item.Unidad === valorUnidad
+              );
 
-                        // Filtrar las rutas solo para la unidad seleccionada
-                        const rutasUnidad = data.filter(item => item.Unidad === valorUnidad);
+              // Filtrar las rutas según las fechas y horas seleccionadas
+              // const rutasFiltradas = rutasUnidad.filter(function(item) {
+              //     const fechaItem = new Date(item.Fecha);
+              //     const horaItem = new Date("1970-01-01T" + item.Hora); // Combinar con una fecha fija para obtener un objeto Date completo
+              //     return fechaItem >= fechaInicio && fechaItem <= fechaFin && horaItem >= horaInicio && horaItem <= horaFin;
+              // });
 
-                        // Filtrar las rutas según las fechas y horas seleccionadas
-                        // const rutasFiltradas = rutasUnidad.filter(function(item) {
-                        //     const fechaItem = new Date(item.Fecha);
-                        //     const horaItem = new Date("1970-01-01T" + item.Hora); // Combinar con una fecha fija para obtener un objeto Date completo
-                        //     return fechaItem >= fechaInicio && fechaItem <= fechaFin && horaItem >= horaInicio && horaItem <= horaFin;
-                        // });
+              datosUnidades.push(rutasUnidad); // Agregar los datos filtrados al array
+              peticionesCompletadas++;
 
-                        datosUnidades.push(rutasUnidad); // Agregar los datos filtrados al array
-                        peticionesCompletadas++;
-
-                        // Verificar si todas las peticiones se han completado
-                        if (peticionesCompletadas === unidadesSeleccionadas.length) {
-                            // Combinar los datos de todas las unidades
-                            dataJSON_Rutas = datosUnidades.flat();
-
-                            // Mostrar las rutas filtradas en el mapa
-                            console.log("Rutas filtradas:", rutasUnidad);
-                            mostrarRutasEnMapa(dataJSON_Rutas);
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error al cargar el archivo JSON: ", error);
-                    });
-            });
-        }
-
-
-          function mostrarRutasEnMapa(rutas) {
-            // Limpiar polilíneas antiguas
-            if (capasMapa.polilinea) {
-                map.removeLayer(capasMapa.polilinea);
-            }
-
-            // Verificar si hay coordenadas válidas para la polilínea
-            const polylinePoints = rutas.map(function(item) {
-                return [parseFloat(item.Latitud), parseFloat(item.Longitud)];
-            });
-
-            console.log("Coordenadas extraídas:", polylinePoints); // Agregado para imprimir coordenadas en la consola
-
-            if (polylinePoints.length === 0) {
-                console.error("Error: No hay coordenadas válidas para la polilínea.");
-                return;
-            }
-
-            // Crear la polilínea con los puntos almacenados
-            const polyline = L.polyline(polylinePoints, {
-                color: '#0C3978',
-                opacity: 0.75,
-                weight: 3.5
-            }).addTo(map);
-
-            capasMapa.polilinea = polyline;
-
-            // Ajustar los límites del mapa solo si hay coordenadas válidas
-            map.fitBounds(polyline.getBounds());
-        }
-
-        function filtrarFechasRutas() {
-            const startDate = new Date(document.getElementById('startDateInputRutas').value);
-            const endDate = new Date(document.getElementById('endDateInputRutas').value);
-            const horaInicio = document.getElementById("HoraInicioRutas").value;
-            const horaFin = document.getElementById("HoraFinalRutas").value;
-
-            if (dataJSON_Rutas && dataJSON_Rutas.length > 0) {
-                // Convertir horas de inicio y fin a segundos para comparación
-                const horaInicioSegundos = convertirAHorasSegundos(horaInicio);
-                const horaFinSegundos = convertirAHorasSegundos(horaFin);
-
-                // Filtrar las rutas según las fechas y horas seleccionadas
-                const rutasFiltradas = dataJSON_Rutas.filter(function(item) {
-                    const itemDate = new Date(item.Fecha);
-                    const itemTime = convertirAHorasSegundos(item.Hora);
-                    return itemDate >= startDate && itemDate <= endDate && itemTime >= horaInicioSegundos && itemTime <= horaFinSegundos;
-                });
-
-                if (rutasFiltradas.length === 0) {
-                    console.error("No hay rutas para mostrar dentro del rango de fechas y horas seleccionado.");
-                    limpiarCapas();
-                    return;
-                }
+              // Verificar si todas las peticiones se han completado
+              if (peticionesCompletadas === unidadesSeleccionadas.length) {
+                // Combinar los datos de todas las unidades
+                dataJSON_Rutas = datosUnidades.flat();
 
                 // Mostrar las rutas filtradas en el mapa
-                mostrarRutasEnMapa(rutasFiltradas);
-            } else {
-                console.error("Error: dataJSON_Rutas no está definida o es un array vacío.");
-            }
+                console.log("Rutas filtradas:", rutasUnidad);
+                mostrarRutasEnMapa(dataJSON_Rutas);
+              }
+            })
+            .catch((error) => {
+              console.error("Error al cargar el archivo JSON: ", error);
+            });
+        });
+      }
+
+      function mostrarRutasEnMapa(rutas) {
+        // Limpiar polilíneas antiguas
+        if (capasMapa.polilinea) {
+          map.removeLayer(capasMapa.polilinea);
         }
 
-        function convertirAHorasSegundos(hora) {
-            const partesHora = hora.split(":");
-            const horas = parseInt(partesHora[0]);
-            const minutos = parseInt(partesHora[1]);
-            const segundos = partesHora.length > 2 ? parseInt(partesHora[2]) : 0; // Si hay segundos en la hora, convertirlos también
+        // Verificar si hay coordenadas válidas para la polilínea
+        const polylinePoints = rutas.map(function (item) {
+          return [parseFloat(item.Latitud), parseFloat(item.Longitud)];
+        });
 
-            return horas * 3600 + minutos * 60 + segundos;
+        console.log("Coordenadas extraídas:", polylinePoints); // Agregado para imprimir coordenadas en la consola
+
+        if (polylinePoints.length === 0) {
+          console.error("Error: No hay coordenadas válidas para la polilínea.");
+          return;
         }
+
+        // Crear la polilínea con los puntos almacenados
+        const polyline = L.polyline(polylinePoints, {
+          color: "#0C3978",
+          opacity: 0.75,
+          weight: 3.5,
+        }).addTo(map);
+
+        capasMapa.polilinea = polyline;
+
+        // Ajustar los límites del mapa solo si hay coordenadas válidas
+        map.fitBounds(polyline.getBounds());
+      }
+
+      function filtrarFechasRutas() {
+        const startDate = new Date(
+          document.getElementById("startDateInputRutas").value
+        );
+        const endDate = new Date(
+          document.getElementById("endDateInputRutas").value
+        );
+        const horaInicio = document.getElementById("HoraInicioRutas").value;
+        const horaFin = document.getElementById("HoraFinalRutas").value;
+
+        if (dataJSON_Rutas && dataJSON_Rutas.length > 0) {
+          // Convertir horas de inicio y fin a segundos para comparación
+          const horaInicioSegundos = convertirAHorasSegundos(horaInicio);
+          const horaFinSegundos = convertirAHorasSegundos(horaFin);
+
+          // Filtrar las rutas según las fechas y horas seleccionadas
+          const rutasFiltradas = dataJSON_Rutas.filter(function (item) {
+            const itemDate = new Date(item.Fecha);
+            const itemTime = convertirAHorasSegundos(item.Hora);
+            return (
+              itemDate >= startDate &&
+              itemDate <= endDate &&
+              itemTime >= horaInicioSegundos &&
+              itemTime <= horaFinSegundos
+            );
+          });
+
+          if (rutasFiltradas.length === 0) {
+            console.error(
+              "No hay rutas para mostrar dentro del rango de fechas y horas seleccionado."
+            );
+            limpiarCapas();
+            return;
+          }
+
+          // Mostrar las rutas filtradas en el mapa
+          mostrarRutasEnMapa(rutasFiltradas);
+        } else {
+          console.error(
+            "Error: dataJSON_Rutas no está definida o es un array vacío."
+          );
+        }
+      }
+
+      function convertirAHorasSegundos(hora) {
+        const partesHora = hora.split(":");
+        const horas = parseInt(partesHora[0]);
+        const minutos = parseInt(partesHora[1]);
+        const segundos = partesHora.length > 2 ? parseInt(partesHora[2]) : 0; // Si hay segundos en la hora, convertirlos también
+
+        return horas * 3600 + minutos * 60 + segundos;
+      }
 
       function getHoraRango() {
-            clearMap();
-            const csvUrl = './areaasjl.csv';
-            cargarCSVyCrearPoligono(csvUrl).then(geoJsonPolygon => {
-            const group1Select = document.getElementById("group1");
-            const group2Select = document.getElementById("group2");
-            const group3Select = document.getElementById("group3");
-            const group4Select = document.getElementById("group4");
-            const subTipoCasoSelect = document.getElementById("subTipoCaso");
-            const fechaSelect = document.getElementById("DateInicio"); // Agrega el elemento de fecha
-            const fechaSelectFin = document.getElementById("DateFinal"); // Agrega el elemento de fecha
-            const horaSelect = document.getElementById("HoraInicio"); // Agrega el elemento de fecha
-            const horaSelectFin = document.getElementById("HoraFinal"); // Agrega el elemento de fecha
-            // const horaSelect = document.getElementById("hora");
-            datosFiltrados = [];
-            const markers = [];
-            const clickHandler = (lat, lon, content) => {
-              const marker = L.marker([lat, lon]);
-              marker.bindPopup(content).openPopup();
-              markers.push(marker);
-            };
-            // Customize this logic based on your data
-            const selectedGroup1Values = Array.from(group1Select.selectedOptions).map(option => option.value);
-            const selectedGroup2Values = Array.from(group2Select.selectedOptions).map(option => option.value);
-            const selectedGroup3Values = Array.from(group3Select.selectedOptions).map(option => option.value);
-            const selectedGroup4Values = Array.from(group4Select.selectedOptions).map(option => option.value);
-            const selectedTipoCasoValues = Array.from(subTipoCasoSelect.selectedOptions).map(option => option.value);
+        clearMap();
+        const csvUrl = "./areaasjl.csv";
+        cargarCSVyCrearPoligono(csvUrl).then((geoJsonPolygon) => {
+          const group1Select = document.getElementById("group1");
+          const group2Select = document.getElementById("group2");
+          const group3Select = document.getElementById("group3");
+          const group4Select = document.getElementById("group4");
+          const subTipoCasoSelect = document.getElementById("subTipoCaso");
+          const fechaSelect = document.getElementById("DateInicio"); // Agrega el elemento de fecha
+          const fechaSelectFin = document.getElementById("DateFinal"); // Agrega el elemento de fecha
+          const horaSelect = document.getElementById("HoraInicio"); // Agrega el elemento de fecha
+          const horaSelectFin = document.getElementById("HoraFinal"); // Agrega el elemento de fecha
+          // const horaSelect = document.getElementById("hora");
+          datosFiltrados = [];
+          const markers = [];
+          const clickHandler = (lat, lon, content) => {
+            const marker = L.marker([lat, lon]);
+            marker.bindPopup(content).openPopup();
+            markers.push(marker);
+          };
+          // Customize this logic based on your data
+          const selectedGroup1Values = Array.from(
+            group1Select.selectedOptions
+          ).map((option) => option.value);
+          const selectedGroup2Values = Array.from(
+            group2Select.selectedOptions
+          ).map((option) => option.value);
+          const selectedGroup3Values = Array.from(
+            group3Select.selectedOptions
+          ).map((option) => option.value);
+          const selectedGroup4Values = Array.from(
+            group4Select.selectedOptions
+          ).map((option) => option.value);
+          const selectedTipoCasoValues = Array.from(
+            subTipoCasoSelect.selectedOptions
+          ).map((option) => option.value);
 
-            const selectedFechaInicio = fechaSelect.value;
-            const selectedFechaFin = fechaSelectFin.value; // Obtén la fecha seleccionada
-            const selectedHoraInicio = horaSelect.value; // Obtén la fecha seleccionada
-            const selectedHoraFin = horaSelectFin.value; // Obtén la fecha seleccionada
-            // const selectedHora = horaSelect.value;
-            circleMarkersLayer = new L.LayerGroup();
-            map.addLayer(circleMarkersLayer);
-            console.log(selectedHoraInicio)
+          const selectedFechaInicio = fechaSelect.value;
+          const selectedFechaFin = fechaSelectFin.value; // Obtén la fecha seleccionada
+          const selectedHoraInicio = horaSelect.value; // Obtén la fecha seleccionada
+          const selectedHoraFin = horaSelectFin.value; // Obtén la fecha seleccionada
+          // const selectedHora = horaSelect.value;
+          circleMarkersLayer = new L.LayerGroup();
+          map.addLayer(circleMarkersLayer);
+          console.log(selectedHoraInicio);
 
-            dataJSON.forEach(element => {
-                // Filter based on selected values
-                if (
-                    (selectedGroup1Values.length === 0 || selectedGroup1Values.includes(element["Comisaria"])) &&
-                    (selectedGroup2Values.length === 0 || selectedGroup2Values.includes(element["Agrupacion"])) &&
-                    (selectedGroup3Values.length === 0 || selectedGroup3Values.includes(element["Nueva Clasificacion"])) &&
-                    (selectedGroup4Values.length === 0 || selectedGroup4Values.includes(element["Tipo de Caso"])) &&
-                    // (selectedTipoCasoValues.length === 0 || selectedTipoCasoValues.includes(element["Sub Tipo de Caso"]))&&
-                    filtrarPorRangoDeFechas(element, selectedFechaInicio, selectedFechaFin) &&
-                    filtrarPorRangoDeHoras(element, selectedHoraInicio, selectedHoraFin)
+          dataJSON.forEach((element) => {
+            // Filter based on selected values
+            if (
+              (selectedGroup1Values.length === 0 ||
+                selectedGroup1Values.includes(element["Comisaria"])) &&
+              (selectedGroup2Values.length === 0 ||
+                selectedGroup2Values.includes(element["Agrupacion"])) &&
+              (selectedGroup3Values.length === 0 ||
+                selectedGroup3Values.includes(
+                  element["Nueva Clasificacion"]
+                )) &&
+              (selectedGroup4Values.length === 0 ||
+                selectedGroup4Values.includes(element["Tipo de Caso"])) &&
+              // (selectedTipoCasoValues.length === 0 || selectedTipoCasoValues.includes(element["Sub Tipo de Caso"]))&&
+              filtrarPorRangoDeFechas(
+                element,
+                selectedFechaInicio,
+                selectedFechaFin
+              ) &&
+              filtrarPorRangoDeHoras(
+                element,
+                selectedHoraInicio,
+                selectedHoraFin
+              )
+            ) {
+              var point = turf.point([element.Longitud, element.Latitud]);
+              if (turf.booleanPointInPolygon(point, geoJsonPolygon)) {
+                let weight = 1; // Ponderación predeterminada
+                if (selectedGroup3Values.includes("Homicidio")) {
+                  weight = 100; // Duplicar el peso si el tipo de caso es homicidio
+                }
+                const obj = [element.Latitud, element.Longitud, weight];
+                arrayHeat.push(obj);
 
-                ) {
-                  var point = turf.point([element.Longitud, element.Latitud]);
-                  if (turf.booleanPointInPolygon(point, geoJsonPolygon)) {
-                    let weight = 1; // Ponderación predeterminada
-                    if (selectedGroup3Values.includes("Homicidio")) {
-                      weight = 100; // Duplicar el peso si el tipo de caso es homicidio
-                    }
-                    const obj = [element.Latitud, element.Longitud, weight];
-                    arrayHeat.push(obj);
-
-                    const content = `<b>Comisaria:</b> ${element["Comisaria"]}<br><b>Agrupacion:</b> ${element["Agrupacion"]}<br><b>Clasificacion:</b> ${element["Nueva Clasificacion"]}<br><b>Tipo de caso:</b> ${element["Tipo de Caso"]}<br><b>Sub Tipo de Caso:</b> ${element["Sub Tipo de Caso"]}<br>
+                const content = `<b>Comisaria:</b> ${element["Comisaria"]}<br><b>Agrupacion:</b> ${element["Agrupacion"]}<br><b>Ocurrencia:</b> ${element["Nueva Clasificacion"]}<br><b>Tipo de caso:</b> ${element["Tipo de Caso"]}<br><b>Sub Tipo de Caso:</b> ${element["Sub Tipo de Caso"]}<br>
                     <b>Fecha:</b> ${element["Fecha"]}<br><b>Hora:</b> ${element["Hora_Minuto"]}<br>`;
 
-                    // Attach click event to each heat point
-                      const circleMarker = L.circleMarker([element.Latitud, element.Longitud], { radius: 25, color: 'red' })
-                      .bindPopup(content)
-                      .addTo(circleMarkersLayer)
-                      .on('click', function () {
-                        console.log(element.Latitud);
-                      });
+                // Attach click event to each heat point
+                const circleMarker = L.circleMarker(
+                  [element.Latitud, element.Longitud],
+                  { radius: 25, color: "red" }
+                )
+                  .bindPopup(content)
+                  .addTo(circleMarkersLayer)
+                  .on("click", function () {
+                    console.log(element.Latitud);
+                  });
+              }
+              // Personalizar tu marcador aquí
+              const myIcon = L.icon({
+                iconUrl: "my-icon.png",
+                iconSize: [38, 50],
+                iconAnchor: [30, 94],
+                popupAnchor: [-3, -76],
+                shadowUrl: "my-icon-shadow.png",
+                shadowSize: [68, 95],
+                shadowAnchor: [22, 94],
+              });
 
-                  }
-                    // Personalizar tu marcador aquí
-                    const myIcon = L.icon({
-                        iconUrl: 'my-icon.png',
-                        iconSize: [38, 50],
-                        iconAnchor: [30, 94],
-                        popupAnchor: [-3, -76],
-                        shadowUrl: 'my-icon-shadow.png',
-                        shadowSize: [68, 95],
-                        shadowAnchor: [22, 94]
-                    });
-
-                    const marker = L.marker([element.Latitud, element.Longitud]) //.addTo(markers);
-                    marker.bindPopup(
-                        `<b>Comisaria:</b> ${element["Comisaria"]}<br><b>Prioridad:</b> ${element["Prioridad"]}<br><b>Tipo de caso:</b> ${element["Tipo de caso"]}<br><b>Sub Tipo de Caso:</b> ${element["Sub Tipo de Caso"]}<br><b>Latitud: </b>${element.Latitud}<br><b>Longitud: </b>${element.Longitud}`
-                    );
-                }
-            });
-
-            const gradient = {
-              0.4: 'blue',
-              0.6: 'cyan',
-              0.8: 'lime',
-              1.0: 'red'
-            };
-
-            //heatLayer = L.heatLayer(arrayHeat, { radius: 25 }).addTo(map);
-            heatLayer = L.heatLayer(arrayHeat, { radius: 25, gradient: gradient }).addTo(map);
-
-            markers.forEach(marker => {
-            marker.addTo(map);
+              const marker = L.marker([element.Latitud, element.Longitud]); //.addTo(markers);
+              marker.bindPopup(
+                `<b>Comisaria:</b> ${element["Comisaria"]}<br><b>Prioridad:</b> ${element["Prioridad"]}<br><b>Tipo de caso:</b> ${element["Tipo de caso"]}<br><b>Sub Tipo de Caso:</b> ${element["Sub Tipo de Caso"]}<br><b>Latitud: </b>${element.Latitud}<br><b>Longitud: </b>${element.Longitud}`
+              );
+            }
           });
 
-            });
-            console.log(arrayHeat);
-        }
+          const gradient = {
+            0.4: "blue",
+            0.6: "cyan",
+            0.8: "lime",
+            1.0: "red",
+          };
+
+          //heatLayer = L.heatLayer(arrayHeat, { radius: 25 }).addTo(map);
+          heatLayer = L.heatLayer(arrayHeat, {
+            radius: 25,
+            gradient: gradient,
+          }).addTo(map);
+
+          markers.forEach((marker) => {
+            marker.addTo(map);
+          });
+        });
+        console.log(arrayHeat);
+      }
 
       function getFechaRango() {
-            clearMap();
-            const csvUrl = './areaasjl.csv';
-            cargarCSVyCrearPoligono(csvUrl).then(geoJsonPolygon => {
-            const group1Select = document.getElementById("group1");
-            const group2Select = document.getElementById("group2");
-            const group3Select = document.getElementById("group3");
-            const group4Select = document.getElementById("group4");
-            const subTipoCasoSelect = document.getElementById("subTipoCaso");
-            const fechaSelect = document.getElementById("DateInicio"); // Agrega el elemento de fecha
-            const fechaSelectFin = document.getElementById("DateFinal"); // Agrega el elemento de fecha
-            // const horaSelect = document.getElementById("hora");
-            datosFiltrados = [];
-            const markers = [];
-            const clickHandler = (lat, lon, content) => {
-              const marker = L.marker([lat, lon]);
-              marker.bindPopup(content).openPopup();
-              markers.push(marker);
-            };
-            // Customize this logic based on your data
-            const selectedGroup1Values = Array.from(group1Select.selectedOptions).map(option => option.value);
-            const selectedGroup2Values = Array.from(group2Select.selectedOptions).map(option => option.value);
-            const selectedGroup3Values = Array.from(group3Select.selectedOptions).map(option => option.value);
-            const selectedGroup4Values = Array.from(group4Select.selectedOptions).map(option => option.value);
-            const selectedTipoCasoValues = Array.from(subTipoCasoSelect.selectedOptions).map(option => option.value);
+        clearMap();
+        const csvUrl = "./areaasjl.csv";
+        cargarCSVyCrearPoligono(csvUrl).then((geoJsonPolygon) => {
+          const group1Select = document.getElementById("group1");
+          const group2Select = document.getElementById("group2");
+          const group3Select = document.getElementById("group3");
+          const group4Select = document.getElementById("group4");
+          const subTipoCasoSelect = document.getElementById("subTipoCaso");
+          const fechaSelect = document.getElementById("DateInicio"); // Agrega el elemento de fecha
+          const fechaSelectFin = document.getElementById("DateFinal"); // Agrega el elemento de fecha
+          // const horaSelect = document.getElementById("hora");
+          datosFiltrados = [];
+          const markers = [];
+          const clickHandler = (lat, lon, content) => {
+            const marker = L.marker([lat, lon]);
+            marker.bindPopup(content).openPopup();
+            markers.push(marker);
+          };
+          // Customize this logic based on your data
+          const selectedGroup1Values = Array.from(
+            group1Select.selectedOptions
+          ).map((option) => option.value);
+          const selectedGroup2Values = Array.from(
+            group2Select.selectedOptions
+          ).map((option) => option.value);
+          const selectedGroup3Values = Array.from(
+            group3Select.selectedOptions
+          ).map((option) => option.value);
+          const selectedGroup4Values = Array.from(
+            group4Select.selectedOptions
+          ).map((option) => option.value);
+          const selectedTipoCasoValues = Array.from(
+            subTipoCasoSelect.selectedOptions
+          ).map((option) => option.value);
 
-            const selectedFechaInicio = fechaSelect.value;
-            const selectedFechaFin = fechaSelectFin.value; // Obtén la fecha seleccionada
-            // const selectedHora = horaSelect.value;
-            circleMarkersLayer = new L.LayerGroup();
-            map.addLayer(circleMarkersLayer);
-            console.log(selectedFechaInicio)
+          const selectedFechaInicio = fechaSelect.value;
+          const selectedFechaFin = fechaSelectFin.value; // Obtén la fecha seleccionada
+          // const selectedHora = horaSelect.value;
+          circleMarkersLayer = new L.LayerGroup();
+          map.addLayer(circleMarkersLayer);
+          console.log(selectedFechaInicio);
 
-            dataJSON.forEach(element => {
-                // Filter based on selected values
-                if (
-                    (selectedGroup1Values.length === 0 || selectedGroup1Values.includes(element["Comisaria"])) &&
-                    (selectedGroup2Values.length === 0 || selectedGroup2Values.includes(element["Agrupacion"])) &&
-                    (selectedGroup3Values.length === 0 || selectedGroup3Values.includes(element["Nueva Clasificacion"])) &&
-                    (selectedGroup4Values.length === 0 || selectedGroup4Values.includes(element["Tipo de Caso"])) &&
-                    // (selectedTipoCasoValues.length === 0 || selectedTipoCasoValues.includes(element["Sub Tipo de Caso"]))&&
-                    filtrarPorRangoDeFechas(element, selectedFechaInicio, selectedFechaFin)
-                ) {
-                  var point = turf.point([element.Longitud, element.Latitud]);
-                  if (turf.booleanPointInPolygon(point, geoJsonPolygon)) {
-                    let weight = 1; // Ponderación predeterminada
-                    if (selectedGroup3Values.includes("Homicidio")) {
-                      weight = 100; // Duplicar el peso si el tipo de caso es homicidio
-                    }
-                    const obj = [element.Latitud, element.Longitud, weight];
-                    arrayHeat.push(obj);
+          dataJSON.forEach((element) => {
+            // Filter based on selected values
+            if (
+              (selectedGroup1Values.length === 0 ||
+                selectedGroup1Values.includes(element["Comisaria"])) &&
+              (selectedGroup2Values.length === 0 ||
+                selectedGroup2Values.includes(element["Agrupacion"])) &&
+              (selectedGroup3Values.length === 0 ||
+                selectedGroup3Values.includes(
+                  element["Nueva Clasificacion"]
+                )) &&
+              (selectedGroup4Values.length === 0 ||
+                selectedGroup4Values.includes(element["Tipo de Caso"])) &&
+              // (selectedTipoCasoValues.length === 0 || selectedTipoCasoValues.includes(element["Sub Tipo de Caso"]))&&
+              filtrarPorRangoDeFechas(
+                element,
+                selectedFechaInicio,
+                selectedFechaFin
+              )
+            ) {
+              var point = turf.point([element.Longitud, element.Latitud]);
+              if (turf.booleanPointInPolygon(point, geoJsonPolygon)) {
+                let weight = 1; // Ponderación predeterminada
+                if (selectedGroup3Values.includes("Homicidio")) {
+                  weight = 100; // Duplicar el peso si el tipo de caso es homicidio
+                }
+                const obj = [element.Latitud, element.Longitud, weight];
+                arrayHeat.push(obj);
 
-                    const content = `<b>Comisaria:</b> ${element["Comisaria"]}<br><b>Agrupacion:</b> ${element["Agrupacion"]}<br><b>Clasificacion:</b> ${element["Nueva Clasificacion"]}<br><b>Tipo de caso:</b> ${element["Tipo de Caso"]}<br><b>Sub Tipo de Caso:</b> ${element["Sub Tipo de Caso"]}<br>
+                const content = `<b>Comisaria:</b> ${element["Comisaria"]}<br><b>Agrupacion:</b> ${element["Agrupacion"]}<br><b>Ocurrencia:</b> ${element["Nueva Clasificacion"]}<br><b>Tipo de caso:</b> ${element["Tipo de Caso"]}<br><b>Sub Tipo de Caso:</b> ${element["Sub Tipo de Caso"]}<br>
                     <b>Fecha:</b> ${element["Fecha"]}<br><b>Hora:</b> ${element["Hora_Minuto"]}<br>`;
 
-                    // Attach click event to each heat point
-                    const circleMarker = L.circleMarker([element.Latitud, element.Longitud], { radius: 25, color: 'red' })
-                      .bindPopup(content)
-                      .addTo(circleMarkersLayer)
-                      .on('click', function () {
-                        console.log(element.Latitud);
-                      });
-                  }
+                // Attach click event to each heat point
+                const circleMarker = L.circleMarker(
+                  [element.Latitud, element.Longitud],
+                  { radius: 25, color: "red" }
+                )
+                  .bindPopup(content)
+                  .addTo(circleMarkersLayer)
+                  .on("click", function () {
+                    console.log(element.Latitud);
+                  });
+              }
 
-                    // Personalizar tu marcador aquí
-                    const myIcon = L.icon({
-                        iconUrl: 'my-icon.png',
-                        iconSize: [38, 50],
-                        iconAnchor: [30, 94],
-                        popupAnchor: [-3, -76],
-                        shadowUrl: 'my-icon-shadow.png',
-                        shadowSize: [68, 95],
-                        shadowAnchor: [22, 94]
-                    });
+              // Personalizar tu marcador aquí
+              const myIcon = L.icon({
+                iconUrl: "my-icon.png",
+                iconSize: [38, 50],
+                iconAnchor: [30, 94],
+                popupAnchor: [-3, -76],
+                shadowUrl: "my-icon-shadow.png",
+                shadowSize: [68, 95],
+                shadowAnchor: [22, 94],
+              });
 
-                    const marker = L.marker([element.Latitud, element.Longitud]) //.addTo(markers);
-                    marker.bindPopup(
-                        `<b>Comisaria:</b> ${element["Comisaria"]}<br><b>Prioridad:</b> ${element["Prioridad"]}<br><b>Tipo de caso:</b> ${element["Tipo de caso"]}<br><b>Sub Tipo de Caso:</b> ${element["Sub Tipo de Caso"]}<br><b>Latitud: </b>${element.Latitud}<br><b>Longitud: </b>${element.Longitud}`
-                    );
-                }
-            });
-
-            const gradient = {
-              0.4: 'blue',
-              0.6: 'cyan',
-              0.8: 'lime',
-              1.0: 'red'
-            };
-
-            //heatLayer = L.heatLayer(arrayHeat, { radius: 25 }).addTo(map);
-            heatLayer = L.heatLayer(arrayHeat, { radius: 25, gradient: gradient }).addTo(map);
-
-            markers.forEach(marker => {
-            marker.addTo(map);
+              const marker = L.marker([element.Latitud, element.Longitud]); //.addTo(markers);
+              marker.bindPopup(
+                `<b>Comisaria:</b> ${element["Comisaria"]}<br><b>Prioridad:</b> ${element["Prioridad"]}<br><b>Tipo de caso:</b> ${element["Tipo de caso"]}<br><b>Sub Tipo de Caso:</b> ${element["Sub Tipo de Caso"]}<br><b>Latitud: </b>${element.Latitud}<br><b>Longitud: </b>${element.Longitud}`
+              );
+            }
           });
 
-            });
-            //console.log(arrayHeat);
-        }
+          const gradient = {
+            0.4: "blue",
+            0.6: "cyan",
+            0.8: "lime",
+            1.0: "red",
+          };
 
-        function getSubTipoCaso() {
+          //heatLayer = L.heatLayer(arrayHeat, { radius: 25 }).addTo(map);
+          heatLayer = L.heatLayer(arrayHeat, {
+            radius: 25,
+            gradient: gradient,
+          }).addTo(map);
+
+          markers.forEach((marker) => {
+            marker.addTo(map);
+          });
+        });
+        //console.log(arrayHeat);
+      }
+
+      function getSubTipoCaso() {
         clearMap();
-        const csvUrl = './areaasjl.csv';
-        cargarCSVyCrearPoligono(csvUrl).then(geoJsonPolygon => {
+        const csvUrl = "./areaasjl.csv";
+        cargarCSVyCrearPoligono(csvUrl).then((geoJsonPolygon) => {
           const group1Select = document.getElementById("group1");
           const group2Select = document.getElementById("group2");
           const group3Select = document.getElementById("group3");
@@ -1353,7 +1647,9 @@
               (selectedGroup2Values.length === 0 ||
                 selectedGroup2Values.includes(element["Agrupacion"])) &&
               (selectedGroup3Values.length === 0 ||
-                selectedGroup3Values.includes(element["Nueva Clasificacion"])) &&
+                selectedGroup3Values.includes(
+                  element["Nueva Clasificacion"]
+                )) &&
               (selectedGroup4Values.length === 0 ||
                 selectedGroup4Values.includes(element["Tipo de Caso"])) &&
               (selectedTipoCasoValues.length === 0 ||
@@ -1368,7 +1664,6 @@
                 const obj = [element.Latitud, element.Longitud, weight];
                 arrayHeat.push(obj);
               }
-              
 
               // Personalizar tu marcador aquí
               const myIcon = L.icon({
@@ -1388,18 +1683,18 @@
             }
           });
           const gradient = {
-            0.4: 'blue',
-            0.6: 'cyan',
-            0.8: 'lime',
-            1.0: 'red'
+            0.4: "blue",
+            0.6: "cyan",
+            0.8: "lime",
+            1.0: "red",
           };
 
-
           //heatLayer = L.heatLayer(arrayHeat, { radius: 25 }).addTo(map);
-          heatLayer = L.heatLayer(arrayHeat, { radius: 25, gradient: gradient }).addTo(map);
-
+          heatLayer = L.heatLayer(arrayHeat, {
+            radius: 25,
+            gradient: gradient,
+          }).addTo(map);
         });
-        
       }
 
       function getTipoCaso() {
@@ -1490,26 +1785,30 @@
       }
 
       function filtrarPorRangoDeFechas(element, fechaInicio, fechaFin) {
-            const fechaElemento = new Date(element.Fecha);
-            const inicio = new Date(fechaInicio);
-            const fin = new Date(fechaFin);
-            return fechaElemento >= inicio && fechaElemento <= fin;
-        }
+        const fechaElemento = new Date(element.Fecha);
+        const inicio = new Date(fechaInicio);
+        const fin = new Date(fechaFin);
+        return fechaElemento >= inicio && fechaElemento <= fin;
+      }
 
-        function filtrarPorRangoDeHoras(element, horaInicio, horaFin) {
-            // Convertir la hora a segundos desde medianoche
-            const segundosDesdeMedianoche = (hora) => {
-                const [horas, minutos, segundos] = hora.split(":").map(Number);
-                return horas * 3600 + minutos * 60 + segundos;
-            };
+      function filtrarPorRangoDeHoras(element, horaInicio, horaFin) {
+        // Convertir la hora a segundos desde medianoche
+        const segundosDesdeMedianoche = (hora) => {
+          const [horas, minutos, segundos] = hora.split(":").map(Number);
+          return horas * 3600 + minutos * 60 + segundos;
+        };
 
-            const segundosElemento = segundosDesdeMedianoche(element["Hora_Minuto"]);
-            const segundosInicio = segundosDesdeMedianoche(horaInicio);
-            const segundosFin = segundosDesdeMedianoche(horaFin);
+        const segundosElemento = segundosDesdeMedianoche(
+          element["Hora_Minuto"]
+        );
+        const segundosInicio = segundosDesdeMedianoche(horaInicio);
+        const segundosFin = segundosDesdeMedianoche(horaFin);
 
-            // Comparar si la hora del elemento está dentro del rango
-            return segundosElemento >= segundosInicio && segundosElemento <= segundosFin;
-        }
+        // Comparar si la hora del elemento está dentro del rango
+        return (
+          segundosElemento >= segundosInicio && segundosElemento <= segundosFin
+        );
+      }
 
       function populateGroup3() {
         clearMap();
@@ -1569,7 +1868,6 @@
         const selectedGroup3Values = Array.from(
           group3Select.selectedOptions
         ).map((option) => option.value);
-
 
         if (
           selectedGroup1Values.length !== 0 &&
@@ -1763,7 +2061,9 @@
           // Llamar a la función para exportar a Excel
           exportarAExcel(coordenadas);
         } else {
-          alert("No hay coordenadas para exportar. Por favor, selecciona puntos en el mapa.");
+          alert(
+            "No hay coordenadas para exportar. Por favor, selecciona puntos en el mapa."
+          );
         }
       });
 
@@ -1776,10 +2076,10 @@
         var worksheet = XLSX.utils.json_to_sheet(coordenadas);
 
         // Agregar la hoja de cálculo al libro
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Coordenadas');
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Coordenadas");
 
         // Guardar el libro como un archivo Excel
-        XLSX.writeFile(workbook, 'coordenadas.xlsx');
+        XLSX.writeFile(workbook, "coordenadas.xlsx");
       }
 
       function agregarMarcadores(datosPrimeraHoja) {
@@ -1950,7 +2250,7 @@
       function agregarMarcadores6(datosSegundaHoja) {
         clearMarkers5();
         let contador = 0;
-        let sumaConteo = 0; 
+        let sumaConteo = 0;
         datosSegundaHoja.forEach((marcador) => {
           const latitud = marcador.LATITUD;
           const longitud = marcador.LONGITUD;
@@ -1961,8 +2261,7 @@
           if (actividad === "OK") {
             const popupInfo = `<br>Descripción: ${marcador.nombre_vecino}<br>Latitud: ${marcador.LATITUD}<br>Longitud: ${marcador.LONGITUD}`;
             const customIcon = new L.Icon({
-              iconUrl:
-                "./camara_vecinal.png", // Ruta a tu imagen de icono
+              iconUrl: "./camara_vecinal.png", // Ruta a tu imagen de icono
               shadowUrl:
                 "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
               iconSize: [25, 41],
@@ -1981,8 +2280,8 @@
           }
         });
         actualizarContador(6, sumaConteo);
-        // console.log("Suma total de CONTEO:", sumaConteo); 
-        // console.log("Contador:", contador); 
+        // console.log("Suma total de CONTEO:", sumaConteo);
+        // console.log("Contador:", contador);
       }
 
       function agregarMarcadores7(datosTerceraHoja) {
@@ -1997,8 +2296,7 @@
           if (id === marcador.ID) {
             const popupInfo = `<br>ID: ${marcador.ID}<br>Latitud: ${marcador.Latitud}<br>Longitud: ${marcador.Longitud}`;
             const customIcon = new L.Icon({
-              iconUrl:
-                "./basura.png", // Ruta a tu imagen de icono
+              iconUrl: "./basura.png", // Ruta a tu imagen de icono
               shadowUrl:
                 "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
               iconSize: [25, 41],
@@ -2028,24 +2326,23 @@
           const nrocamaras = marcador.CAMARAS;
           // const tipoBotonPanico = marcador['BOTON DE PANICO'];
 
-            const popupInfo = `<br>INTERSECCIONES: ${interseccion}<br>NRO DE CAMARAS: ${nrocamaras}<br>Latitud: ${latitud}<br>Longitud: ${longitud}`;
-            const customIcon = new L.Icon({
-              iconUrl:
-                "./mototaxi.png", // Ruta a tu imagen de icono
-              shadowUrl:
-                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-              iconSize: [25, 41],
-              iconAnchor: [12, 41],
-              popupAnchor: [1, -34],
-              shadowSize: [41, 41],
-            });
+          const popupInfo = `<br>INTERSECCIONES: ${interseccion}<br>NRO DE CAMARAS: ${nrocamaras}<br>Latitud: ${latitud}<br>Longitud: ${longitud}`;
+          const customIcon = new L.Icon({
+            iconUrl: "./mototaxi.png", // Ruta a tu imagen de icono
+            shadowUrl:
+              "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41],
+          });
 
-            const prioridad = L.marker([latitud, longitud], {
-              icon: customIcon,
-            }).addTo(map);
-            currentMarkers7.push(prioridad);
-            prioridad.bindPopup(popupInfo);
-            contador++;
+          const prioridad = L.marker([latitud, longitud], {
+            icon: customIcon,
+          }).addTo(map);
+          currentMarkers7.push(prioridad);
+          prioridad.bindPopup(popupInfo);
+          contador++;
         });
         actualizarContador(8, contador);
       }
@@ -2062,24 +2359,23 @@
           const celular = marcador.Celular;
           // const tipoBotonPanico = marcador['BOTON DE PANICO'];
 
-            const popupInfo = `<br>Empresa: ${empresas}<br>Referencia: ${referencia}<br>Anuncio: ${anuncio}<br>Celular: ${celular}<br>Latitud: ${latitud}<br>Longitud: ${longitud}`;
-            const customIcon = new L.Icon({
-              iconUrl:
-                "./paneles.png", // Ruta a tu imagen de icono
-              shadowUrl:
-                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-              iconSize: [25, 41],
-              iconAnchor: [12, 41],
-              popupAnchor: [1, -34],
-              shadowSize: [41, 41],
-            });
+          const popupInfo = `<br>Empresa: ${empresas}<br>Referencia: ${referencia}<br>Anuncio: ${anuncio}<br>Celular: ${celular}<br>Latitud: ${latitud}<br>Longitud: ${longitud}`;
+          const customIcon = new L.Icon({
+            iconUrl: "./paneles.png", // Ruta a tu imagen de icono
+            shadowUrl:
+              "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41],
+          });
 
-            const prioridad = L.marker([latitud, longitud], {
-              icon: customIcon,
-            }).addTo(map);
-            currentMarkers8.push(prioridad);
-            prioridad.bindPopup(popupInfo);
-            contador++;
+          const prioridad = L.marker([latitud, longitud], {
+            icon: customIcon,
+          }).addTo(map);
+          currentMarkers8.push(prioridad);
+          prioridad.bindPopup(popupInfo);
+          contador++;
         });
         actualizarContador(9, contador);
       }
@@ -2091,35 +2387,34 @@
           const latitud = marcador.LATITUD;
           const longitud = marcador.LONGITUD;
           const punto = marcador.PUNTO;
-          const tipo = marcador['TIPO DE CAMARA'];
-          
-            // Validación del tipo de cámara
+          const tipo = marcador["TIPO DE CAMARA"];
+
+          // Validación del tipo de cámara
           let multiplicador = 1;
 
-          if (tipo.includes('*LPR')) {
-              const multiplicadorStr = tipo.split('*')[0];
-              multiplicador = parseInt(multiplicadorStr, 10) || 1;
+          if (tipo.includes("*LPR")) {
+            const multiplicadorStr = tipo.split("*")[0];
+            multiplicador = parseInt(multiplicadorStr, 10) || 1;
           }
 
-            const popupInfo = `<br>Punto: ${punto}<br>Tipo: ${tipo}<br>Latitud: ${latitud}<br>Longitud: ${longitud}`;
-            const customIcon = new L.Icon({
-              iconUrl:
-                "./camaras_sjl.png", // Ruta a tu imagen de icono
-              shadowUrl:
-                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-              iconSize: [25, 41],
-              iconAnchor: [12, 41],
-              popupAnchor: [1, -34],
-              shadowSize: [41, 41],
-            });
+          const popupInfo = `<br>Punto: ${punto}<br>Tipo: ${tipo}<br>Latitud: ${latitud}<br>Longitud: ${longitud}`;
+          const customIcon = new L.Icon({
+            iconUrl: "./camaras_sjl.png", // Ruta a tu imagen de icono
+            shadowUrl:
+              "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41],
+          });
 
-            const prioridad = L.marker([latitud, longitud], {
-              icon: customIcon,
-            }).addTo(map);
-            currentMarkers9.push(prioridad);
-            prioridad.bindPopup(popupInfo);
-            ///contador++;
-            contador += multiplicador;
+          const prioridad = L.marker([latitud, longitud], {
+            icon: customIcon,
+          }).addTo(map);
+          currentMarkers9.push(prioridad);
+          prioridad.bindPopup(popupInfo);
+          ///contador++;
+          contador += multiplicador;
         });
         actualizarContador(10, contador);
       }
@@ -2133,27 +2428,26 @@
           const zona = marcador.ZONA;
           const nombre = marcador.NOMBRE;
           const ubicación = marcador.UBICACIÓN;
-          const nro = marcador['N°'];
+          const nro = marcador["N°"];
 
-            const popupInfo = `<br>N°: ${nro}<br>Nombre: ${nombre}<br>Ubicacion: ${ubicación}<br>Zona: ${zona}<br>Latitud: ${latitud}<br>Longitud: ${longitud}`;
-            const customIcon = new L.Icon({
-              iconUrl:
-                "./camara_35s.png", // Ruta a tu imagen de icono
-              shadowUrl:
-                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-              iconSize: [25, 41],
-              iconAnchor: [12, 41],
-              popupAnchor: [1, -34],
-              shadowSize: [41, 41],
-            });
+          const popupInfo = `<br>N°: ${nro}<br>Nombre: ${nombre}<br>Ubicacion: ${ubicación}<br>Zona: ${zona}<br>Latitud: ${latitud}<br>Longitud: ${longitud}`;
+          const customIcon = new L.Icon({
+            iconUrl: "./camara_35s.png", // Ruta a tu imagen de icono
+            shadowUrl:
+              "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41],
+          });
 
-            const prioridad = L.marker([latitud, longitud], {
-              icon: customIcon,
-            }).addTo(map);
-            currentMarkers10.push(prioridad);
-            prioridad.bindPopup(popupInfo);
-            contador++;
-            //contador += multiplicador;
+          const prioridad = L.marker([latitud, longitud], {
+            icon: customIcon,
+          }).addTo(map);
+          currentMarkers10.push(prioridad);
+          prioridad.bindPopup(popupInfo);
+          contador++;
+          //contador += multiplicador;
         });
         actualizarContador(11, contador);
       }
@@ -2166,31 +2460,29 @@
           const longitud = marcador.LONGITUD;
           const modelo = marcador.MODELO;
           const jurisdiccion = marcador.JURIDICCIÓN;
-          const nombre_vecino = marcador['NOMBRE VECINO'];
+          const nombre_vecino = marcador["NOMBRE VECINO"];
 
-            const popupInfo = `<br>Modelo: ${modelo}<br>Jurisdiccion: ${jurisdiccion}<br>Nombre Vecino: ${nombre_vecino}`;
-            const customIcon = new L.Icon({
-              iconUrl:
-                "./camara_caja_de_agua.png", // Ruta a tu imagen de icono
-              shadowUrl:
-                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-              iconSize: [25, 41],
-              iconAnchor: [12, 41],
-              popupAnchor: [1, -34],
-              shadowSize: [41, 41],
-            });
+          const popupInfo = `<br>Modelo: ${modelo}<br>Jurisdiccion: ${jurisdiccion}<br>Nombre Vecino: ${nombre_vecino}`;
+          const customIcon = new L.Icon({
+            iconUrl: "./camara_caja_de_agua.png", // Ruta a tu imagen de icono
+            shadowUrl:
+              "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41],
+          });
 
-            const prioridad = L.marker([latitud, longitud], {
-              icon: customIcon,
-            }).addTo(map);
-            currentMarkers11.push(prioridad);
-            prioridad.bindPopup(popupInfo);
-            contador++;
-            //contador += multiplicador;
+          const prioridad = L.marker([latitud, longitud], {
+            icon: customIcon,
+          }).addTo(map);
+          currentMarkers11.push(prioridad);
+          prioridad.bindPopup(popupInfo);
+          contador++;
+          //contador += multiplicador;
         });
         actualizarContador(12, contador);
       }
-
 
       document
         .getElementById("mostrarMarcadoresCheckbox6")
@@ -2212,7 +2504,7 @@
           }
         });
 
-        document
+      document
         .getElementById("mostrarMarcadoresCheckbox8")
         .addEventListener("change", (event) => {
           if (event.target.checked) {
@@ -2222,7 +2514,7 @@
           }
         });
 
-        document
+      document
         .getElementById("mostrarMarcadoresCheckbox9")
         .addEventListener("change", (event) => {
           if (event.target.checked) {
@@ -2232,7 +2524,7 @@
           }
         });
 
-        document
+      document
         .getElementById("mostrarMarcadoresCheckbox10")
         .addEventListener("change", (event) => {
           if (event.target.checked) {
@@ -2242,7 +2534,7 @@
           }
         });
 
-        document
+      document
         .getElementById("mostrarMarcadoresCheckbox11")
         .addEventListener("change", (event) => {
           if (event.target.checked) {
@@ -2252,7 +2544,7 @@
           }
         });
 
-        document
+      document
         .getElementById("mostrarMarcadoresCheckbox12")
         .addEventListener("change", (event) => {
           if (event.target.checked) {
@@ -2289,7 +2581,10 @@
               }
 
               // Mostrar el polígono en el mapa con un popup estático
-              var polygon = L.polygon(latlngs, { color: color, fillOpacity: 0.05 }).addTo(map);
+              var polygon = L.polygon(latlngs, {
+                color: color,
+                fillOpacity: 0.05,
+              }).addTo(map);
               // globalPolygons.push(latlngs);
               //map.fitBounds(polygon.getBounds());
 
@@ -2371,7 +2666,7 @@
       document
         .getElementById("mostrarMarcadoresCheckbox11")
         .addEventListener("change", () => obtenerDatos());
-      
+
       document
         .getElementById("mostrarMarcadoresCheckbox12")
         .addEventListener("change", () => obtenerDatos());
@@ -2403,7 +2698,6 @@
         .catch((error) =>
           console.error("Error al cargar el archivo JSON:", error)
         );
-
     </script>
 
     <script src="./assets/vendor/libs/popper/popper.js"></script>
