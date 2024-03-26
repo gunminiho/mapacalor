@@ -1034,7 +1034,7 @@
       var marcadoresLayer = L.layerGroup().addTo(map);
       var contadorMarcadores = 0;
       //const url = "./map.json";
-      const url = "./incidencias_21_03_2024.json";
+      const url = "./incidencias_25_03_2024.json";
       const urlRutas = "./data_rutas.json";
       let dataJSON_Unidades;
       let dataJSON;
@@ -2409,39 +2409,48 @@
       function agregarMarcadores10(datosPrimeraHoja) {
         clearMarkers9();
         let contador = 0;
-        datosPrimeraHoja.forEach((marcador) => {
-          const latitud = marcador.LATITUD;
-          const longitud = marcador.LONGITUD;
-          const punto = marcador.PUNTO;
-          const tipo = marcador["TIPO DE CAMARA"];
+        // const csvUrl = "./Mariscal Caceres.csv";
+        // cargarCSVyCrearPoligono(csvUrl).then((geoJsonPolygon) => {
+          datosPrimeraHoja.forEach((marcador) => {
+            const latitud = marcador.LATITUD;
+            const longitud = marcador.LONGITUD;
+            const punto = marcador.PUNTO;
+            const tipo = marcador["TIPO DE CAMARA"];
 
-          // Validación del tipo de cámara
-          let multiplicador = 1;
+            // Validación del tipo de cámara
+            let multiplicador = 1;
 
-          if (tipo.includes("*LPR")) {
-            const multiplicadorStr = tipo.split("*")[0];
-            multiplicador = parseInt(multiplicadorStr, 10) || 1;
-          }
+            if (tipo.includes("*LPR")) {
+              const multiplicadorStr = tipo.split("*")[0];
+              multiplicador = parseInt(multiplicadorStr, 10) || 1;
+            }
 
-          const popupInfo = `<br>Punto: ${punto}<br>Tipo: ${tipo}<br>Latitud: ${latitud}<br>Longitud: ${longitud}`;
-          const customIcon = new L.Icon({
-            iconUrl: "./camaras_sjl.png", // Ruta a tu imagen de icono
-            shadowUrl:
-              "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41],
+            const popupInfo = `<br>Punto: ${punto}<br>Tipo: ${tipo}<br>Latitud: ${latitud}<br>Longitud: ${longitud}`;
+            const customIcon = new L.Icon({
+              iconUrl: "./camaras_sjl.png", // Ruta a tu imagen de icono
+              shadowUrl:
+                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41],
+            });
+
+            // var point = turf.point([longitud, latitud]);
+            // if (turf.booleanPointInPolygon(point, geoJsonPolygon)) {
+              const prioridad = L.marker([latitud, longitud], {
+                icon: customIcon,
+              }).addTo(map);
+              currentMarkers9.push(prioridad);
+              prioridad.bindPopup(popupInfo);
+            //   coordenadas.push({latitud: latitud, longitud: longitud, Punto: punto, Tipo: tipo})
+            // }
+            ///contador++;
+            contador += multiplicador;
           });
+          // exportarAExcel(coordenadas);
+        // });
 
-          const prioridad = L.marker([latitud, longitud], {
-            icon: customIcon,
-          }).addTo(map);
-          currentMarkers9.push(prioridad);
-          prioridad.bindPopup(popupInfo);
-          ///contador++;
-          contador += multiplicador;
-        });
         actualizarContador(10, contador);
       }
 
