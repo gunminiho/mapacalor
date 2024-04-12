@@ -282,6 +282,14 @@
         width: 3%;
       }
 
+      #btnMiUbicacion {
+        position: absolute;
+        top: 150px;
+        right: 20px;
+        z-index: 1000;
+        width: 3%;
+      }
+
       @media (max-width: 768px) {
         #toggle-controls {
           display: none;
@@ -393,6 +401,14 @@
           z-index: 1000;
           width: 8%;
         }
+
+        #btnMiUbicacion {
+          position: absolute;
+          top: 260px;
+          right: 20px;
+          z-index: 1000;
+          width: 8%;
+        }
       }
 
       input[type="date"] {
@@ -466,6 +482,14 @@
       id="btnCamaras"
     >
       <i class="ti ti-layers-subtract"></i>
+    </button>
+
+    <button
+    type="button"
+    class="btn btn-primary btn-icon rounded-pill"
+    id="btnMiUbicacion"
+    onclick="obtenerUbicacion()">
+      <i class="ti ti-map-pin"></i>
     </button>
 
     <ul class="dropdown-menu dropdown-menu-end">
@@ -640,7 +664,7 @@
       <div
         class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc modal-lg"
       >
-        <div class="modal-content" style="padding: 1%;">
+        <div class="modal-content" style="padding: 1%">
           <!-- <div id="controls"> -->
           <div class="modal-body">
             <button
@@ -648,7 +672,7 @@
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
-              style="margin-top: 5%;"
+              style="margin-top: 5%"
             ></button>
 
             <!--  FILTRO UNIDAD RUTAS SELECT --------------------------------------------------------------------------------- -->
@@ -664,6 +688,13 @@
               />
               Seleccionar Todo
             </label>
+
+            <!-- <div>
+              <button onclick="obtenerUbicacion()" class="btn btn-primary">
+                Obtener Ubicación
+              </button>
+              <p id="ubicacion"></p>
+            </div> -->
 
             <form class="row g-3" onsubmit="return false">
               <div class="col-12 col-md-12">
@@ -1022,6 +1053,7 @@
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 20,
       }).addTo(map);
       map.on("mousemove", function (e) {
         document.getElementById("coordinates").innerHTML =
@@ -1031,11 +1063,43 @@
           e.latlng.lng.toFixed(6);
       });
 
+      function obtenerUbicacion() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(posicion) {
+            var latitud = posicion.coords.latitude;
+            var longitud = posicion.coords.longitude;
+
+            map.setView([latitud, longitud], 18);
+
+            L.marker([latitud, longitud]).addTo(map)
+              .bindPopup('¡Estás aquí!')
+              .openPopup();
+        });
+        } else {
+          alert("La geolocalización no es compatible con este navegador.");
+        }
+      }
+
+      // function mostrarUbicacion(posicion) {
+      //   var latitud = posicion.coords.latitude;
+      //   var longitud = posicion.coords.longitude;
+      //   var precision = posicion.coords.accuracy;
+
+      //   document.getElementById("ubicacion").innerHTML =
+      //     "Latitud: " +
+      //     latitud +
+      //     "<br>Longitud: " +
+      //     longitud +
+      //     "<br>Precisión: " +
+      //     precision +
+      //     " metros.";
+      // }
+
       var coordenadas = [];
       var marcadoresLayer = L.layerGroup().addTo(map);
       var contadorMarcadores = 0;
       //const url = "./map.json";
-      const url = "./incidencias_31_03_2024.json";
+      const url = "./incidencias_11_04_2024.json";
       const urlRutas = "./data_rutas.json";
       let dataJSON_Unidades;
       let dataJSON;
@@ -1049,44 +1113,6 @@
         iconAnchor: [16, 32], // Punto en el que la imagen debe estar centrada en las coordenadas del marcador
         popupAnchor: [0, -32], // Punto desde el que se abre el popup relativo al icono
       });
-
-      // Agregar el evento 'click' al mapa
-      // map.on('click', function (e) {
-      //     // Obtener las coordenadas del clic
-      //     var latitud = e.latlng.lat.toFixed(6);
-      //     var longitud = e.latlng.lng.toFixed(6);
-
-      //     // Mostrar las coordenadas en la consola (puedes quitar esto en la versión final)
-      //     console.log("Latitud: " + latitud + ", Longitud: " + longitud);
-
-      //     // Agregar las coordenadas a la lista
-      //     coordenadas.push({ latitud: latitud, longitud: longitud });
-
-      //     // Crear un nuevo marcador en la ubicación clicada
-      //     var marcador = L.marker(e.latlng, {icon: customIcon}).addTo(marcadoresLayer);
-
-      //     contadorMarcadores++;
-
-      //     // Añadir evento para eliminar el marcador al clic o doble clic en él
-      //     marcador.on('click', function() {
-      //         // Remover el marcador del mapa
-      //         map.removeLayer(marcador);
-      //         contadorMarcadores--;
-
-      //         document.getElementById('contMarcadores').innerText = "Número de marcadores: " + contadorMarcadores;
-
-      //         // Encontrar y eliminar las coordenadas correspondientes del array
-      //         coordenadas = coordenadas.filter(function(coordenada) {
-      //             return coordenada.latitud != latitud || coordenada.longitud != longitud;
-      //         });
-
-      //         // Mostrar las coordenadas actualizadas en la consola (puedes quitar esto en la versión final)
-      //         console.log("Coordenadas actualizadas:", coordenadas);
-
-      //     });
-
-      //     document.getElementById('contMarcadores').innerText = "Número de marcadores: " + contadorMarcadores;
-      // });
 
       document
         .getElementById("fileInput")
@@ -1639,6 +1665,77 @@
         //console.log(arrayHeat);
       }
 
+      function getSubTipoCasoAll(dataJSON) {
+        clearMap();
+        const csvUrl = "./areaasjl.csv";
+        cargarCSVyCrearPoligono(csvUrl).then((geoJsonPolygon) => {
+          const group1Select = document.getElementById("group1");
+          const group2Select = document.getElementById("group2");
+          const group3Select = document.getElementById("group3");
+          const group4Select = document.getElementById("group4");
+          const subTipoCasoSelect = document.getElementById("subTipoCaso");
+
+          // Customize this logic based on your data
+          const selectedGroup1Values = Array.from(
+            group1Select.selectedOptions
+          ).map((option) => option.value);
+          const selectedGroup2Values = Array.from(
+            group2Select.selectedOptions
+          ).map((option) => option.value);
+          const selectedGroup3Values = Array.from(
+            group3Select.selectedOptions
+          ).map((option) => option.value);
+          const selectedGroup4Values = Array.from(
+            group4Select.selectedOptions
+          ).map((option) => option.value);
+          const selectedTipoCasoValues = Array.from(
+            subTipoCasoSelect.selectedOptions
+          ).map((option) => option.value);
+
+          dataJSON.forEach((element) => {
+            // Filter based on selected values
+              var point = turf.point([element.Longitud, element.Latitud]);
+              if (turf.booleanPointInPolygon(point, geoJsonPolygon)) {
+                let weight = 1; // Ponderación predeterminada
+                if (selectedGroup3Values.includes("Homicidio")) {
+                  weight = 100; // Duplicar el peso si el tipo de caso es homicidio
+                }
+                const obj = [element.Latitud, element.Longitud, weight];
+                arrayHeat.push(obj);
+              }
+
+              // Personalizar tu marcador aquí
+              const myIcon = L.icon({
+                iconUrl: "my-icon.png",
+                iconSize: [38, 50],
+                iconAnchor: [30, 94],
+                popupAnchor: [-3, -76],
+                shadowUrl: "my-icon-shadow.png",
+                shadowSize: [68, 95],
+                shadowAnchor: [22, 94],
+              });
+
+              const marker = L.marker([element.Latitud, element.Longitud]); //.addTo(markers);
+              marker.bindPopup(
+                `<b>Comisaria:</b> ${element["Comisaria"]}<br><b>Prioridad:</b> ${element["Prioridad"]}<br><b>Tipo de caso:</b> ${element["Tipo de Caso"]}<br><b>Sub Tipo de Caso:</b> ${element["Sub Tipo de Caso"]}<br><b>Latitud: </b>${element.Latitud}<br><b>Longitud: </b>${element.Longitud}`
+              );
+            
+          });
+          const gradient = {
+            0.4: "blue",
+            0.6: "cyan",
+            0.8: "lime",
+            1.0: "red",
+          };
+
+          //heatLayer = L.heatLayer(arrayHeat, { radius: 25 }).addTo(map);
+          heatLayer = L.heatLayer(arrayHeat, {
+            radius: 25,
+            gradient: gradient,
+          }).addTo(map);
+        });
+      }
+
       function getSubTipoCaso() {
         clearMap();
         const csvUrl = "./areaasjl.csv";
@@ -1723,6 +1820,7 @@
           }).addTo(map);
         });
       }
+      
 
       function getTipoCaso() {
         clearMap();
@@ -2412,44 +2510,44 @@
         let contador = 0;
         // const csvUrl = "./Mariscal Caceres.csv";
         // cargarCSVyCrearPoligono(csvUrl).then((geoJsonPolygon) => {
-          datosPrimeraHoja.forEach((marcador) => {
-            const latitud = marcador.LATITUD;
-            const longitud = marcador.LONGITUD;
-            const punto = marcador.PUNTO;
-            const tipo = marcador["TIPO DE CAMARA"];
+        datosPrimeraHoja.forEach((marcador) => {
+          const latitud = marcador.LATITUD;
+          const longitud = marcador.LONGITUD;
+          const punto = marcador.PUNTO;
+          const tipo = marcador["TIPO DE CAMARA"];
 
-            // Validación del tipo de cámara
-            let multiplicador = 1;
+          // Validación del tipo de cámara
+          let multiplicador = 1;
 
-            if (tipo.includes("*LPR")) {
-              const multiplicadorStr = tipo.split("*")[0];
-              multiplicador = parseInt(multiplicadorStr, 10) || 1;
-            }
+          if (tipo.includes("*LPR")) {
+            const multiplicadorStr = tipo.split("*")[0];
+            multiplicador = parseInt(multiplicadorStr, 10) || 1;
+          }
 
-            const popupInfo = `<br>Punto: ${punto}<br>Tipo: ${tipo}<br>Latitud: ${latitud}<br>Longitud: ${longitud}`;
-            const customIcon = new L.Icon({
-              iconUrl: "./camaras_sjl.png", // Ruta a tu imagen de icono
-              shadowUrl:
-                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-              iconSize: [25, 41],
-              iconAnchor: [12, 41],
-              popupAnchor: [1, -34],
-              shadowSize: [41, 41],
-            });
-
-            // var point = turf.point([longitud, latitud]);
-            // if (turf.booleanPointInPolygon(point, geoJsonPolygon)) {
-              const prioridad = L.marker([latitud, longitud], {
-                icon: customIcon,
-              }).addTo(map);
-              currentMarkers9.push(prioridad);
-              prioridad.bindPopup(popupInfo);
-            //   coordenadas.push({latitud: latitud, longitud: longitud, Punto: punto, Tipo: tipo})
-            // }
-            ///contador++;
-            contador += multiplicador;
+          const popupInfo = `<br>Punto: ${punto}<br>Tipo: ${tipo}<br>Latitud: ${latitud}<br>Longitud: ${longitud}`;
+          const customIcon = new L.Icon({
+            iconUrl: "./camaras_sjl.png", // Ruta a tu imagen de icono
+            shadowUrl:
+              "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41],
           });
-          // exportarAExcel(coordenadas);
+
+          // var point = turf.point([longitud, latitud]);
+          // if (turf.booleanPointInPolygon(point, geoJsonPolygon)) {
+          const prioridad = L.marker([latitud, longitud], {
+            icon: customIcon,
+          }).addTo(map);
+          currentMarkers9.push(prioridad);
+          prioridad.bindPopup(popupInfo);
+          //   coordenadas.push({latitud: latitud, longitud: longitud, Punto: punto, Tipo: tipo})
+          // }
+          ///contador++;
+          contador += multiplicador;
+        });
+        // exportarAExcel(coordenadas);
         // });
 
         actualizarContador(10, contador);
@@ -2712,6 +2810,7 @@
         .then((data) => {
           console.log(data);
           dataJSON = data;
+          getSubTipoCasoAll(dataJSON);
 
           // Llenar group1Select con opciones
           const group1Select = document.getElementById("group1");
