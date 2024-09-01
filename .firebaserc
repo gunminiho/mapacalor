@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "mapa-de-calor-cecom-2024"
-  }
+    "default": "mapa-calor-cecom",
+    "mapa_calor_cecom": "mapa-calor-cecom"
+  },
+  "targets": {},
+  "etags": {}
 }
